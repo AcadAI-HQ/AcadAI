@@ -1,0 +1,65 @@
+
+{
+  "title": "Frontend Developer Roadmap",
+  "description": "A comprehensive roadmap to becoming a modern frontend developer in 2024. This path covers everything from the basics of the web to advanced frameworks and tools.",
+  "stages": [
+    {
+      "title": "Internet & Web Basics",
+      "description": "Understand the fundamental concepts of how the internet and websites work.",
+      "isCore": true,
+      "modules": [
+        { "title": "How does the internet work?", "description": "Learn about clients, servers, and network protocols.", "isCore": true },
+        { "title": "What is HTTP?", "description": "Explore the protocol that powers the web, including methods, headers, and status codes.", "isCore": true },
+        { "title": "Browsers and how they work", "description": "Understand the rendering process, DOM, and CSSOM.", "isCore": false },
+        { "title": "DNS and how it works", "description": "Discover how domain names are translated into IP addresses.", "isCore": false },
+        { "title": "What is a Domain Name?", "description": "Learn about domain registration and management.", "isCore": true }
+      ]
+    },
+    {
+      "title": "HTML",
+      "description": "Learn the structure of web pages.",
+      "isCore": true,
+      "modules": [
+        { "title": "Learn the basics", "description": "Master tags, elements, and attributes.", "isCore": true },
+        { "title": "Forms and Validations", "description": "Create interactive forms for user input.", "isCore": true },
+        { "title": "Semantic HTML", "description": "Write meaningful and accessible web content.", "isCore": false },
+        { "title": "Accessibility", "description": "Ensure your websites are usable by everyone.", "isCore": false }
+      ]
+    },
+    {
+      "title": "CSS",
+      "description": "Learn to style web pages.",
+      "isCore": true,
+      "modules": [
+        { "title": "Learn the basics", "description": "Selectors, properties, and the box model.", "isCore": true },
+        { "title": "Flexbox", "description": "A modern layout model for arranging items in a single dimension.", "isCore": true },
+        { "title": "Grid", "description": "A powerful layout system for two-dimensional layouts.", "isCore": false },
+        { "title": "Responsive Design", "description": "Adapt your layouts to different screen sizes using media queries.", "isCore": true },
+        { "title": "Animations", "description": "Bring your site to life with transitions and keyframes.", "isCore": false }
+      ]
+    },
+    {
+      "title": "JavaScript",
+      "description": "The programming language of the web.",
+      "isCore": true,
+      "modules": [
+        { "title": "Syntax and Basic Constructs", "description": "Variables, data types, operators, and control flow.", "isCore": true },
+        { "title": "DOM Manipulation", "description": "Interact with the HTML structure of the page.", "isCore": true },
+        { "title": "Fetch API / Ajax", "description": "Make asynchronous requests to servers.", "isCore": true },
+        { "title": "ES6+ and Modular JavaScript", "description": "Learn modern JavaScript features like Promises, async/await, and modules.", "isCore": false },
+        { "title": "Hoisting, Event Bubbling, Scope", "description": "Understand core JavaScript concepts.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Frameworks",
+      "description": "Choose a modern framework to build complex applications.",
+      "isCore": false,
+      "modules": [
+        { "title": "React", "description": "A popular library for building user interfaces.", "isCore": false },
+        { "title": "Vue", "description": "A progressive framework that is approachable and versatile.", "isCore": false },
+        { "title": "Angular", "description": "A platform for building mobile and desktop web applications.", "isCore": false },
+        { "title": "Next.js", "description": "The React framework for production.", "isCore": false }
+      ]
+    }
+  ]
+}

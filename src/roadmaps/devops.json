@@ -1,0 +1,55 @@
+
+{
+  "title": "DevOps Engineer Roadmap",
+  "description": "A comprehensive guide to becoming a DevOps Engineer, focusing on automation, infrastructure, and collaboration.",
+  "stages": [
+    {
+      "title": "Programming & OS",
+      "description": "Foundational knowledge for automation and system management.",
+      "isCore": true,
+      "modules": [
+        { "title": "Learn a Scripting Language", "description": "Master Python or Go for automation scripts.", "isCore": true },
+        { "title": "Linux Fundamentals", "description": "Understand the command line, file system, and process management.", "isCore": true },
+        { "title": "Networking Basics", "description": "Learn about TCP/IP, DNS, HTTP, and firewalls.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Infrastructure as Code (IaC)",
+      "description": "Manage and provision infrastructure through code.",
+      "isCore": true,
+      "modules": [
+        { "title": "Configuration Management", "description": "Learn Ansible for automating system configuration.", "isCore": true },
+        { "title": "Containerization", "description": "Master Docker for creating and managing containers.", "isCore": true },
+        { "title": "Container Orchestration", "description": "Learn Kubernetes to manage containerized applications at scale.", "isCore": false },
+        { "title": "Infrastructure Provisioning", "description": "Use Terraform to build, change, and version infrastructure safely.", "isCore": false }
+      ]
+    },
+    {
+      "title": "CI/CD",
+      "description": "Automate the software development lifecycle.",
+      "isCore": true,
+      "modules": [
+        { "title": "Understand CI/CD Concepts", "description": "Learn the principles of continuous integration, delivery, and deployment.", "isCore": true },
+        { "title": "CI/CD Tools", "description": "Get hands-on experience with GitHub Actions or Jenkins.", "isCore": true }
+      ]
+    },
+    {
+      "title": "Monitoring & Observability",
+      "description": "Ensure system health and performance.",
+      "isCore": false,
+      "modules": [
+        { "title": "Monitoring Tools", "description": "Learn Prometheus for metrics and Grafana for visualization.", "isCore": false },
+        { "title": "Logging", "description": "Understand centralized logging with the ELK Stack (Elasticsearch, Logstash, Kibana).", "isCore": false }
+      ]
+    },
+    {
+      "title": "Cloud Providers",
+      "description": "Master one of the major cloud platforms.",
+      "isCore": false,
+      "modules": [
+        { "title": "Choose a Cloud Provider", "description": "Deep dive into AWS, Google Cloud, or Azure.", "isCore": false },
+        { "title": "Cloud Native Technologies", "description": "Explore services like serverless functions, managed databases, and object storage.", "isCore": false }
+      ]
+    }
+  ]
+}

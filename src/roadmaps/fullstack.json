@@ -1,0 +1,56 @@
+
+{
+  "title": "Fullstack Developer Roadmap",
+  "description": "This roadmap combines frontend and backend paths to guide you in becoming a versatile fullstack developer capable of building end-to-end applications.",
+  "stages": [
+    {
+      "title": "Frontend Foundations",
+      "description": "Start with the building blocks of the web.",
+      "isCore": true,
+      "modules": [
+        { "title": "HTML, CSS, & JavaScript", "description": "Master the core trio of web development.", "isCore": true },
+        { "title": "Responsive Design", "description": "Build websites that work on all devices.", "isCore": true },
+        { "title": "DOM Manipulation", "description": "Learn how to interact with web pages dynamically.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Backend Foundations",
+      "description": "Build the server-side logic.",
+      "isCore": true,
+      "modules": [
+        { "title": "Choose a Language (e.g., Node.js)", "description": "Select and learn a backend language.", "isCore": true },
+        { "title": "Databases (SQL & NoSQL basics)", "description": "Understand how to work with data.", "isCore": true },
+        { "title": "REST APIs", "description": "Learn to build communication channels between client and server.", "isCore": true }
+      ]
+    },
+    {
+      "title": "Modern Frameworks",
+      "description": "Leverage frameworks to build faster and more efficiently.",
+      "isCore": true,
+      "modules": [
+        { "title": "Frontend Framework (e.g., React)", "description": "Choose and master a component-based UI library.", "isCore": true },
+        { "title": "Backend Framework (e.g., Express)", "description": "Build robust server-side applications.", "isCore": true },
+        { "title": "Fullstack Framework (e.g., Next.js)", "description": "Explore frameworks that handle both client and server.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Authentication & Security",
+      "description": "Learn how to secure your applications and manage users.",
+      "isCore": false,
+      "modules": [
+        { "title": "Authentication Strategies", "description": "Implement JWT, sessions, or third-party auth.", "isCore": false },
+        { "title": "Common Security Principles", "description": "Learn about CORS, CSRF, and data validation.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Deployment & DevOps",
+      "description": "Ship your applications to the world.",
+      "isCore": false,
+      "modules": [
+        { "title": "Containerization (Docker)", "description": "Package your application for consistent deployment.", "isCore": false },
+        { "title": "CI/CD Pipelines", "description": "Automate your build, test, and deployment process.", "isCore": false },
+        { "title": "Cloud Services (e.g., Vercel, Firebase)", "description": "Host your fullstack applications.", "isCore": false }
+      ]
+    }
+  ]
+}
