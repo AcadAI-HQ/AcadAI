@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { RoadmapView } from "@/components/roadmap/roadmap-view";
@@ -19,18 +19,21 @@ const getFreeRoadmap = (premiumRoadmap: Roadmap): Roadmap => {
   return { ...premiumRoadmap, stages: freeStages };
 };
 
-export default function RoadmapPage({ params }: { params: { domain: string } }) {
+export default function RoadmapPage({ params }: { params: Promise<{ domain: string }> }) {
   const { user } = useAuth();
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Unwrap the params Promise using React.use()
+  const { domain } = use(params);
 
   useEffect(() => {
     const fetchRoadmap = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`/roadmaps/${params.domain}.json`);
+        const response = await fetch(`/roadmaps/${domain}.json`);
         if (!response.ok) {
           throw new Error("Roadmap not found");
         }
@@ -56,7 +59,7 @@ export default function RoadmapPage({ params }: { params: { domain: string } }) 
         fetchRoadmap();
     }
 
-  }, [params.domain, user]);
+  }, [domain, user]);
 
   if (loading) {
     return (

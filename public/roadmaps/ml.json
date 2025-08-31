@@ -1,0 +1,57 @@
+
+{
+  "title": "Machine Learning Engineer Roadmap",
+  "description": "A path to becoming a Machine Learning Engineer, covering mathematics, programming, ML algorithms, and MLOps.",
+  "stages": [
+    {
+      "title": "Mathematical Foundations",
+      "description": "Grasp the core math concepts that underpin machine learning.",
+      "isCore": true,
+      "modules": [
+        { "title": "Linear Algebra", "description": "Vectors, matrices, and eigenvalues.", "isCore": true },
+        { "title": "Calculus", "description": "Derivatives and gradients for optimization.", "isCore": true },
+        { "title": "Probability & Statistics", "description": "Distributions, hypothesis testing, and bayesian inference.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Programming for ML",
+      "description": "Learn the tools to implement ML models.",
+      "isCore": true,
+      "modules": [
+        { "title": "Python", "description": "Become proficient in Python, the lingua franca of ML.", "isCore": true },
+        { "title": "NumPy & Pandas", "description": "Master libraries for numerical computation and data manipulation.", "isCore": true },
+        { "title": "Matplotlib & Seaborn", "description": "Learn to visualize data effectively.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Core Machine Learning",
+      "description": "Understand the theory and practice of classical ML algorithms.",
+      "isCore": true,
+      "modules": [
+        { "title": "Supervised Learning", "description": "Linear/Logistic Regression, SVMs, Decision Trees.", "isCore": true },
+        { "title": "Unsupervised Learning", "description": "Clustering (k-Means), Dimensionality Reduction (PCA).", "isCore": true },
+        { "title": "Scikit-Learn", "description": "The essential library for implementing classical ML models.", "isCore": false }
+      ]
+    },
+    {
+      "title": "Deep Learning",
+      "description": "Dive into neural networks and modern architectures.",
+      "isCore": false,
+      "modules": [
+        { "title": "Neural Networks", "description": "Learn about perceptrons, backpropagation, and activation functions.", "isCore": false },
+        { "title": "Deep Learning Frameworks", "description": "Master TensorFlow or PyTorch.", "isCore": false },
+        { "title": "CNNs & RNNs", "description": "Explore architectures for computer vision and sequential data.", "isCore": false }
+      ]
+    },
+    {
+      "title": "MLOps",
+      "description": "Learn to deploy, monitor, and maintain ML models in production.",
+      "isCore": false,
+      "modules": [
+        { "title": "Model Deployment", "description": "Serve models via REST APIs (e.g., with FastAPI).", "isCore": false },
+        { "title": "Containerization (Docker)", "description": "Package your ML applications.", "isCore": false },
+        { "title": "Cloud ML Platforms", "description": "Learn about AWS SageMaker, Google AI Platform, or Azure ML.", "isCore": false }
+      ]
+    }
+  ]
+}
