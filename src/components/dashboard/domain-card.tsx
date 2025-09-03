@@ -40,7 +40,7 @@ export function DomainCard({ domain, onSelect }: DomainCardProps) {
         <CardContent>
           <CardDescription>
             {domain.active
-              ? `Generate a personalized roadmap for ${domain.name} development.`
+              ? `Generate a comprehensive, professional-level roadmap for ${domain.name} development.`
               : `The roadmap for ${domain.name} is currently under development.`}
           </CardDescription>
         </CardContent>

@@ -19,15 +19,15 @@ const faqs = [
   },
   {
     question: "Can I customize my roadmap?",
-    answer: "While the initial roadmap is AI-generated for optimal learning, our premium plan allows for a 'live self-updating' feature that adapts based on your progress and evolving industry trends. Direct manual customization is a feature we are exploring for the future.",
+    answer: "Currently, our roadmaps are AI-generated for optimal learning. We are exploring customization features for the future that will allow you to tailor your learning path based on your specific goals and preferences.",
   },
   {
-    question: "What's the difference between the free and premium roadmaps?",
-    answer: "The free roadmap provides the core foundational concepts for a given domain, giving you a strong start. The premium roadmap is exhaustive, covering advanced topics, specialized tools, and provides a much deeper, more comprehensive learning experience.",
+    question: "How comprehensive are the roadmaps?",
+    answer: "Our roadmaps provide comprehensive coverage of each domain, including foundational concepts, advanced topics, specialized tools, and current industry best practices. You get the complete professional-level learning experience that was previously premium content.",
   },
   {
-    question: "How does the 'live self-updating roadmap' work?",
-    answer: "For premium users, our system continuously monitors the tech landscape. When a new, important technology or skill emerges for your chosen path, your roadmap is automatically updated to include it, ensuring you're always learning the most current and valuable skills.",
+    question: "Is Acad AI really free?",
+    answer: "Yes! Acad AI is completely free to use. You get access to our comprehensive roadmaps (previously premium content) across all domains without any cost or subscription required.",
   },
 ];
 

@@ -1,6 +1,97 @@
 {
   "domain": "Machine Learning",
   "type": "premium",
-  "overview": "Roadmap coming soon!",
-  "steps": []
+  "overview": "A comprehensive machine learning roadmap covering mathematics, algorithms, deep learning, MLOps, and practical applications in modern AI systems.",
+  "steps": [
+    {
+      "title": "Mathematics & Statistics Foundation",
+      "description": "Build strong mathematical foundations essential for understanding ML algorithms.",
+      "resources": [
+        "Linear algebra (vectors, matrices, eigenvalues)",
+        "Calculus (derivatives, gradients, chain rule)",
+        "Statistics & probability theory",
+        "Khan Academy, 3Blue1Brown YouTube series"
+      ]
+    },
+    {
+      "title": "Python Programming for ML",
+      "description": "Master Python and essential libraries for data science and machine learning.",
+      "resources": [
+        "Python fundamentals and advanced concepts",
+        "NumPy for numerical computing",
+        "Pandas for data manipulation",
+        "Matplotlib/Seaborn for data visualization"
+      ]
+    },
+    {
+      "title": "Data Preprocessing & EDA",
+      "description": "Learn data cleaning, feature engineering, and exploratory data analysis techniques.",
+      "resources": [
+        "Data cleaning and handling missing values",
+        "Feature scaling and normalization",
+        "Feature selection and engineering",
+        "Exploratory data analysis techniques"
+      ]
+    },
+    {
+      "title": "Classical Machine Learning",
+      "description": "Master supervised and unsupervised learning algorithms and their applications.",
+      "resources": [
+        "Scikit-learn library mastery",
+        "Regression (linear, polynomial, regularized)",
+        "Classification (SVM, decision trees, ensemble methods)",
+        "Clustering (K-means, hierarchical, DBSCAN)"
+      ]
+    },
+    {
+      "title": "Deep Learning Fundamentals",
+      "description": "Understand neural networks, backpropagation, and deep learning architectures.",
+      "resources": [
+        "TensorFlow/Keras or PyTorch",
+        "Neural network architectures (CNNs, RNNs, LSTMs)",
+        "Backpropagation and gradient descent",
+        "Regularization techniques (dropout, batch normalization)"
+      ]
+    },
+    {
+      "title": "Advanced Deep Learning",
+      "description": "Explore cutting-edge architectures and techniques in deep learning.",
+      "resources": [
+        "Transformer architectures and attention mechanisms",
+        "Generative models (GANs, VAEs)",
+        "Transfer learning and fine-tuning",
+        "Computer vision and NLP applications"
+      ]
+    },
+    {
+      "title": "MLOps & Production Systems",
+      "description": "Learn to deploy, monitor, and maintain ML models in production environments.",
+      "resources": [
+        "Model versioning and experiment tracking (MLflow, Weights & Biases)",
+        "Containerization with Docker",
+        "Model serving (Flask, FastAPI, TensorFlow Serving)",
+        "CI/CD for ML pipelines"
+      ]
+    },
+    {
+      "title": "Specialized Applications",
+      "description": "Dive deep into specific domains and advanced ML applications.",
+      "resources": [
+        "Natural Language Processing (BERT, GPT, transformers)",
+        "Computer Vision (object detection, image segmentation)",
+        "Recommendation systems",
+        "Time series forecasting and analysis"
+      ]
+    },
+    {
+      "title": "Ethics & Responsible AI",
+      "description": "Understand bias, fairness, and ethical considerations in ML systems.",
+      "resources": [
+        "Bias detection and mitigation",
+        "Model interpretability and explainability",
+        "Privacy-preserving ML techniques",
+        "Ethical AI frameworks and guidelines"
+      ]
+    }
+  ]
 }

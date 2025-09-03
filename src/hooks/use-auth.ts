@@ -14,8 +14,5 @@ export const useAuth = (): AuthContextType => {
   if (!context.useGeneration) {
     context.useGeneration = async () => { throw new Error('useGeneration function is not implemented'); };
   }
-  if (!context.processPayment) {
-    context.processPayment = async () => { throw new Error('processPayment function is not implemented'); };
-  }
   return context;
 };

@@ -28,7 +28,6 @@ const Footer = () => {
             <ul className="mt-4 space-y-2 text-sm">
               <li><Link href="#about" className="text-muted-foreground hover:text-primary">About</Link></li>
               <li><Link href="#how-it-works" className="text-muted-foreground hover:text-primary">How It Works</Link></li>
-              <li><Link href="#pricing" className="text-muted-foreground hover:text-primary">Pricing</Link></li>
               <li><Link href="#faq" className="text-muted-foreground hover:text-primary">FAQ</Link></li>
             </ul>
           </div>

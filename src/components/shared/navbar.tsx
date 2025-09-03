@@ -27,12 +27,6 @@ export function Navbar() {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       <div className="ml-auto flex items-center gap-4">
-        {user?.subscriptionStatus === 'premium' && (
-            <div className="flex items-center gap-2 text-yellow-400">
-              <Star className="h-5 w-5 fill-current" />
-              <span className="text-sm font-medium hidden sm:inline">Premium</span>
-            </div>
-          )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="overflow-hidden rounded-full">

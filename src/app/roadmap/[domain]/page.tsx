@@ -3,7 +3,6 @@
 
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { RoadmapView } from "@/components/roadmap/roadmap-view";
 import type { Roadmap } from "@/types";
@@ -18,18 +17,17 @@ interface RoadmapStep {
 }
 interface RoadmapFile {
   domain: string;
-  type: 'free' | 'premium';
+  type: 'premium';
   overview: string;
   steps: RoadmapStep[];
 }
 
-
 // Convert JSON structure to our app's Roadmap structure
-const transformRoadmapData = (data: RoadmapFile, domain: string, type: 'free' | 'premium'): Roadmap => {
+const transformRoadmapData = (data: RoadmapFile, domain: string): Roadmap => {
   // Capitalize first letter of domain
   const capitalizedDomain = domain.charAt(0).toUpperCase() + domain.slice(1);
   return {
-    title: `${capitalizedDomain} Roadmap (${data.type})`,
+    title: `${capitalizedDomain} Roadmap - Comprehensive`,
     description: data.overview,
     stages: data.steps.map(step => ({
       title: step.title,
@@ -45,10 +43,9 @@ const transformRoadmapData = (data: RoadmapFile, domain: string, type: 'free' | 
 };
 
 
-export default function RoadmapPage({ params }: { params: { domain: string } }) {
+export default function RoadmapPage({ params }: { params: Promise<{ domain: string }> }) {
   const { domain } = use(params);
   const { user } = useAuth();
-  const router = useRouter();
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,25 +56,23 @@ export default function RoadmapPage({ params }: { params: { domain: string } }) 
 
       setLoading(true);
       setError(null);
-      
-      const subscriptionType = user.subscriptionStatus;
 
-      // Construct the file path based on the domain and subscription type
-      const roadmapFile = `/roadmaps/${domain}/${subscriptionType}.json`;
+      // Use premium roadmaps as the default free experience
+      const roadmapFile = `/roadmaps/${domain}/premium.json`;
 
       try {
         const response = await fetch(roadmapFile);
         if (!response.ok) {
            if (response.status === 404) {
             // Handle cases where a roadmap for a specific domain doesn't exist yet
-            const safeResponse = await fetch(`/roadmaps/frontend/${subscriptionType}.json`);
+            const safeResponse = await fetch(`/roadmaps/frontend/premium.json`);
             if (!safeResponse.ok) {
                throw new Error(`Default roadmap for 'frontend' also not found.`);
             }
             const data: RoadmapFile = await safeResponse.json();
              // Simulate AI generation time
             await new Promise(resolve => setTimeout(resolve, 1000));
-            setRoadmap(transformRoadmapData(data, 'frontend', subscriptionType));
+            setRoadmap(transformRoadmapData(data, 'frontend'));
             return;
           }
           throw new Error(`Roadmap not found at ${roadmapFile}. Please ensure the file exists.`);
@@ -87,7 +82,7 @@ export default function RoadmapPage({ params }: { params: { domain: string } }) 
         // Simulate AI generation time
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        setRoadmap(transformRoadmapData(data, domain, subscriptionType));
+        setRoadmap(transformRoadmapData(data, domain));
 
       } catch (err: any) {
         setError(err.message || "Failed to load the roadmap.");
@@ -103,9 +98,6 @@ export default function RoadmapPage({ params }: { params: { domain: string } }) 
 
   }, [domain, user]);
 
-  const handleUpgradeClick = () => {
-    router.push('/dashboard');
-  }
 
   if (loading) {
     return (
@@ -138,18 +130,6 @@ export default function RoadmapPage({ params }: { params: { domain: string } }) 
     <div className="pt-6 px-6">
       <h1 className="text-4xl font-headline font-bold">{roadmap.title}</h1>
       <p className="text-lg text-muted-foreground mt-2">{roadmap.description}</p>
-      {user?.subscriptionStatus === 'free' && (
-          <div className="mt-6 mb-4 p-4 bg-yellow-900/20 border border-yellow-700/50 rounded-lg text-yellow-200 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <AlertTriangle className="h-6 w-6"/>
-              <div>
-                <h3 className="font-bold">You are viewing the Free Roadmap</h3>
-                <p className="text-sm text-yellow-300/80">Upgrade to Premium for a more comprehensive path with advanced topics.</p>
-              </div>
-            </div>
-            <Button onClick={handleUpgradeClick} >Upgrade Now</Button>
-          </div>
-      )}
       <RoadmapView roadmap={roadmap} />
     </div>
   );

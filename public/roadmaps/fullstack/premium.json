@@ -1,6 +1,97 @@
 {
   "domain": "Fullstack Development",
   "type": "premium",
-  "overview": "Roadmap coming soon!",
-  "steps": []
+  "overview": "A comprehensive fullstack development roadmap combining frontend and backend technologies with modern deployment practices, perfect for building complete web applications.",
+  "steps": [
+    {
+      "title": "Frontend Foundations",
+      "description": "Master HTML, CSS, and JavaScript with modern best practices and accessibility.",
+      "resources": [
+        "Semantic HTML5 and accessibility (WCAG guidelines)",
+        "Advanced CSS (Grid, Flexbox, animations, variables)",
+        "Modern JavaScript (ES6+, async/await, modules)",
+        "DOM manipulation and event handling"
+      ]
+    },
+    {
+      "title": "Frontend Framework Mastery",
+      "description": "Learn a modern frontend framework and associated ecosystem tools.",
+      "resources": [
+        "React with hooks, context, and state management",
+        "Vue.js or Angular as alternative frameworks",
+        "Component design patterns and reusability",
+        "Frontend routing and navigation"
+      ]
+    },
+    {
+      "title": "Backend Development",
+      "description": "Build robust server-side applications with APIs and database integration.",
+      "resources": [
+        "Node.js/Express.js or Python/Django framework",
+        "RESTful API design and GraphQL",
+        "Database design (SQL and NoSQL)",
+        "Authentication and authorization (JWT, OAuth)"
+      ]
+    },
+    {
+      "title": "Database Management",
+      "description": "Design and optimize databases for scalable applications.",
+      "resources": [
+        "Relational databases (PostgreSQL, MySQL)",
+        "NoSQL databases (MongoDB, Redis)",
+        "Database migrations and seeders",
+        "Query optimization and indexing"
+      ]
+    },
+    {
+      "title": "Modern Development Tools",
+      "description": "Master essential development tools and workflows for efficient development.",
+      "resources": [
+        "Package managers (npm, yarn, pnpm)",
+        "Build tools (Vite, Webpack, Parcel)",
+        "Version control workflows with Git",
+        "Code editors and productivity extensions"
+      ]
+    },
+    {
+      "title": "Testing & Quality Assurance",
+      "description": "Implement comprehensive testing strategies for both frontend and backend.",
+      "resources": [
+        "Unit testing (Jest, Vitest, Pytest)",
+        "Integration and end-to-end testing (Playwright, Cypress)",
+        "API testing (Postman, Insomnia)",
+        "Code quality tools (ESLint, Prettier, Husky)"
+      ]
+    },
+    {
+      "title": "Cloud & Deployment",
+      "description": "Deploy fullstack applications using modern cloud platforms and DevOps practices.",
+      "resources": [
+        "Cloud platforms (Vercel, Netlify, AWS, GCP)",
+        "Containerization with Docker",
+        "CI/CD pipelines (GitHub Actions, GitLab CI)",
+        "Environment management and secrets"
+      ]
+    },
+    {
+      "title": "Performance & Security",
+      "description": "Optimize application performance and implement security best practices.",
+      "resources": [
+        "Frontend performance optimization (lazy loading, code splitting)",
+        "Backend performance (caching, database optimization)",
+        "Security practices (HTTPS, CORS, input validation)",
+        "Monitoring and error tracking"
+      ]
+    },
+    {
+      "title": "Advanced Fullstack Concepts",
+      "description": "Explore advanced patterns and architectures for complex applications.",
+      "resources": [
+        "Microservices architecture patterns",
+        "Real-time features (WebSockets, Server-Sent Events)",
+        "Progressive Web Apps (PWAs)",
+        "Serverless functions and edge computing"
+      ]
+    }
+  ]
 }

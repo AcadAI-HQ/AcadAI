@@ -17,14 +17,10 @@ export interface Roadmap {
   stages: RoadmapStage[];
 }
 
-export type SubscriptionStatus = 'free' | 'premium';
-
 export interface UserProfile {
   uid: string;
   email: string | null;
   displayName: string | null;
-  subscriptionStatus: SubscriptionStatus;
-  generationsLeft: number;
   skills?: string[];
   lastGeneratedDomain?: string;
 }

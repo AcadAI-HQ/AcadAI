@@ -12,12 +12,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-This is **Acad AI**, a Next.js 15 application for AI-powered personalized learning roadmaps with Firebase backend and Google Genkit integration.
+This is **Acad AI**, a completely free Next.js 15 application for comprehensive learning roadmaps with Firebase backend. Previously premium content is now available to all users at no cost.
 
 ### Core Structure
 - **Frontend**: Next.js with TypeScript, Tailwind CSS, and shadcn/ui components
-- **Authentication**: Firebase Auth with custom user profiles stored in Firestore
-- **AI Integration**: Google Genkit with Gemini 2.0 Flash model for roadmap generation
+- **Authentication**: Firebase Auth with simplified user profiles stored in Firestore
+- **Roadmap Content**: Static JSON files with comprehensive, professional-level content
 - **UI Framework**: Radix UI primitives with custom styling, Framer Motion animations
 - **State Management**: React Context for authentication state
 
@@ -25,20 +25,30 @@ This is **Acad AI**, a Next.js 15 application for AI-powered personalized learni
 - `src/app/` - Next.js App Router pages and layouts
 - `src/components/` - Reusable UI components organized by feature (dashboard, landing, roadmap, shared, ui)
 - `src/contexts/` - React contexts (AuthContext for user state)
-- `src/ai/` - Genkit AI configuration and development setup
-- `src/roadmaps/` - Static JSON roadmap data for different domains
+- `public/roadmaps/` - Static JSON roadmap files with comprehensive content
 - `src/types/` - TypeScript type definitions
 
-### Business Logic
-- **User Types**: Free users (3 roadmap generations) vs Premium users (unlimited)
-- **Domains**: Frontend, Backend, Fullstack, ML, DevOps roadmaps
-- **Subscription**: Premium tier at Rs. 199/month with Razorpay integration
-- **Roadmap Structure**: Hierarchical stages → modules with core/optional classification
+### Business Logic & Features
+- **Free for Everyone**: Completely free platform with no subscription tiers or generation limits
+- **Comprehensive Content**: All users receive professional-level, detailed roadmaps (previously premium content)
+- **Available Domains**: 
+  - Frontend Development (React, Vue, modern web technologies)
+  - Backend Development (APIs, databases, system architecture)
+  - Fullstack Development (complete web application development)
+  - Machine Learning (from foundations to MLOps and specialized applications)
+  - DevOps (infrastructure automation, CI/CD, cloud platforms)
+- **Roadmap Structure**: Hierarchical stages with detailed resources and learning paths
+
+### Recent Changes (2025)
+- **Removed Premium Model**: Eliminated all subscription-based features and payment integration
+- **Enhanced Free Content**: What was previously premium content is now available to all users
+- **Simplified User Profiles**: Removed subscription status and generation limits from user data
+- **Comprehensive Roadmaps**: All domains now feature detailed, professional-level learning paths
 
 ### Authentication Flow
 - Firebase Auth manages authentication
-- User profiles stored in Firestore with subscription status and generation limits
-- AuthContext provides login/signup/logout and subscription management
+- User profiles stored in Firestore with user preferences and skills
+- AuthContext provides login/signup/logout functionality
 - Protected routes redirect to login if unauthenticated
 
 ### Styling Guidelines
@@ -49,8 +59,19 @@ This is **Acad AI**, a Next.js 15 application for AI-powered personalized learni
 
 ### Firebase Configuration
 - Authentication, Firestore database integration
-- User profiles include: uid, email, displayName, subscriptionStatus, generationsLeft
+- Simplified user profiles include: uid, email, displayName, skills, lastGeneratedDomain
 - Firebase config in `src/lib/firebase.ts`
+- No payment or subscription data stored
+
+### Roadmap Content Structure
+- **Location**: `/public/roadmaps/{domain}/premium.json` (now served as free content)
+- **Format**: JSON files with domain, overview, and detailed learning steps
+- **Content Quality**: Professional-level, comprehensive coverage including:
+  - Foundational concepts and advanced topics
+  - Modern industry tools and frameworks
+  - Best practices and current job market requirements
+  - Testing, deployment, and production considerations
+  - Specialized applications and career paths
 
 ### Environment Variables Required
 - `NEXT_PUBLIC_FIREBASE_API_KEY` - Firebase Web API Key
@@ -59,10 +80,17 @@ This is **Acad AI**, a Next.js 15 application for AI-powered personalized learni
 - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` - Firebase Storage Bucket
 - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` - Firebase Messaging Sender ID
 - `NEXT_PUBLIC_FIREBASE_APP_ID` - Firebase App ID
-- `NEXT_PUBLIC_RAZORPAY_KEY_ID` - Razorpay Key for payment processing
 
 ### Component Patterns
 - Components organized by feature in `src/components/`
 - UI components from shadcn/ui in `src/components/ui/`
 - Custom styling with Tailwind CSS and CSS modules
 - Framer Motion for animations and transitions
+- Removed: Pricing components, limit warning dialogs, subscription management UI
+
+### Development Notes
+- **No Payment Integration**: All Razorpay and payment-related code has been removed
+- **Simplified Auth Context**: No subscription or payment methods in authentication
+- **Content Loading**: Roadmap pages load premium JSON files directly as free content
+- **User Experience**: All users see comprehensive roadmaps without restrictions
+- **Messaging**: UI emphasizes "comprehensive" and "professional-level" content being free

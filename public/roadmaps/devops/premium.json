@@ -1,6 +1,97 @@
 {
   "domain": "DevOps",
   "type": "premium",
-  "overview": "Roadmap coming soon!",
-  "steps": []
+  "overview": "A comprehensive DevOps roadmap covering infrastructure automation, CI/CD, containerization, monitoring, and cloud-native technologies for modern software delivery.",
+  "steps": [
+    {
+      "title": "Linux System Administration",
+      "description": "Master Linux fundamentals, shell scripting, and system administration tasks.",
+      "resources": [
+        "Linux command line mastery",
+        "Shell scripting (Bash, Zsh)",
+        "Process management and system monitoring",
+        "Network configuration and troubleshooting"
+      ]
+    },
+    {
+      "title": "Version Control & Collaboration",
+      "description": "Advanced Git workflows and collaboration strategies for development teams.",
+      "resources": [
+        "Advanced Git commands and workflows",
+        "Branching strategies (GitFlow, GitHub Flow)",
+        "Code review processes",
+        "Git hooks and automation"
+      ]
+    },
+    {
+      "title": "Infrastructure as Code",
+      "description": "Automate infrastructure provisioning and management using code-based approaches.",
+      "resources": [
+        "Terraform for infrastructure provisioning",
+        "Ansible for configuration management",
+        "CloudFormation or ARM templates",
+        "Infrastructure testing and validation"
+      ]
+    },
+    {
+      "title": "Containerization & Orchestration",
+      "description": "Master Docker containers and Kubernetes orchestration for scalable applications.",
+      "resources": [
+        "Docker fundamentals and advanced concepts",
+        "Kubernetes architecture and components",
+        "Pod, Service, and Ingress management",
+        "Helm charts for package management"
+      ]
+    },
+    {
+      "title": "CI/CD Pipeline Design",
+      "description": "Design and implement robust continuous integration and deployment pipelines.",
+      "resources": [
+        "Jenkins, GitHub Actions, or GitLab CI",
+        "Pipeline as Code practices",
+        "Automated testing integration",
+        "Deployment strategies (blue-green, canary)"
+      ]
+    },
+    {
+      "title": "Cloud Platform Mastery",
+      "description": "Deep dive into major cloud platforms and their DevOps services.",
+      "resources": [
+        "AWS/Azure/GCP core services",
+        "Cloud-native CI/CD tools",
+        "Serverless architectures and functions",
+        "Cloud security and compliance"
+      ]
+    },
+    {
+      "title": "Monitoring & Observability",
+      "description": "Implement comprehensive monitoring, logging, and alerting systems.",
+      "resources": [
+        "Prometheus and Grafana for metrics",
+        "ELK Stack or Fluentd for logging",
+        "Distributed tracing (Jaeger, Zipkin)",
+        "Incident response and on-call practices"
+      ]
+    },
+    {
+      "title": "Security & Compliance",
+      "description": "Integrate security practices throughout the DevOps lifecycle (DevSecOps).",
+      "resources": [
+        "Security scanning in CI/CD pipelines",
+        "Container and infrastructure security",
+        "Secrets management (Vault, AWS Secrets Manager)",
+        "Compliance automation and auditing"
+      ]
+    },
+    {
+      "title": "Performance & Scalability",
+      "description": "Optimize applications and infrastructure for performance and scale.",
+      "resources": [
+        "Load testing and performance monitoring",
+        "Auto-scaling strategies",
+        "Database optimization and management",
+        "CDN and caching strategies"
+      ]
+    }
+  ]
 }
