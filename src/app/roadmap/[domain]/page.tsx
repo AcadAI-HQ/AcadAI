@@ -135,7 +135,7 @@ export default function RoadmapPage({ params }: { params: { domain: string } }) 
   }
 
   return (
-    <div>
+    <div className="pt-6 px-6">
       <h1 className="text-4xl font-headline font-bold">{roadmap.title}</h1>
       <p className="text-lg text-muted-foreground mt-2">{roadmap.description}</p>
       {user?.subscriptionStatus === 'free' && (

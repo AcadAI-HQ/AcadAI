@@ -131,8 +131,8 @@ export default function DashboardPage() {
         </div>
         
         <div>
-          <h2 className="text-2xl font-headline font-bold tracking-tight my-4">Choose a Domain to Generate Roadmap</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <h2 className="text-2xl font-headline font-bold tracking-tight my-4 text-center">Choose a Domain to Generate Roadmap</h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
             {domains.map((domain) => (
               <DomainCard
                 key={domain.id}

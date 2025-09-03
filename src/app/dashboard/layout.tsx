@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/shared/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Sidebar, SidebarProvider, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { Sidebar, SidebarProvider, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { LayoutDashboard, Route, BrainCircuit } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +47,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <div className="flex min-h-screen w-full bg-muted/40">
         <Sidebar>
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -81,10 +81,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
           </div>
         </Sidebar>
-        <div className="flex flex-col sm:gap-4 sm:py-4 transition-all duration-300 ease-in-out sm:pl-[var(--sidebar-width-icon)] group-data-[state=expanded]/sidebar-wrapper:sm:pl-[var(--sidebar-width)]">
+        <div className="flex flex-1 flex-col md:ml-64">
            <Navbar />
-           <main className="flex-1 gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-              {children}
+           <main className="flex-1 gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 flex justify-center items-start">
+              <div className="w-full max-w-5xl">
+                {children}
+              </div>
            </main>
         </div>
       </div>
