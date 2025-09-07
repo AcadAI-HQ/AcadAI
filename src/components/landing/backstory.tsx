@@ -41,7 +41,7 @@ const Backstory = () => {
             "That's why we built Acad AI. We envisioned a tool that could provide the mentorship and direction we never had—a smart guide that cuts through the noise and delivers a clear, efficient path to success. This platform is the solution I wish I had when I started my journey."
           </p>
           <div className="mt-6 border-t border-border pt-6">
-            <h3 className="font-semibold text-foreground">Bhaskar & Disshad, Cofounders of Acad AI</h3>
+            <h3 className="font-semibold text-foreground">Bhaskar and Disshad, Cofounders of Acad AI</h3>
             <p className="text-sm text-muted-foreground">Developers and lifelong learners</p>
           </div>
         </motion.div>
