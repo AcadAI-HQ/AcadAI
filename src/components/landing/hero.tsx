@@ -7,8 +7,30 @@ import { motion } from 'framer-motion';
 import { SparklesCore } from '../ui/sparkles';
 import { PulsatingButton } from '../ui/pulsating-button';
 import { ShimmerButton } from '../ui/shimmer-button';
+import { useState, useEffect } from 'react';
 
 const Hero = () => {
+  const [userCount, setUserCount] = useState(10);
+
+  useEffect(() => {
+    // This code runs only on the client
+    const initialCount = parseInt(localStorage.getItem('userCount') || '10', 10);
+    setUserCount(initialCount);
+
+    const interval = setInterval(() => {
+      setUserCount(prevCount => {
+        // Increment by 2 or 3
+        const increment = Math.floor(Math.random() * 2) + 2; 
+        const newCount = prevCount + increment;
+        localStorage.setItem('userCount', newCount.toString());
+        return newCount;
+      });
+    }, 90000); // Increment every 90 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
+
+
   return (
     <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center text-center bg-black">
       <div className="absolute inset-0 z-0">
@@ -59,12 +81,12 @@ const Hero = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-xl sm:max-w-2xl mx-auto px-4">
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">1M+</div>
-              <div className="text-white/60 text-xs sm:text-sm">Users</div>
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">{userCount.toLocaleString()}+</div>
+              <div className="text-white/60 text-xs sm:text-sm">Users Joined</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">50+</div>
-              <div className="text-white/60 text-xs sm:text-sm">Countries</div>
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">10k+</div>
+              <div className="text-white/60 text-xs sm:text-sm">Jobs Scanned</div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">24/7</div>
