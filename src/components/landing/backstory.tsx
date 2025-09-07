@@ -17,7 +17,7 @@ const Backstory = () => {
         >
           <Image
             src="https://placehold.co/500x500.png"
-            alt="Founder of Acad AI"
+            alt="Cofounders of Acad AI"
             data-ai-hint="founder portrait"
             width={500}
             height={500}
@@ -35,14 +35,14 @@ const Backstory = () => {
             From Frustration to a <span className="text-accent">Solution</span>
           </h2>
           <p className="mt-4 text-muted-foreground text-lg">
-            "I was once in your shoes. Scrolling endlessly through tutorials, buying courses I never finished, and feeling overwhelmed by the sheer number of 'essential' technologies to learn. I wasted months, if not years, on inefficient learning."
+            "We were once in your shoes. Scrolling endlessly through tutorials, buying courses we never finished, and feeling overwhelmed by the sheer number of 'essential' technologies to learn. I wasted months, if not years, on inefficient learning."
           </p>
           <p className="mt-4 text-muted-foreground text-lg">
-            "That's why I built Acad AI. I envisioned a tool that could provide the mentorship and direction I never had—a smart guide that cuts through the noise and delivers a clear, efficient path to success. This platform is the solution I wish I had when I started my journey."
+            "That's why we built Acad AI. We envisioned a tool that could provide the mentorship and direction we never had—a smart guide that cuts through the noise and delivers a clear, efficient path to success. This platform is the solution I wish I had when I started my journey."
           </p>
           <div className="mt-6 border-t border-border pt-6">
-            <h3 className="font-semibold text-foreground">Jane Doe, Founder of Acad AI</h3>
-            <p className="text-sm text-muted-foreground">Ex-FAANG Engineer & Lifelong Learner</p>
+            <h3 className="font-semibold text-foreground">Bhaskar & Disshad, Cofounders of Acad AI</h3>
+            <p className="text-sm text-muted-foreground">Developers and lifelong learners</p>
           </div>
         </motion.div>
       </div>
