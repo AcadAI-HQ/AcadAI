@@ -1,83 +1,91 @@
 {
   "domain": "Frontend Development",
   "type": "premium",
-  "overview": "A comprehensive roadmap aligned with current job market demands. Covers modern frameworks, performance optimization, testing, and specialization paths.",
+  "overview": "A detailed roadmap covering frontend fundamentals to advanced specialization, aligned with global entry-level and mid-level job market requirements. Focused on modern frameworks, performance optimization, testing, and deployment with only free resources.",
   "steps": [
     {
-      "title": "Foundations (HTML, CSS, JS)",
-      "description": "Master the fundamentals with a focus on accessibility and clean code practices.",
+      "title": "Foundations (HTML, CSS, JavaScript Basics)",
+      "description": "Master HTML5, semantic tags, CSS3 fundamentals (box model, positioning, flexbox, grid), and core JavaScript (variables, functions, DOM, events). Learn accessibility (a11y) and clean coding habits.",
       "resources": [
         "https://developer.mozilla.org/en-US/",
-        "https://javascript.info/"
+        "https://javascript.info/",
+        "https://www.freecodecamp.org/learn/responsive-web-design/"
       ]
     },
     {
-      "title": "Advanced JavaScript",
-      "description": "Learn ES6+, async/await, promises, closures, event loop, modules.",
+      "title": "Advanced JavaScript (ES6+)",
+      "description": "Deep dive into ES6+ features: arrow functions, template literals, destructuring, spread/rest operators, modules, classes, promises, async/await, closures, event loop, call stack, higher-order functions.",
       "resources": [
         "https://exploringjs.com/es6/",
-        "https://frontendmasters.com/courses/javascript-hard-parts/"
+        "https://javascript.info/",
+        "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/"
       ]
     },
     {
-      "title": "Modern CSS Techniques",
-      "description": "CSS variables, animations, transitions, SCSS/SASS, TailwindCSS.",
+      "title": "Modern CSS & Styling",
+      "description": "CSS variables, responsive design, media queries, animations, transitions, BEM methodology, preprocessors (SASS/SCSS), and utility-first CSS frameworks like TailwindCSS.",
       "resources": [
-        "https://tailwindcss.com/docs",
-        "https://sass-lang.com/guide"
+        "https://css-tricks.com/",
+        "https://sass-lang.com/guide",
+        "https://tailwindcss.com/docs"
       ]
     },
     {
-      "title": "Frontend Frameworks",
-      "description": "Focus on React (industry leader). Learn hooks, state management, routing.",
+      "title": "Frontend Frameworks (React Focus)",
+      "description": "Learn React (hooks, components, props, state, lifecycle). Cover routing, forms, context, and project structuring. Brief exposure to Vue/Angular is optional but React dominates market demand.",
       "resources": [
-        "https://react.dev/",
-        "https://redux.js.org/"
+        "https://react.dev/learn",
+        "https://reactrouter.com/en/main/start/tutorial",
+        "https://beta.reactjs.org/learn"
       ]
     },
     {
       "title": "TypeScript",
-      "description": "Adopt TypeScript for better scalability, type safety, and enterprise use.",
+      "description": "Learn TypeScript for scalable apps. Focus on types, interfaces, generics, utility types, modules, decorators, and integrating TypeScript in React projects.",
       "resources": [
         "https://www.typescriptlang.org/docs/",
         "https://www.freecodecamp.org/news/learn-typescript-beginners-guide/"
       ]
     },
     {
-      "title": "API Integration",
-      "description": "Work with REST APIs and GraphQL. Learn data fetching, authentication, and error handling.",
+      "title": "API Integration & Data Handling",
+      "description": "Work with REST APIs (CRUD), GraphQL basics, fetch/axios, error handling, authentication (JWT, OAuth), pagination, and caching strategies.",
       "resources": [
-        "https://graphql.org/learn/",
-        "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction"
+        "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction",
+        "https://graphql.org/learn/"
       ]
     },
     {
       "title": "State Management",
-      "description": "Learn Redux, Context API, Zustand or Recoil for managing global state.",
+      "description": "Master local vs global state. Learn Context API, Redux Toolkit, Zustand, or Recoil. Understand side-effects handling with Redux Thunk or Redux Saga.",
       "resources": [
         "https://redux.js.org/",
+        "https://react.dev/learn/scaling-up-with-reducer-and-context",
         "https://recoiljs.org/"
       ]
     },
     {
       "title": "Testing & Quality Assurance",
-      "description": "Unit testing, integration testing, end-to-end testing with Jest, React Testing Library, Cypress.",
+      "description": "Learn unit testing, integration testing, and end-to-end testing. Cover Jest (unit), React Testing Library (component), Cypress/Playwright (E2E).",
       "resources": [
-        "https://jestjs.io/",
-        "https://testing-library.com/docs/react-testing-library/intro/"
+        "https://jestjs.io/docs/getting-started",
+        "https://testing-library.com/docs/react-testing-library/intro/",
+        "https://docs.cypress.io/guides/overview/why-cypress"
       ]
     },
     {
       "title": "Build Tools & Deployment",
-      "description": "Learn Webpack, Vite, CI/CD basics, deployment on Vercel/Netlify.",
+      "description": "Understand bundlers (Webpack, Vite), transpilers (Babel), package managers (npm, yarn, pnpm). Learn CI/CD basics, environment variables, and deployment on Vercel/Netlify.",
       "resources": [
-        "https://vitejs.dev/",
-        "https://vercel.com/docs"
+        "https://vitejs.dev/guide/",
+        "https://webpack.js.org/concepts/",
+        "https://vercel.com/docs",
+        "https://docs.netlify.com/"
       ]
     },
     {
       "title": "Performance Optimization",
-      "description": "Lazy loading, code splitting, Core Web Vitals, caching strategies.",
+      "description": "Core Web Vitals, code splitting, lazy loading, memoization, image optimization, tree-shaking, service workers, and caching strategies (localStorage, IndexedDB).",
       "resources": [
         "https://web.dev/vitals/",
         "https://developers.google.com/web/fundamentals/performance"
@@ -85,25 +93,31 @@
     },
     {
       "title": "Soft Skills & Career Prep",
-      "description": "DSA basics for interviews, system design fundamentals, portfolio building.",
+      "description": "Practice DSA basics (arrays, strings, recursion, hash maps), system design for frontend (SPA architecture, caching layers), Git/GitHub workflows, and portfolio building with real projects.",
       "resources": [
         "https://leetcode.com/",
-        "https://www.pramp.com/"
+        "https://github.com/",
+        "https://www.freecodecamp.org/news/git-and-github-crash-course/"
       ]
     },
     {
       "title": "Specialization Paths (Optional)",
-      "description": "Pick a specialization: Next.js (Fullstack), React Native (Mobile), or Three.js (Web Graphics).",
+      "description": "Choose based on career goals: Next.js (fullstack apps & SSR), React Native (mobile), Three.js (3D/graphics), Electron (desktop apps), or Web3.js/Ethers.js (blockchain frontends).",
       "resources": [
         "https://nextjs.org/learn/",
-        "https://reactnative.dev/",
-        "https://threejs.org/"
+        "https://reactnative.dev/docs/getting-started",
+        "https://threejs.org/docs/",
+        "https://www.electronjs.org/docs/latest",
+        "https://docs.ethers.org/"
       ]
     },
     {
       "title": "Capstone Project",
-      "description": "Build a production-ready app (e.g., e-commerce site, SaaS dashboard) and deploy.",
-      "resources": []
+      "description": "Build and deploy a production-ready application such as an e-commerce platform, SaaS dashboard, or real-time chat app. Showcase performance, testing, and scalability.",
+      "resources": [
+        "https://vercel.com/docs",
+        "https://docs.netlify.com/"
+      ]
     }
   ]
 }
