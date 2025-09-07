@@ -1,72 +1,205 @@
 {
   "domain": "Frontend Development",
-  "type": "premium",
-  "overview": "A detailed roadmap covering frontend fundamentals to advanced specialization, aligned with global entry-level and mid-level job market requirements. Focused on modern frameworks, performance optimization, testing, and deployment with only free resources.",
+  "overview": "A hyper-detailed roadmap where each technology is divided into granular topics. Covers fundamentals, modern frameworks, animations, and performance optimization to prepare students for global frontend roles.",
   "steps": [
     {
-      "title": "Foundations (HTML, CSS, JavaScript Basics)",
-      "description": "Master HTML5, semantic tags, CSS3 fundamentals (box model, positioning, flexbox, grid), and core JavaScript (variables, functions, DOM, events). Learn accessibility (a11y) and clean coding habits.",
+      "title": "HTML5",
+      "description": "Master semantic structure, accessibility, and SEO basics.",
+      "subtopics": [
+        "HTML boilerplate and structure",
+        "Head, meta tags, title, favicon",
+        "Semantic tags: header, nav, main, article, section, footer",
+        "Forms: inputs, labels, validation attributes",
+        "Tables, lists, multimedia (audio/video)",
+        "ARIA roles and accessibility basics",
+        "SEO essentials (alt tags, headings hierarchy, metadata)"
+      ],
       "resources": [
-        "https://developer.mozilla.org/en-US/",
-        "https://javascript.info/",
+        "https://developer.mozilla.org/en-US/docs/Learn/HTML",
         "https://www.freecodecamp.org/learn/responsive-web-design/"
       ]
     },
     {
-      "title": "Advanced JavaScript (ES6+)",
-      "description": "Deep dive into ES6+ features: arrow functions, template literals, destructuring, spread/rest operators, modules, classes, promises, async/await, closures, event loop, call stack, higher-order functions.",
+      "title": "CSS3",
+      "description": "Learn styling, layouts, and responsive design.",
+      "subtopics": [
+        "Box model, display types, overflow",
+        "Positioning (relative, absolute, sticky, fixed)",
+        "Flexbox deep dive",
+        "CSS Grid layouts",
+        "Responsive design with media queries",
+        "Pseudo-classes & pseudo-elements",
+        "CSS variables & calc()",
+        "Transitions & animations",
+        "Gradients, shadows, filters",
+        "Custom fonts, Google Fonts, icon fonts"
+      ],
       "resources": [
-        "https://exploringjs.com/es6/",
-        "https://javascript.info/",
-        "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/"
+        "https://css-tricks.com/",
+        "https://developer.mozilla.org/en-US/docs/Learn/CSS"
       ]
     },
     {
-      "title": "Modern CSS & Styling",
-      "description": "CSS variables, responsive design, media queries, animations, transitions, BEM methodology, preprocessors (SASS/SCSS), and utility-first CSS frameworks like TailwindCSS.",
+      "title": "JavaScript Core",
+      "description": "Learn vanilla JavaScript for logic and DOM manipulation.",
+      "subtopics": [
+        "Variables (var, let, const)",
+        "Data types & type coercion",
+        "Operators & expressions",
+        "Functions (declaration, expression, arrow)",
+        "Scope, hoisting, closures",
+        "DOM manipulation (querySelector, events, forms)",
+        "Event bubbling & delegation",
+        "LocalStorage & sessionStorage",
+        "Error handling (try/catch/finally)",
+        "JSON basics"
+      ],
       "resources": [
-        "https://css-tricks.com/",
-        "https://sass-lang.com/guide",
+        "https://javascript.info/",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      ]
+    },
+    {
+      "title": "JavaScript ES6+",
+      "description": "Modern features required in industry projects.",
+      "subtopics": [
+        "Template literals",
+        "Destructuring arrays & objects",
+        "Spread & rest operators",
+        "Default parameters",
+        "Modules (import/export)",
+        "Classes & inheritance",
+        "Promises, async/await",
+        "Fetch API",
+        "Map, Set, WeakMap, WeakSet",
+        "Array methods: map, filter, reduce, find, some, every"
+      ],
+      "resources": [
+        "https://exploringjs.com/es6/",
+        "https://javascript.info/"
+      ]
+    },
+    {
+      "title": "Animations & Interactivity",
+      "description": "Bring bling and polish to web projects.",
+      "subtopics": [
+        "CSS transitions & keyframe animations",
+        "GSAP basics (tweens, timelines, easing)",
+        "Scroll animations with GSAP ScrollTrigger",
+        "Framer Motion (for React): gestures, variants, transitions",
+        "Locomotive Scroll basics (smooth scrolling)",
+        "Lenis scroll library",
+        "Parallax effects & intersection observer",
+        "SVG animations (stroke-dasharray, path morphing)"
+      ],
+      "resources": [
+        "https://greensock.com/docs/",
+        "https://www.framer.com/motion/",
+        "https://github.com/locomotivemtl/locomotive-scroll",
+        "https://lenis.studiofreight.com/"
+      ]
+    },
+    {
+      "title": "React.js",
+      "description": "The industry-standard library for building UIs.",
+      "subtopics": [
+        "JSX & rendering",
+        "Functional vs class components",
+        "Props & prop drilling",
+        "useState, useEffect hooks",
+        "Custom hooks",
+        "useRef & DOM manipulation",
+        "Context API",
+        "Conditional rendering",
+        "Lists & keys",
+        "Controlled & uncontrolled forms",
+        "React Router basics (v6+)"
+      ],
+      "resources": [
+        "https://react.dev/learn",
+        "https://reactrouter.com/en/main/start/tutorial"
+      ]
+    },
+    {
+      "title": "TailwindCSS",
+      "description": "Utility-first CSS framework for rapid development.",
+      "subtopics": [
+        "Installation & setup",
+        "Utility classes (spacing, colors, typography)",
+        "Responsive design with breakpoints",
+        "Pseudo-classes (hover, focus, active)",
+        "Dark mode setup",
+        "Custom theme configuration",
+        "Animations with Tailwind plugins"
+      ],
+      "resources": [
         "https://tailwindcss.com/docs"
       ]
     },
     {
-      "title": "Frontend Frameworks (React Focus)",
-      "description": "Learn React (hooks, components, props, state, lifecycle). Cover routing, forms, context, and project structuring. Brief exposure to Vue/Angular is optional but React dominates market demand.",
+      "title": "Next.js",
+      "description": "Production-ready React framework for fullstack apps.",
+      "subtopics": [
+        "Pages & routing system",
+        "Server-Side Rendering (SSR)",
+        "Static Site Generation (SSG)",
+        "Incremental Static Regeneration (ISR)",
+        "API routes",
+        "Dynamic routing & catch-all routes",
+        "Image optimization (next/image)",
+        "Middleware & authentication",
+        "Deployment on Vercel"
+      ],
       "resources": [
-        "https://react.dev/learn",
-        "https://reactrouter.com/en/main/start/tutorial",
-        "https://beta.reactjs.org/learn"
+        "https://nextjs.org/learn/"
       ]
     },
     {
-      "title": "TypeScript",
-      "description": "Learn TypeScript for scalable apps. Focus on types, interfaces, generics, utility types, modules, decorators, and integrating TypeScript in React projects.",
+      "title": "TypeScript with React",
+      "description": "Scale applications with strong typing.",
+      "subtopics": [
+        "Basic types & type inference",
+        "Interfaces vs types",
+        "Generics",
+        "Utility types (Partial, Pick, Omit)",
+        "Typing props & states",
+        "Typing hooks",
+        "Strict null checks & optional chaining",
+        "Type narrowing"
+      ],
       "resources": [
         "https://www.typescriptlang.org/docs/",
         "https://www.freecodecamp.org/news/learn-typescript-beginners-guide/"
       ]
     },
     {
-      "title": "API Integration & Data Handling",
-      "description": "Work with REST APIs (CRUD), GraphQL basics, fetch/axios, error handling, authentication (JWT, OAuth), pagination, and caching strategies.",
-      "resources": [
-        "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction",
-        "https://graphql.org/learn/"
-      ]
-    },
-    {
       "title": "State Management",
-      "description": "Master local vs global state. Learn Context API, Redux Toolkit, Zustand, or Recoil. Understand side-effects handling with Redux Thunk or Redux Saga.",
+      "description": "Handle global app state efficiently.",
+      "subtopics": [
+        "Prop drilling & lifting state",
+        "Context API deep dive",
+        "Redux Toolkit basics",
+        "Async thunks in Redux",
+        "Zustand state management",
+        "Recoil atoms/selectors"
+      ],
       "resources": [
         "https://redux.js.org/",
-        "https://react.dev/learn/scaling-up-with-reducer-and-context",
-        "https://recoiljs.org/"
+        "https://recoiljs.org/",
+        "https://zustand-demo.pmnd.rs/"
       ]
     },
     {
-      "title": "Testing & Quality Assurance",
-      "description": "Learn unit testing, integration testing, and end-to-end testing. Cover Jest (unit), React Testing Library (component), Cypress/Playwright (E2E).",
+      "title": "Testing",
+      "description": "Ensure app reliability and scalability.",
+      "subtopics": [
+        "Unit testing with Jest",
+        "Component testing with React Testing Library",
+        "Mocking APIs",
+        "Snapshot testing",
+        "End-to-end testing with Cypress",
+        "Playwright basics"
+      ],
       "resources": [
         "https://jestjs.io/docs/getting-started",
         "https://testing-library.com/docs/react-testing-library/intro/",
@@ -74,46 +207,32 @@
       ]
     },
     {
-      "title": "Build Tools & Deployment",
-      "description": "Understand bundlers (Webpack, Vite), transpilers (Babel), package managers (npm, yarn, pnpm). Learn CI/CD basics, environment variables, and deployment on Vercel/Netlify.",
-      "resources": [
-        "https://vitejs.dev/guide/",
-        "https://webpack.js.org/concepts/",
-        "https://vercel.com/docs",
-        "https://docs.netlify.com/"
-      ]
-    },
-    {
       "title": "Performance Optimization",
-      "description": "Core Web Vitals, code splitting, lazy loading, memoization, image optimization, tree-shaking, service workers, and caching strategies (localStorage, IndexedDB).",
+      "description": "Build apps that scale globally.",
+      "subtopics": [
+        "Core Web Vitals (LCP, FID, CLS)",
+        "Code splitting & lazy loading",
+        "React.memo & useMemo",
+        "useCallback for performance",
+        "Image optimization",
+        "Bundle analysis (Webpack, Vite)",
+        "Caching with service workers",
+        "PWA basics"
+      ],
       "resources": [
         "https://web.dev/vitals/",
         "https://developers.google.com/web/fundamentals/performance"
       ]
     },
     {
-      "title": "Soft Skills & Career Prep",
-      "description": "Practice DSA basics (arrays, strings, recursion, hash maps), system design for frontend (SPA architecture, caching layers), Git/GitHub workflows, and portfolio building with real projects.",
-      "resources": [
-        "https://leetcode.com/",
-        "https://github.com/",
-        "https://www.freecodecamp.org/news/git-and-github-crash-course/"
-      ]
-    },
-    {
-      "title": "Specialization Paths (Optional)",
-      "description": "Choose based on career goals: Next.js (fullstack apps & SSR), React Native (mobile), Three.js (3D/graphics), Electron (desktop apps), or Web3.js/Ethers.js (blockchain frontends).",
-      "resources": [
-        "https://nextjs.org/learn/",
-        "https://reactnative.dev/docs/getting-started",
-        "https://threejs.org/docs/",
-        "https://www.electronjs.org/docs/latest",
-        "https://docs.ethers.org/"
-      ]
-    },
-    {
       "title": "Capstone Project",
-      "description": "Build and deploy a production-ready application such as an e-commerce platform, SaaS dashboard, or real-time chat app. Showcase performance, testing, and scalability.",
+      "description": "Integrate everything into a real-world project.",
+      "examples": [
+        "E-commerce store with cart & checkout",
+        "Social media clone with authentication",
+        "Real-time chat app with WebSockets",
+        "Portfolio with animations and blog (Next.js + Tailwind)"
+      ],
       "resources": [
         "https://vercel.com/docs",
         "https://docs.netlify.com/"
