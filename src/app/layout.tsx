@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { Providers } from './providers';
-import Script from 'next/script';
+import { ConditionalLayout } from '@/components/layout/conditional-layout';
 
 export const metadata: Metadata = {
   title: 'Acad AI: Personalized Learning Paths',
@@ -23,7 +23,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <Providers>
-          {children}
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
           <Toaster />
         </Providers>
       </body>

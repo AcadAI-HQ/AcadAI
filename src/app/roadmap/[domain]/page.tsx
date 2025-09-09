@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { RoadmapView } from "@/components/roadmap/roadmap-view";
 import type { Roadmap } from "@/types";
-import { Bot, AlertTriangle } from "lucide-react";
+import { Bot, AlertTriangle, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Helper type for roadmap JSON structure
@@ -127,10 +127,16 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
   }
 
   return (
-    <div className="pt-6 px-6">
+    <>
+      <Button asChild variant="ghost" size="sm" className="mb-4">
+        <Link href="/dashboard">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Dashboard
+        </Link>
+      </Button>
       <h1 className="text-4xl font-headline font-bold">{roadmap.title}</h1>
       <p className="text-lg text-muted-foreground mt-2">{roadmap.description}</p>
       <RoadmapView roadmap={roadmap} />
-    </div>
+    </>
   );
 }
