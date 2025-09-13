@@ -15,6 +15,37 @@ interface RoadmapViewProps {
   roadmap: Roadmap;
 }
 
+const renderModuleContent = (stage: RoadmapStage) => {
+  const module = stage.modules[0]; // We are mapping one step to one module
+  if (!module) return null;
+
+  const items = module.subtopics || module.examples;
+  if (!items || items.length === 0) return null;
+
+  const itemType = module.subtopics ? "Subtopics" : "Examples";
+
+  return (
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>View {itemType}</AccordionTrigger>
+        <AccordionContent>
+          <motion.ul 
+            className="space-y-3 mt-4"
+            variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
+          >
+            {items.map((item, index) => (
+              <motion.li key={index} className="flex items-start gap-3" variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
+                <Circle className="h-3 w-3 mt-1.5 text-primary/70 shrink-0" />
+                <span className="text-sm text-muted-foreground">{item}</span>
+              </motion.li>
+            ))}
+          </motion.ul>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+};
+
 export function RoadmapView({ roadmap }: RoadmapViewProps) {
   
   const containerVariants = {
@@ -22,7 +53,7 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
+        staggerChildren: 0.2,
       },
     },
   };
@@ -30,11 +61,6 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
   const stageVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0 },
-  };
-
-  const moduleVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
   };
 
   return (
@@ -58,27 +84,7 @@ export function RoadmapView({ roadmap }: RoadmapViewProps) {
                   <CardDescription>{stage.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>View Modules</AccordionTrigger>
-                      <AccordionContent>
-                        <motion.ul 
-                          className="space-y-4 mt-4"
-                          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-                        >
-                          {stage.modules.map((module, moduleIndex) => (
-                            <motion.li key={moduleIndex} className="flex items-start gap-4" variants={moduleVariants}>
-                              <Circle className="h-3 w-3 mt-1.5 text-primary/70 shrink-0" />
-                              <div>
-                                <h4 className="font-semibold">{module.title}</h4>
-                                <p className="text-sm text-muted-foreground">{module.description}</p>
-                              </div>
-                            </motion.li>
-                          ))}
-                        </motion.ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
+                  {renderModuleContent(stage)}
                 </CardContent>
               </Card>
             </div>
