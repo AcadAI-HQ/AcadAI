@@ -1,0 +1,266 @@
+{
+    "domain": "Fullstack Development",
+    "type": "premium",
+    "overview": "Global (2025) roadmap for entry → mid level fullstack developers. Covers frontend + backend + infra + AI, with granular topics and unique capstone project ideas and ways freshers can show up in job market.",
+    "steps": [
+        {
+            "title": "Computer Science & Fundamentals",
+            "description": "Foundational knowledge every fullstack developer should have to understand how systems work and to perform well in interviews.",
+            "subtopics": [
+                "Time & space complexity (Big O notation)",
+                "Data structures: arrays, linked lists, hash maps, trees, graphs",
+                "Algorithms: sorting, searching, BFS / DFS, shortest paths basics",
+                "Networking basics: HTTP/HTTPS, REST principles, WebSockets, DNS, TLS",
+                "Operating system basics: processes, threads, concurrency, file system",
+                "Unix command line & shell basics",
+                "Version control: Git workflows, branching, pull requests"
+            ],
+            "resources": [
+                "https://cses.fi/book.html",
+                "https://javascript.info/",
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+                "https://git-scm.com/book/en/v2"
+            ]
+        },
+        {
+            "title": "Frontend Foundations",
+            "description": "Client-side basics plus modern enhancements for building responsive, accessible, interactive UIs.",
+            "subtopics": [
+                "HTML5: semantic tags, forms, accessibility (ARIA), meta tags, SEO basics",
+                "CSS3: box model; positioning; Flexbox & Grid; responsive design (media queries, mobile first)",
+                "CSS styling methods: vanilla CSS, preprocessors (SASS), CSS modules",
+                "Animations & interactivity: CSS animations, transitions, scroll & hover effects",
+                "Modern JS (ES6+): modules, promises, async/await, fetch API, destructuring, arrow functions, spread/rest",
+                "DOM manipulation, event loop, closures, callbacks, event delegation",
+                "Browser dev tools: debugging, profiling, layout / repaint & reflow"
+            ],
+            "resources": [
+                "https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer",
+                "https://www.freecodecamp.org/learn/responsive-web-design/",
+                "https://javascript.info/",
+                "https://css-tricks.com/"
+            ]
+        },
+        {
+            "title": "Frontend Advanced / Frameworks & Libraries",
+            "description": "More advanced front-end topics and popular frameworks that employers expect for fullstack roles.",
+            "subtopics": [
+                "React (or Vue / Angular): component architecture, hooks (useState, useEffect, custom hooks), component lifecycle (if applicable), state vs props, virtual DOM",
+                "Routing: client-side routing (React Router / Vue Router), nested routes, route guards, lazy loading of routes",
+                "State management: Context API, Redux Toolkit, Zustand/Recoil, Vuex/Pinia",
+                "Styling frameworks: Tailwind CSS; CSS-in-JS (styled-components / Emotion); design systems / component libraries (MUI, Chakra, Ant Design)",
+                "Animations and UX polish: libraries like GSAP, Framer Motion; smooth scrolling / scroll-triggered animations; microinteractions",
+                "SSR / SSG frameworks: Next.js, Nuxt.js, SvelteKit — data fetching, incremental/static regeneration, image optimization, SEO",
+                "Accessibility & performance in UI: lazy loading, code splitting, memoization, ARIA, color contrast, keyboard navigation"
+            ],
+            "resources": [
+                "https://react.dev/learn",
+                "https://tailwindcss.com/docs",
+                "https://nextjs.org/learn/",
+                "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/"
+            ]
+        },
+        {
+            "title": "Backend Foundations",
+            "description": "Server-side development basics needed for fullstack work.",
+            "subtopics": [
+                "Pick a primary backend language: Node.js (JavaScript/TypeScript), Python (Django / FastAPI / Flask), Java (Spring Boot), C# (.NET Core), or others",
+                "Server architecture: how servers handle requests, middlewares, routing",
+                "APIs: RESTful design (CRUD, status codes, versioning, filtering/pagination), GraphQL basics, WebSockets / SSE for real-time",
+                "Authentication & Authorization: JWT, OAuth 2.0, sessions, role-based access control",
+                "Databases: SQL (PostgreSQL, MySQL), NoSQL (MongoDB, Firebase), schema vs schema-less design, transactions, indexing",
+                "ORMs & query builders: e.g. TypeORM, Prisma, Sequelize, SQLAlchemy, Hibernate",
+                "Background jobs & queues: handling asynchronous tasks, retries, scheduling (e.g. Bull, Celery, sidekiq)",
+                "Error handling & logging"
+            ],
+            "resources": [
+                "https://nodejs.org/en/docs/guides/",
+                "https://fastapi.tiangolo.com/",
+                "https://spring.io/projects/spring-boot",
+                "https://docs.djangoproject.com/en/stable/"
+            ]
+        },
+        {
+            "title": "DevOps & Infrastructure",
+            "description": "Skills for deploying, scaling, and operating fullstack apps in production environments.",
+            "subtopics": [
+                "Git workflows + CI/CD pipelines (GitHub Actions, GitLab CI, Jenkins)",
+                "Containerization: Docker basics, multi-stage builds",
+                "Orchestration: Kubernetes fundamentals, manifests, services, ingress",
+                "Cloud platforms: AWS / GCP / Azure: compute, storage, managed databases, serverless functions",
+                "Serverless architecture: AWS Lambda / Google Cloud Functions / Azure Functions, edge functions",
+                "Infrastructure as code (IaC): Terraform basics, CloudFormation / Pulumi",
+                "Monitoring & observability: metrics, logs, tracing (Prometheus, Grafana, OpenTelemetry, Sentry)",
+                "Security best practices (backend & front): HTTPS/TLS, CORS, input validation, rate limiting, secrets management"
+            ],
+            "resources": [
+                "https://docs.github.com/actions",
+                "https://docs.docker.com/get-started/",
+                "https://kubernetes.io/docs/home/",
+                "https://aws.amazon.com/getting-started/"
+            ]
+        },
+        {
+            "title": "Performance, Scalability & Advanced Topics",
+            "description": "What sets apart mid-level fullstack devs: designing apps that handle real load, scale nicely, and remain maintainable.",
+            "subtopics": [
+                "Caching strategies: in-memory (Redis), HTTP headers / CDNs, query caching",
+                "Load balancing, horizontal scaling, auto-scaling",
+                "Database optimization: query plans, indexing, sharding (when needed), connection pooling",
+                "Event-driven architecture, message queues, pub/sub (RabbitMQ, Kafka, etc.)",
+                "Microservices vs modular monoliths: trade-offs, boundary definitions",
+                "GraphQL performance: batching, persisted queries, N+1 problem",
+                "Edge computing / CDNs / serverless edge functions",
+                "Cost optimization (cloud cost, serverless, data transfer, compute usage)"
+            ],
+            "resources": [
+                "https://redis.io/docs/manual/scaling/",
+                "https://kubernetes.io/docs/tasks/",
+                "https://graphql.org/learn/"
+            ]
+        },
+        {
+            "title": "AI & Modern Integrations",
+            "description": "The emerging / hot skills that fullstack devs should know to stay ahead in 2025.",
+            "subtopics": [
+                "AI APIs & model inference: OpenAI, HuggingFace, Cohere etc.",
+                "Prompt engineering: crafting prompts, handling response latency, chain-of-thought, safety/fallbacks",
+                "Semantic search / embeddings (vector stores)",
+                "AI-powered features: autocomplete, recommendations, summarization, image generation",
+                "Streaming / chunked responses & WebSocket use for real-time AI UIs",
+                "Ethics, data privacy, bias in AI outputs, user-trust and UX for AI"
+            ],
+            "resources": [
+                "https://platform.openai.com/docs",
+                "https://www.huggingface.co/docs"
+            ]
+        },
+        {
+            "title": "Soft Skills, Documentation & Best Practices",
+            "description": "Non-coding but crucial skills fullstack devs need for team success & hiring.",
+            "subtopics": [
+                "Clean architecture & design patterns (SOLID, DRY, KISS)",
+                "Writing documentation: README, API docs, inline comments",
+                "Code reviews, pair programming, mentoring",
+                "Testing strategy: unit, integration, E2E, contract tests",
+                "Debugging tools & techniques",
+                "Estimations & planning, agile methodologies",
+                "Security mindset & privacy laws (GDPR, CCPA if relevant)",
+                "Accessibility & inclusive design"
+            ],
+            "resources": [
+                "https://github.com/donnemartin/system-design-primer",
+                "https://developer.mozilla.org/en-US/docs/Learn/Accessibility"
+            ]
+        },
+        {
+            "title": "Capstone Projects & Showcase Ideas",
+            "description": "Projects that allow freshers to show cross-cutting skills and stand out beyond standard CRUD apps.",
+            "projects": [
+                {
+                    "name": "Fullstack AI Chat Application",
+                    "description": "Real-time chat UI + backend with user auth, streaming responses, fallback prompts, retention of chat history. Add semantic search over past chats.",
+                    "tech_stack": [
+                        "React or Vue",
+                        "Next.js or Nuxt (SSR)",
+                        "Node.js / FastAPI backend",
+                        "OpenAI or HuggingFace API",
+                        "WebSockets or SSE",
+                        "MongoDB / PostgreSQL"
+                    ],
+                    "showcase_tips": [
+                        "Expose transcripts + search feature",
+                        "Show prompt engineering strategy",
+                        "Include tests for real-time & fallback behavior"
+                    ]
+                },
+                {
+                    "name": "Project Management / Team Dashboard App",
+                    "description": "Users, roles, projects, tasks, real-time updates, activity logs, permission controls; include analytics of usage and charts.",
+                    "tech_stack": [
+                        "React + Tailwind",
+                        "Backend (Node.js/Express or Django)",
+                        "GraphQL APIs",
+                        "Redis for caching",
+                        "Docker",
+                        "Deployed to cloud free tier"
+                    ],
+                    "showcase_tips": [
+                        "Write API docs",
+                        "Add CI/CD pipeline",
+                        "Include performance / load test results"
+                    ]
+                },
+                {
+                    "name": "Personal Finance + Investment Tracker with AI Insights",
+                    "description": "Track incomes/expenses/investments, show predictions (AI), alerts for unusual transactions, data visualizations, charts, export reports.",
+                    "tech_stack": [
+                        "Next.js + React/Vue",
+                        "Backend Python or Node.js",
+                        "Charts (D3 / Recharts)",
+                        "AI API for prediction",
+                        "SQL database",
+                        "Authentication & authorization"
+                    ],
+                    "showcase_tips": [
+                        "Add mobile-friendly UI",
+                        "Show cost/performance tradeoffs",
+                        "Include offline or PWA mode if possible"
+                    ]
+                },
+                {
+                    "name": "Realtime Collaboration Tool",
+                    "description": "Whiteboard or document editor that supports multiple users, presence, conflict resolution; live updates, version history.",
+                    "tech_stack": [
+                        "React/Angular/Vue",
+                        "Backend with WebSocket support",
+                        "Database + Redis",
+                        "Auth & permissions"
+                    ],
+                    "showcase_tips": [
+                        "Highlight concurrency conflict resolution",
+                        "Include fallback & offline behavior"
+                    ]
+                },
+                {
+                    "name": "Serverless E-Learning Platform",
+                    "description": "Courses, quizzes, video streaming, user dashboards; use serverless functions for backend; possibly offline mode or download; AI for recommendations / summaries.",
+                    "tech_stack": [
+                        "Frontend with framework (React/Next.js etc.)",
+                        "Backend via serverless (AWS Lambda etc.)",
+                        "Database + blob storage",
+                        "AI API optional for summaries or voice",
+                        "CI/CD & deployment"
+                    ],
+                    "showcase_tips": [
+                        "Show usage analytics",
+                        "Handle video uploads/streaming",
+                        "Implement caching and security"
+                    ]
+                },
+                {
+                    "name": "Multi-Tenant SaaS Admin System",
+                    "description": "Multiple customer orgs sharing same codebase, but separate data; theming/customizations per tenant; role hierarchy; audit logs; subscription management",
+                    "tech_stack": [
+                        "Backend language + tenancy pattern",
+                        "Frontend framework + theming",
+                        "Auth & payment integrations",
+                        "Cloud deployment"
+                    ],
+                    "showcase_tips": [
+                        "Document tenant separation design",
+                        "Include subscription/payment mockups",
+                        "Show scaling considerations"
+                    ]
+                }
+            ],
+            "freshers_showcase_ways": [
+                "Host full code on GitHub with README, tests, CI/CD setup, and deployment on free tiers (Vercel, Render, AWS free tier)",
+                "Write blog posts / case studies about architecture decisions & trade-offs",
+                "Record demo videos showcasing features & performance",
+                "Contribute to open-source or clone popular products with your own twist",
+                "Add load/performance tests and observability (metrics, logs) to projects"
+            ]
+        }
+    ]
+}

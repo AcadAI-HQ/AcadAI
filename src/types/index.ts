@@ -3,7 +3,14 @@ export interface RoadmapModule {
   description: string;
   isCore: boolean;
   subtopics?: string[];
-  examples?: string[];
+  examples?: RoadmapExample[];
+  resources?: string[];
+}
+
+export interface RoadmapExample {
+  name: string;
+  features: string;
+  stack: string;
 }
 
 export interface RoadmapStage {

@@ -1,0 +1,405 @@
+{
+    "domain": "Backend Development",
+    "type": "premium",
+    "overview": "Global (2025) entry-to-mid roadmap for backend engineers. Focus: language mastery, APIs, databases, cloud, containers, security, testing, observability, microservices & serverless, plus standout capstone projects and concrete ways freshers can demonstrate experience.",
+    "steps": [
+      {
+        "title": "Computer Science Foundations (must)",
+        "description": "Basic CS concepts to reason about backend problems and interviews.",
+        "subtopics": [
+          "Time & space complexity (Big O)",
+          "Data structures: arrays, linked lists, stacks, queues, hash maps, trees, heaps",
+          "Algorithms: sorting, searching, BFS/DFS, basics of graphs",
+          "Concurrency basics & race conditions",
+          "Networking fundamentals: TCP/IP, HTTP(S), TLS, ports, DNS",
+          "Unix basics: processes, signals, file permissions, shell scripting"
+        ],
+        "resources": [
+          "https://cses.fi/book.html",
+          "https://open.kattis.com/",
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+        ]
+      },
+      {
+        "title": "Pick Primary Language (choose 1 → practice 2)",
+        "description": "Master one backend language thoroughly, then learn a second to widen opportunities.",
+        "options": [
+          {
+            "name": "Python",
+            "focus": [
+              "Core Python (data types, functions, OOP)",
+              "Async Python: asyncio, async/await",
+              "FastAPI (modern, fast, async), Django (batteries-included)",
+              "Typing (mypy), packaging (pip/poetry)"
+            ],
+            "free_resources": [
+              "https://docs.python.org/3/tutorial/",
+              "https://fastapi.tiangolo.com/",
+              "https://docs.djangoproject.com/en/stable/intro/"
+            ]
+          },
+          {
+            "name": "Node.js (JavaScript/TypeScript)",
+            "focus": [
+              "Node runtime, event loop, streams",
+              "Express.js basics → NestJS for structured apps",
+              "TypeScript: types, generics, tsconfig",
+              "Async patterns: promises, async/await, streams"
+            ],
+            "free_resources": [
+              "https://nodejs.org/en/docs/guides/",
+              "https://expressjs.com/",
+              "https://docs.nestjs.com/"
+            ]
+          },
+          {
+            "name": "Java",
+            "focus": [
+              "Java core (OOP, concurrency), Spring Boot",
+              "JVM tooling (jprofiler, jstack)",
+              "Build tools: Maven/Gradle"
+            ],
+            "free_resources": [
+              "https://docs.oracle.com/javase/tutorial/",
+              "https://spring.io/projects/spring-boot"
+            ]
+          },
+          {
+            "name": "Go / Rust (optional high-growth)",
+            "focus": [
+              "Go: concurrency (goroutines, channels), net/http, small binaries",
+              "Rust: ownership model, high-performance services"
+            ],
+            "free_resources": [
+              "https://golang.org/doc/tutorial/",
+              "https://doc.rust-lang.org/book/"
+            ]
+          }
+        ],
+        "outcome": "Able to build production-level APIs and services in chosen language."
+      },
+      {
+        "title": "APIs & Protocols",
+        "description": "Design, build, document, and scale APIs.",
+        "subtopics": [
+          "RESTful design: resources, status codes, pagination, filtering",
+          "HTTP methods, headers, authentication flows",
+          "GraphQL basics: schema, resolvers, batching, persisted queries",
+          "WebSockets & SSE (real-time features)",
+          "gRPC basics & when to use it",
+          "API documentation: OpenAPI/Swagger, Postman collections",
+          "Rate limiting, throttling, versioning strategies"
+        ],
+        "resources": [
+          "https://swagger.io/docs/",
+          "https://graphql.org/learn/",
+          "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events"
+        ]
+      },
+      {
+        "title": "Databases & Storage",
+        "description": "Design schemas, write efficient queries, and choose appropriate storage.",
+        "subtopics": [
+          "Relational DBs: Postgres, MySQL — schema design, indexes, transactions",
+          "NoSQL: MongoDB, DynamoDB — pros/cons, denormalization",
+          "Query optimization & explain plans",
+          "ORMs: SQLAlchemy, TypeORM, Prisma, Hibernate",
+          "Caching: Redis (data structures, TTL, pub/sub)",
+          "Search: ElasticSearch / OpenSearch basics",
+          "Blob storage: S3 or equivalent for files"
+        ],
+        "resources": [
+          "https://www.postgresql.org/docs/",
+          "https://redis.io/docs/",
+          "https://www.elastic.co/guide/index.html"
+        ]
+      },
+      {
+        "title": "Authentication, Authorization & Security",
+        "description": "Secure apps end-to-end — authentication, tokens, secrets & common attack mitigation.",
+        "subtopics": [
+          "Auth flows: sessions vs JWT vs OAuth2 / OpenID Connect",
+          "Password hashing (bcrypt/argon2), secure storage",
+          "Role-Based Access Control (RBAC) & attribute-based (ABAC)",
+          "Common vulnerabilities: XSS, CSRF, SQL Injection, deserialization attacks",
+          "Transport security: HTTPS/TLS, HSTS",
+          "Secrets management (environment variables, vaults)",
+          "Dependency auditing (npm audit, safety, Snyk)"
+        ],
+        "resources": [
+          "https://oauth.net/2/",
+          "https://cheatsheetseries.owasp.org/cheatsheets"
+        ]
+      },
+      {
+        "title": "Testing, QA & TDD",
+        "description": "Build confidence: unit, integration, contract, load, and end-to-end tests.",
+        "subtopics": [
+          "Unit testing frameworks: pytest / unittest, Jest, JUnit",
+          "Integration tests: test DBs, mock external services",
+          "Contract tests for microservices (Pact)",
+          "Property-based testing (optional advanced)",
+          "Load & stress testing: k6, locust, JMeter basics",
+          "CI test pipelines & gating (run tests in GitHub Actions/GitLab CI)"
+        ],
+        "resources": [
+          "https://docs.pytest.org/",
+          "https://jestjs.io/docs/getting-started",
+          "https://k6.io/docs/"
+        ]
+      },
+      {
+        "title": "Architecture Patterns",
+        "description": "From monoliths to microservices: tradeoffs, patterns & data consistency.",
+        "subtopics": [
+          "Monolith vs microservices vs modular monolith",
+          "Service-oriented design, bounded contexts",
+          "Event-driven architecture: events, pub/sub, Kafka basics",
+          "Saga pattern for distributed transactions",
+          "API Gateway, Circuit Breaker, Retry patterns",
+          "CQRS & event sourcing (advanced use cases)"
+        ],
+        "resources": [
+          "https://microservices.io/",
+          "https://kafka.apache.org/documentation/"
+        ]
+      },
+      {
+        "title": "Containers, Orchestration & Infra",
+        "description": "Run, scale, and operate services reliably in cloud environments.",
+        "subtopics": [
+          "Docker: images, containers, multi-stage builds, volumes",
+          "Kubernetes basics: pods, deployments, services, ingress",
+          "Helm charts, manifests, troubleshooting",
+          "Local dev parity: docker-compose, minikube/kind",
+          "Service mesh intro: Istio/Linkerd (optional)"
+        ],
+        "resources": [
+          "https://docs.docker.com/get-started/",
+          "https://kubernetes.io/docs/home/"
+        ]
+      },
+      {
+        "title": "Cloud Platforms & Serverless",
+        "description": "Deploy and run backend services on cloud providers and serverless platforms.",
+        "subtopics": [
+          "Core services: compute (EC2/GCE), managed DBs (RDS/Cloud SQL), serverless (Lambda/Cloud Functions)",
+          "IAM basics & least-privilege",
+          "Storage: S3/GCS, lifecycle rules",
+          "Managed services: managed queues (SQS/PubSub), managed Redis, managed Kafka",
+          "Infrastructure as code: Terraform basics",
+          "Serverless frameworks: Serverless, Cloud Run, AWS Lambda + API Gateway"
+        ],
+        "resources": [
+          "https://aws.amazon.com/getting-started/",
+          "https://cloud.google.com/docs",
+          "https://www.terraform.io/docs/index.html"
+        ]
+      },
+      {
+        "title": "Observability & Reliability",
+        "description": "Instrument systems to monitor health, errors, and performance.",
+        "subtopics": [
+          "Logging: structured logs, correlation ids",
+          "Metrics: Prometheus metrics, Grafana dashboards",
+          "Tracing: OpenTelemetry, Jaeger/Zipkin",
+          "Error monitoring: Sentry",
+          "Alerting & SLOs/SLIs",
+          "Chaos engineering basics (optional advanced)"
+        ],
+        "resources": [
+          "https://opentelemetry.io/docs/",
+          "https://prometheus.io/docs/introduction/overview/"
+        ]
+      },
+      {
+        "title": "CI/CD & Developer Experience",
+        "description": "Ship reliably — automated builds, tests, releases and rollbacks.",
+        "subtopics": [
+          "CI basics: GitHub Actions / GitLab CI pipelines",
+          "Automated deployments to staging/prod, blue/green or canary",
+          "Artifact storage & versioning",
+          "Automated DB migrations & rollbacks",
+          "Feature flags & gradual rollouts"
+        ],
+        "resources": [
+          "https://docs.github.com/actions",
+          "https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/"
+        ]
+      },
+      {
+        "title": "Performance & Scalability Engineering",
+        "description": "Design systems to handle load and scale efficiently.",
+        "subtopics": [
+          "Caching strategies: CDN, HTTP cache headers, Redis",
+          "Database sharding & read replicas",
+          "Connection pooling & backpressure",
+          "Asynchronous workers & queueing (Celery, Bull, Sidekiq, RQ)",
+          "Horizontal vs vertical scaling, autoscaling policies"
+        ],
+        "resources": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching",
+          "https://redis.io/docs/manual/scaling/"
+        ]
+      },
+      {
+        "title": "Data Engineering Basics (optional but valuable)",
+        "description": "Useful for backend roles that touch pipelines, analytics or ML infra.",
+        "subtopics": [
+          "ETL basics, streaming vs batch",
+          "Message brokers: Kafka, RabbitMQ, Pub/Sub",
+          "Data warehouses: BigQuery, Redshift",
+          "Basic SQL for analytics & window functions"
+        ],
+        "resources": [
+          "https://kafka.apache.org/documentation/",
+          "https://cloud.google.com/bigquery/docs"
+        ]
+      },
+      {
+        "title": "AI & ML Integration for Backend",
+        "description": "How backend engineers surface and host AI capabilities (increasingly requested).",
+        "subtopics": [
+          "Calling external AI APIs (OpenAI, Hugging Face Inference) safely",
+          "Handling large responses: streaming & chunked responses",
+          "Vector search & similarity (Pinecone, Milvus, Weaviate) for semantic search",
+          "Running lightweight models server-side (ONNX, small transformers)",
+          "Feature stores & model versioning (basic concepts)",
+          "Monitoring model performance & cost (latency, token usage)"
+        ],
+        "resources": [
+          "https://platform.openai.com/docs",
+          "https://www.huggingface.co/docs/inference-api"
+        ]
+      },
+      {
+        "title": "Soft Skills & Career Prep",
+        "description": "Communicate design choices, write docs, and collaborate across teams.",
+        "subtopics": [
+          "Writing clear README & architecture docs (ADR)",
+          "Designing API contracts & API-first thinking",
+          "Code reviews & pull request etiquette",
+          "Estimations, sprint participation, grooming",
+          "Interview prep: system design for small services, DSA basics"
+        ],
+        "resources": [
+          "https://www.craft.do/s/Architecture-Decision-Records",
+          "https://github.com/donnemartin/system-design-primer"
+        ]
+      },
+      {
+        "title": "Capstone Projects & Freshers Showcases",
+        "description": "Unique projects that demonstrate end-to-end backend skills and stand out from ordinary CRUD apps.",
+        "projects": [
+          {
+            "name": "Event-Driven Orders Pipeline (Niche Multi-step Workflow)",
+            "description": "Simulate an e-commerce order processing pipeline but focus on backend complexity: events flow through services (order service, payment simulator, inventory, notification), event sourcing or Kafka for durable event log, replay capability.",
+            "tech_stack": ["FastAPI or Express + TypeScript", "Kafka or Redis Streams", "Postgres", "Docker", "Kubernetes (optional)"],
+            "showcase_tips": [
+              "Publish sequence diagram and ADRs",
+              "Provide replay & failure recovery demo via UI or CLI",
+              "Include metrics (processing latency, throughput) and logs"
+            ]
+          },
+          {
+            "name": "Realtime Collaboration API (Docs/Whiteboard Backend)",
+            "description": "Backend for realtime collaboration with operational transform or CRDT basics; presence, permissions, and conflict resolution.",
+            "tech_stack": ["Node.js (WebSockets) or Elixir (Phoenix Channels)", "Redis for presence", "Postgres for persistence"],
+            "showcase_tips": [
+              "Record demo: multi-user editing & conflict resolution",
+              "Show tests for concurrent editing scenarios"
+            ]
+          },
+          {
+            "name": "Personalized Recommendation Microservice",
+            "description": "Simple recommendation system (content-based + collaborative filtering) with user event ingestion, offline batch training and an online scoring API.",
+            "tech_stack": ["Python (FastAPI)", "Postgres + Redis", "job runner (Celery) or Cloud Functions", "simple ML using scikit-learn or implicit"],
+            "showcase_tips": [
+              "Expose an explainability endpoint (why recommended)",
+              "Document data pipelines & training schedule"
+            ]
+          },
+          {
+            "name": "Serverless Image/Video Processing Pipeline",
+            "description": "Upload → async processing (thumbnails, transcodes) → CDN + signed URLs; cost-aware design and retries.",
+            "tech_stack": ["AWS Lambda/Cloud Functions", "S3/GCS", "FFmpeg in lambda layers or containerized workers"],
+            "showcase_tips": [
+              "Show architecture diagram, cost estimate & optimization steps",
+              "Include automated tests for worker idempotency"
+            ]
+          },
+          {
+            "name": "Auth-as-a-Service (OAuth2 Service)",
+            "description": "Build an auth service implementing OAuth2 flows, client registration, token introspection, refresh, and RBAC.",
+            "tech_stack": ["Go or Node (OAuth libraries)", "Postgres", "Redis for sessions", "OpenID Connect basics"],
+            "showcase_tips": [
+              "Provide Postman collection and demo clients",
+              "Explain security choices and threat model"
+            ]
+          },
+          {
+            "name": "Telemetry & Observability Demo App",
+            "description": "Create a small microservice app and instrument logs (structured), traces (OpenTelemetry), and metrics (Prometheus), with dashboards and alerts.",
+            "tech_stack": ["Any language", "Prometheus + Grafana", "Jaeger/OpenTelemetry"],
+            "showcase_tips": [
+              "Include demo of root-cause via tracing",
+              "Add incident postmortem example"
+            ]
+          },
+          {
+            "name": "Semantic Search API (AI-enhanced)",
+            "description": "Ingest documents, create vector embeddings, provide semantic search + highlight; add safeguards & rate limits.",
+            "tech_stack": ["OpenAI/HF embeddings", "Pinecone/Milvus/Weaviate (or simple FAISS)", "FastAPI/Express"],
+            "showcase_tips": [
+              "Show latency & cost profiling",
+              "Document prompt patterns & fallback heuristics"
+            ]
+          }
+        ],
+        "freshers_showcase_ways": [
+          "Host code on GitHub with clear README, tests, CI, and deployment (Vercel/Render/AWS free tiers).",
+          "Write a technical blog/case study: architecture decisions, tradeoffs, and performance numbers.",
+          "Record a 5–10 minute demo video showing key features, failure recovery and metrics dashboards.",
+          "Open-source a small library or contribute to an existing project (bugfixes / docs).",
+          "Add automated deployments & a staging environment to show production readiness."
+        ],
+        "free_resources": [
+          "https://github.com/",
+          "https://vercel.com/docs (free tiers for small projects)",
+          "https://render.com/docs (free tiers)",
+          "https://docs.github.com/en/actions"
+        ]
+      },
+      {
+        "title": "Interview & Hiring Prep (Backend-focused)",
+        "description": "How to prepare for backend interviews and what to show recruiters.",
+        "subtopics": [
+          "System design for small services: how data flows, where to cache, how to scale the API",
+          "Design an endpoint: authentication, rate limits, response formats, pagination",
+          "DSA practice: medium difficulty problems (hashmaps, trees, BFS/DFS)",
+          "Behavioral STAR stories about ownership, incident handling, and collaboration",
+          "Portfolio: repository link, architecture docs, demo video, test coverage"
+        ],
+        "resources": [
+          "https://github.com/donnemartin/system-design-primer",
+          "https://leetcode.com/"
+        ]
+      },
+      {
+        "title": "Continuous Learning / Roadmap Maintenance",
+        "description": "How to keep your platform's backend roadmap accurate over time.",
+        "subtopics": [
+          "Scrape & aggregate job postings monthly, extract keywords & frequencies",
+          "Detect rising & falling terms via time-series analysis",
+          "Maintain mapping from keywords → concrete skills & subtopics",
+          "Add human review to avoid noisy trends (spam / template repetition)",
+          "Provide regional filters (US/EU/India) and level filters (Entry/Mid/Senior)"
+        ],
+        "resources": [
+          "https://developer.mozilla.org/",
+          "https://stackoverflow.com/insights/survey"
+        ]
+      }
+    ]
+  }
+  

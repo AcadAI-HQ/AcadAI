@@ -1,0 +1,236 @@
+{
+    "domain": "DevOps",
+    "type": "premium",
+    "overview": "Global 2025 roadmap for entry → mid‐level DevOps roles. Covers core foundations, automation, cloud & infra, monitoring, security, emergent trends, plus strong project ideas freshers can use to build experience.",
+    "steps": [
+      {
+        "title": "Linux, OS & Networking Fundamentals",
+        "description": "Understand under-the-hood of systems; essential for all DevOps tasks.",
+        "subtopics": [
+          "Linux command line: navigation, processes, permissions, logs",
+          "System init, services, daemons",
+          "Package managers, system updates",
+          "Basics of networking: IP, DNS, HTTP/S, CORS, Ports, firewalls",
+          "Virtualization basics: VMs vs containers"
+        ],
+        "resources": [
+          "https://linuxjourney.com/",
+          "https://www.edx.org/course/introduction-to-linux"
+        ]
+      },
+      {
+        "title": "Scripting & Programming for DevOps",
+        "description": "Automate tasks, glue infra together, write utilities and tools.",
+        "subtopics": [
+          "Bash / Shell scripting: common tasks, parsing files, automation",
+          "Python (or another general-purpose language): file IO, APIs, modules",
+          "Go (optional): especially for performance, tools, CLI",
+          "Version control & Git: branching, merging, workflows"
+        ],
+        "resources": [
+          "https://www.freecodecamp.org/news/beginners-guide-to-bash-scripting/",
+          "https://docs.python.org/3/tutorial/",
+          "https://git-scm.com/book/en/v2"
+        ]
+      },
+      {
+        "title": "Continuous Integration / Continuous Deployment (CI/CD)",
+        "description": "Automating build, test, deploy pipelines to deliver safely and frequently.",
+        "subtopics": [
+          "Principles: commit → build → test → deploy",
+          "Tools: GitHub Actions, GitLab CI, Jenkins, CircleCI",
+          "Writing pipeline scripts (YAML etc.)",
+          "Automated testing in pipelines",
+          "Rollbacks, blue/green & canary deployments, feature flags"
+        ],
+        "resources": [
+          "https://docs.github.com/actions",
+          "https://docs.gitlab.com/ee/ci/",
+          "https://www.jenkins.io/doc/"
+        ]
+      },
+      {
+        "title": "Containers & Orchestration",
+        "description": "Package, run, scale, and manage containerized applications.",
+        "subtopics": [
+          "Docker fundamentals: images, containers, volumes, networking, Dockerfile optimization",
+          "Multi-stage builds; reducing image size",
+          "Container registries",
+          "Kubernetes basics: pods, deployments, services, ingress controllers",
+          "Helm / Kustomize templating",
+          "Autoscaling, rolling updates, health checks"
+        ],
+        "resources": [
+          "https://www.docker.com/get-started",
+          "https://kubernetes.io/docs/home/"
+        ]
+      },
+      {
+        "title": "Infrastructure as Code (IaC) & Configuration Management",
+        "description": "Provision and maintain infrastructure reproducibly and codified.",
+        "subtopics": [
+          "Terraform: basics, modules, state, remote state, versioning",
+          "CloudFormation (AWS) or equivalents on Azure/GCP",
+          "Ansible, Chef, Puppet for configuration management / task automation",
+          "Immutable infrastructure vs mutable infrastructure",
+          "GitOps practices"
+        ],
+        "resources": [
+          "https://www.terraform.io/docs/",
+          "https://docs.ansible.com/",
+          "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html"
+        ]
+      },
+      {
+        "title": "Cloud Platforms & Serverless Infrastructure",
+        "description": "Set up, operate, scale backend systems in cloud & serverless environments.",
+        "subtopics": [
+          "AWS / Azure / GCP basics: compute, storage, IAM, networking",
+          "Serverless functions (Lambda / GCP Functions / Azure Functions)",
+          "Object storage (S3 / GCS / Blob storage)",
+          "VPCs, subnets, security groups / firewall rules",
+          "Load balancing & CDN",
+          "Hybrid / multi-cloud strategies",
+          "Cost management & budgeting on cloud"
+        ],
+        "resources": [
+          "https://aws.amazon.com/getting-started/",
+          "https://cloud.google.com/docs"
+        ]
+      },
+      {
+        "title": "Monitoring, Logging & Observability",
+        "description": "Make systems transparent: know when things break and why.",
+        "subtopics": [
+          "Logging infrastructure: log aggregation (e.g. ELK Stack), structured logs",
+          "Metric collection: Prometheus, statsd",
+          "Dashboards: Grafana, Kibana",
+          "Tracing: OpenTelemetry / Jaeger / Zipkin",
+          "Alerting, incident response, SLO / SLA concepts",
+          "Health checks, readiness & liveness probes"
+        ],
+        "resources": [
+          "https://prometheus.io/docs/introduction/overview/",
+          "https://opentelemetry.io/docs/"
+        ]
+      },
+      {
+        "title": "Security, Compliance & DevSecOps",
+        "description": "Embed security throughout the DevOps lifecycle to build reliable & safe systems.",
+        "subtopics": [
+          "Secure by default: SSH keys, secrets management, secure storage",
+          "Vulnerability scanning (containers, dependencies)",
+          "TLS / SSL, certificate management",
+          "Static code analysis, dependency audits",
+          "IAM least-privilege, network security, firewall rules",
+          "Compliance frameworks if relevant (GDPR, HIPAA, etc.)",
+          "Secrets rotation, key management"
+        ],
+        "resources": [
+          "https://cheatsheetseries.owasp.org/",
+          "https://docs.hashicorp.com/vault/"
+        ]
+      },
+      {
+        "title": "Performance, Reliability & Scaling",
+        "description": "Ensuring systems remain performant, resilient and scalable under load.",
+        "subtopics": [
+          "Load testing, stress testing (tools like k6, Locust)",
+          "Fault tolerance: retries, timeouts, circuit breakers",
+          "High availability & disaster recovery (backup & restore, multi-region deployment)",
+          "Auto-scaling, infrastructure scaling (horizontal/vertical)",
+          "Caching (redis / memcached), CDNs, network optimization",
+          "Resiliency patterns: fallback, degradation"
+        ],
+        "resources": [
+          "https://k6.io/docs/",
+          "https://redis.io/docs/"
+        ]
+      },
+      {
+        "title": "Soft Skills & Best Practices",
+        "description": "Collaboration, documentation, and mindset that helps you from entry to mid level.",
+        "subtopics": [
+          "Good communication between devs, ops, SRE",
+          "Incident postmortems and blameless culture",
+          "Versioning & proper source control practices",
+          "Documentation: README, infra diagrams, runbooks",
+          "Time management & prioritization",
+          "Ownership & responsibility"
+        ],
+        "resources": [
+          "https://about.gitlab.com/handbook/",
+          "https://12factor.net/"
+        ]
+      },
+      {
+        "title": "Emerging Trends & AI in DevOps",
+        "description": "What’s rising and can give you a competitive edge in DevOps roles soon.",
+        "subtopics": [
+          "GitOps (ArgoCD, Flux)",
+          "AI/ML aided operations (AIOps): anomaly detection, predictive scaling, automated root-cause analysis",
+          "Service meshes: Istio, Linkerd",
+          "Edge computing, edge functions",
+          "Chaos engineering basics",
+          "Platform engineering / self-service infrastructure"
+        ],
+        "resources": [
+          "https://www.cncf.io/projects/service-meshes/",
+          "https://www.freedesktop.org/wiki/)"
+        ]
+      },
+      {
+        "title": "Capstone Projects & Freshers Showcase Ideas",
+        "description": "Projects that let you display full DevOps pipeline and thinking — more than simple deployment apps.",
+        "projects": [
+          {
+            "name": "CI/CD Pipeline End-to-End Demo",
+            "description": "Build a multi-service app (e.g., frontend + backend) and set up a full CI/CD pipeline with automated tests, linting, containerization, and blue/green or canary deploys.",
+            "tech_stack": ["GitHub Actions or GitLab CI", "Docker", "Kubernetes or k3s", "A cloud provider free tier"],
+            "showcase_tips": [
+              "Include rollback strategy",
+              "Show test coverage & linting in pipeline",
+              "Document the pipeline steps clearly"
+            ]
+          },
+          {
+            "name": "Infrastructure as Code Project",
+            "description": "Define infra for an app using Terraform (or equivalent), include networking, storage, compute, IAM policies; deploy and tear down reliably.",
+            "tech_stack": ["Terraform", "AWS or GCP free-tier", "Ansible or similar for configuration"],
+            "showcase_tips": [
+              "Version state, show module reuse",
+              "Include cost estimates and optimization"
+            ]
+          },
+          {
+            "name": "Monitoring & Observability Dashboard",
+            "description": "Deploy sample app + instrument it: logs, metrics, tracing; set up alerts; show dashboards and simulate failures to see alerts triggered.",
+            "tech_stack": ["Prometheus", "Grafana", "sample app (could be simple HTTP server)"],
+            "showcase_tips": [
+              "Simulate load and failures",
+              "Create runbook for incident recovery"
+            ]
+          },
+          {
+            "name": "Serverless Microservices Setup",
+            "description": "Build microservices functions deployed serverless; integrate IAM, environment variables; autoscaling; minimal latency; integrate with cloud storage or queues.",
+            "tech_stack": ["AWS Lambda / Azure Functions / GCP Functions", "API Gateway / equivalent", "Cloud storage / queues"],
+            "showcase_tips": [
+              "Show cold-start mitigation",
+              "Measure performance under load"
+            ]
+          },
+          {
+            "name": "Multi-Cloud & Cost Optimization Case Study",
+            "description": "Use two cloud providers (free or minimal billing), deploy similar services, compare cost, latency, ease of use; show how to optimize cost/resources.",
+            "tech_stack": ["AWS + GCP / Azure", "Docker / Kubernetes", "IaC tools"],
+            "showcase_tips": [
+              "Publish metrics and configs",
+              "Document trade-offs, regions, pricing"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

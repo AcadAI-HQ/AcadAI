@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/shared/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,6 +15,18 @@ const NO_SIDEBAR_PAGES = ['/login', '/signup'];
 export function ConditionalLayout({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Protected routes that require authentication
+  const protectedRoutes = ['/dashboard', '/roadmap'];
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+
+  // Redirect unauthenticated users from protected routes
+  useEffect(() => {
+    if (!loading && !user && isProtectedRoute) {
+      router.replace('/');
+    }
+  }, [user, loading, isProtectedRoute, router]);
 
   // Don't show sidebar on specific pages or when user is not authenticated
   // Show sidebar on authenticated pages except login/signup and landing page
