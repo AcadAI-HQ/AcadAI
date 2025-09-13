@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from '@/lib/firebase';
+import { incrementUserCount } from '@/lib/update-user-count';
 import type { UserProfile } from '@/types';
 
 export interface AuthContextType {
@@ -69,7 +70,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userDocRef = doc(db, "users", firebaseUser.uid);
       await setDoc(userDocRef, newUserProfile);
       
+      // Set user state first
       setUser(newUserProfile);
+      
+      // Wait a moment for Firebase Auth to fully process, then increment count
+      setTimeout(async () => {
+        try {
+          await incrementUserCount();
+          console.log('✅ User count incremented successfully after signup');
+        } catch (error) {
+          console.log('⚠️ User count increment failed, but signup succeeded:', error);
+        }
+      }, 1000); // Wait 1 second for auth to fully process
+      
       router.push('/dashboard');
     } catch (error) {
       console.error("Signup failed:", error);
