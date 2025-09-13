@@ -66,7 +66,7 @@ export async function POST() {
     return NextResponse.json({ 
       success: false, 
       error: 'Failed to increment user count',
-      details: error.message 
+      details: error instanceof Error ? error.message : String(error) 
     }, { status: 500 });
   }
 }

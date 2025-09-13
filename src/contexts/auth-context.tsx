@@ -94,7 +94,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     await signOut(auth);
     setUser(null);
-    router.push('/login');
+    // Redirect to landing page and replace history to prevent back navigation
+    router.replace('/');
+    // Clear browser history to prevent back navigation to dashboard
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', '/');
+    }
   };
 
   const useGeneration = async (domain: string) => {

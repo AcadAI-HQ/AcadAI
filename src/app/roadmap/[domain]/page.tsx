@@ -13,7 +13,13 @@ import { Button } from "@/components/ui/button";
 interface RoadmapStep {
   title: string;
   description: string;
-  resources: string[];
+  subtopics?: string[];
+  examples?: {
+    name: string;
+    features: string;
+    stack: string;
+  }[];
+  resources?: string[];
 }
 interface RoadmapFile {
   domain: string;
@@ -27,17 +33,20 @@ const transformRoadmapData = (data: RoadmapFile, domain: string): Roadmap => {
   // Capitalize first letter of domain
   const capitalizedDomain = domain.charAt(0).toUpperCase() + domain.slice(1);
   return {
-    title: `${capitalizedDomain} Roadmap - Comprehensive`,
+    title: `${capitalizedDomain} Development Roadmap`,
     description: data.overview,
     stages: data.steps.map(step => ({
       title: step.title,
       description: step.description,
-      isCore: true, // We can simplify this as we are not filtering modules anymore
-      modules: step.resources.map(res => ({
-        title: res, // Using resource link as title for simplicity
-        description: `Resource for ${step.title}`,
-        isCore: true
-      })),
+      isCore: true,
+      modules: [{
+        title: step.title,
+        description: step.description,
+        isCore: true,
+        subtopics: step.subtopics,
+        examples: step.examples,
+        resources: step.resources // Keep resources but don't show them in UI
+      }],
     })),
   };
 };
@@ -57,15 +66,15 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
       setLoading(true);
       setError(null);
 
-      // Use premium roadmaps as the default free experience
-      const roadmapFile = `/roadmaps/${domain}/premium.json`;
+      // Use new roadmap format from roadmaps-new folder
+      const roadmapFile = `/roadmaps-new/${domain}.json`;
 
       try {
-        const response = await fetch(roadmapFile);
+        const response = await fetch(roadmapFile, { cache: 'no-cache' });
         if (!response.ok) {
            if (response.status === 404) {
             // Handle cases where a roadmap for a specific domain doesn't exist yet
-            const safeResponse = await fetch(`/roadmaps/frontend/premium.json`);
+            const safeResponse = await fetch(`/roadmaps-new/frontend.json`, { cache: 'no-cache' });
             if (!safeResponse.ok) {
                throw new Error(`Default roadmap for 'frontend' also not found.`);
             }

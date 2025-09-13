@@ -1,0 +1,289 @@
+{
+    "domain": "Frontend Development",
+    "type": "premium",
+    "overview": "A hyper-detailed roadmap divided into granular topics. Covers fundamentals, modern frameworks, animations, AI integration, performance optimization, testing, and unique project ideas aligned with global job market demands.",
+    "steps": [
+      {
+        "title": "HTML5",
+        "description": "Master semantic structure, accessibility, and SEO basics.",
+        "subtopics": [
+          "HTML boilerplate and structure",
+          "Head, meta tags, title, favicon",
+          "Semantic tags: header, nav, main, article, section, footer",
+          "Forms: inputs, labels, validation attributes",
+          "Tables, lists, multimedia (audio/video)",
+          "ARIA roles and accessibility basics",
+          "SEO essentials (alt tags, headings hierarchy, metadata)"
+        ],
+        "resources": [
+          "https://developer.mozilla.org/en-US/docs/Learn/HTML",
+          "https://www.freecodecamp.org/learn/responsive-web-design/"
+        ]
+      },
+      {
+        "title": "CSS3",
+        "description": "Learn styling, layouts, and responsive design.",
+        "subtopics": [
+          "Box model, display types, overflow",
+          "Positioning (relative, absolute, sticky, fixed)",
+          "Flexbox deep dive",
+          "CSS Grid layouts",
+          "Responsive design with media queries",
+          "Pseudo-classes & pseudo-elements",
+          "CSS variables & calc()",
+          "Transitions & animations",
+          "Gradients, shadows, filters",
+          "Custom fonts, Google Fonts, icon fonts"
+        ],
+        "resources": [
+          "https://css-tricks.com/",
+          "https://developer.mozilla.org/en-US/docs/Learn/CSS"
+        ]
+      },
+      {
+        "title": "JavaScript Core",
+        "description": "Learn vanilla JavaScript for logic and DOM manipulation.",
+        "subtopics": [
+          "Variables (var, let, const)",
+          "Data types & type coercion",
+          "Operators & expressions",
+          "Functions (declaration, expression, arrow)",
+          "Scope, hoisting, closures",
+          "DOM manipulation (querySelector, events, forms)",
+          "Event bubbling & delegation",
+          "LocalStorage & sessionStorage",
+          "Error handling (try/catch/finally)",
+          "JSON basics"
+        ],
+        "resources": [
+          "https://javascript.info/",
+          "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+        ]
+      },
+      {
+        "title": "JavaScript ES6+",
+        "description": "Modern features required in industry projects.",
+        "subtopics": [
+          "Template literals",
+          "Destructuring arrays & objects",
+          "Spread & rest operators",
+          "Default parameters",
+          "Modules (import/export)",
+          "Classes & inheritance",
+          "Promises, async/await",
+          "Fetch API",
+          "Map, Set, WeakMap, WeakSet",
+          "Array methods: map, filter, reduce, find, some, every"
+        ],
+        "resources": [
+          "https://exploringjs.com/es6/",
+          "https://javascript.info/"
+        ]
+      },
+      {
+        "title": "Animations & Interactivity",
+        "description": "Bring bling and polish to web projects.",
+        "subtopics": [
+          "CSS transitions & keyframe animations",
+          "GSAP basics (tweens, timelines, easing)",
+          "Scroll animations with GSAP ScrollTrigger",
+          "Framer Motion (for React): gestures, variants, transitions",
+          "Locomotive Scroll basics (smooth scrolling)",
+          "Lenis scroll library",
+          "Parallax effects & intersection observer",
+          "SVG animations (stroke-dasharray, path morphing)"
+        ],
+        "resources": [
+          "https://greensock.com/docs/",
+          "https://www.framer.com/motion/",
+          "https://github.com/locomotivemtl/locomotive-scroll",
+          "https://lenis.studiofreight.com/"
+        ]
+      },
+      {
+        "title": "React.js",
+        "description": "The industry-standard library for building UIs.",
+        "subtopics": [
+          "JSX & rendering",
+          "Functional vs class components",
+          "Props & prop drilling",
+          "useState, useEffect hooks",
+          "Custom hooks",
+          "useRef & DOM manipulation",
+          "Context API",
+          "Conditional rendering",
+          "Lists & keys",
+          "Controlled & uncontrolled forms",
+          "React Router basics (v6+)"
+        ],
+        "resources": [
+          "https://react.dev/learn",
+          "https://reactrouter.com/en/main/start/tutorial"
+        ]
+      },
+      {
+        "title": "TailwindCSS",
+        "description": "Utility-first CSS framework for rapid development.",
+        "subtopics": [
+          "Installation & setup",
+          "Utility classes (spacing, colors, typography)",
+          "Responsive design with breakpoints",
+          "Pseudo-classes (hover, focus, active)",
+          "Dark mode setup",
+          "Custom theme configuration",
+          "Animations with Tailwind plugins"
+        ],
+        "resources": [
+          "https://tailwindcss.com/docs"
+        ]
+      },
+      {
+        "title": "Next.js",
+        "description": "Production-ready React framework for fullstack apps.",
+        "subtopics": [
+          "Pages & routing system",
+          "Server-Side Rendering (SSR)",
+          "Static Site Generation (SSG)",
+          "Incremental Static Regeneration (ISR)",
+          "API routes",
+          "Dynamic routing & catch-all routes",
+          "Image optimization (next/image)",
+          "Middleware & authentication",
+          "Deployment on Vercel"
+        ],
+        "resources": [
+          "https://nextjs.org/learn/"
+        ]
+      },
+      {
+        "title": "TypeScript with React",
+        "description": "Scale applications with strong typing.",
+        "subtopics": [
+          "Basic types & type inference",
+          "Interfaces vs types",
+          "Generics",
+          "Utility types (Partial, Pick, Omit)",
+          "Typing props & states",
+          "Typing hooks",
+          "Strict null checks & optional chaining",
+          "Type narrowing"
+        ],
+        "resources": [
+          "https://www.typescriptlang.org/docs/",
+          "https://www.freecodecamp.org/news/learn-typescript-beginners-guide/"
+        ]
+      },
+      {
+        "title": "State Management",
+        "description": "Handle global app state efficiently.",
+        "subtopics": [
+          "Prop drilling & lifting state",
+          "Context API deep dive",
+          "Redux Toolkit basics",
+          "Async thunks in Redux",
+          "Zustand state management",
+          "Recoil atoms/selectors"
+        ],
+        "resources": [
+          "https://redux.js.org/",
+          "https://recoiljs.org/",
+          "https://zustand-demo.pmnd.rs/"
+        ]
+      },
+      {
+        "title": "Testing",
+        "description": "Ensure app reliability and scalability.",
+        "subtopics": [
+          "Unit testing with Jest",
+          "Component testing with React Testing Library",
+          "Mocking APIs",
+          "Snapshot testing",
+          "End-to-end testing with Cypress",
+          "Playwright basics"
+        ],
+        "resources": [
+          "https://jestjs.io/docs/getting-started",
+          "https://testing-library.com/docs/react-testing-library/intro/",
+          "https://docs.cypress.io/guides/overview/why-cypress"
+        ]
+      },
+      {
+        "title": "AI for Frontend",
+        "description": "Emerging requirement: integrate AI features into web apps.",
+        "subtopics": [
+          "AI APIs (OpenAI, HuggingFace, Cohere)",
+          "Prompt engineering basics for frontend devs",
+          "Streaming responses in UI (Server-Sent Events, WebSockets)",
+          "Building AI chat interfaces (typing effect, history)",
+          "AI-powered search/autocomplete (vector search via Pinecone/Weaviate APIs)",
+          "Image generation UIs (stability.ai, DALL·E APIs)",
+          "UX for AI: loading states, handling uncertainty, fallbacks"
+        ],
+        "resources": [
+          "https://platform.openai.com/docs/introduction",
+          "https://huggingface.co/docs",
+          "https://learn.microsoft.com/en-us/azure/cognitive-services/"
+        ]
+      },
+      {
+        "title": "Performance Optimization",
+        "description": "Build apps that scale globally.",
+        "subtopics": [
+          "Core Web Vitals (LCP, FID, CLS)",
+          "Code splitting & lazy loading",
+          "React.memo & useMemo",
+          "useCallback for performance",
+          "Image optimization",
+          "Bundle analysis (Webpack, Vite)",
+          "Caching with service workers",
+          "PWA basics"
+        ],
+        "resources": [
+          "https://web.dev/vitals/",
+          "https://developers.google.com/web/fundamentals/performance"
+        ]
+      },
+      {
+        "title": "Project Ideas",
+        "description": "Unique project ideas that stand out in portfolios.",
+        "examples": [
+          {
+            "name": "AI-Powered Recipe Generator",
+            "features": "Ingredient input, AI-generated recipes, nutrition info, export shopping list",
+            "stack": "Next.js, Tailwind, OpenAI API, Framer Motion"
+          },
+          {
+            "name": "Realtime Collaboration Whiteboard",
+            "features": "Drawing tools, sticky notes, real-time sync, multiplayer",
+            "stack": "React, Canvas API, WebSockets/Firebase"
+          },
+          {
+            "name": "Personal Finance Dashboard",
+            "features": "Expense tracking, charts, AI insights (spending patterns)",
+            "stack": "React, D3.js/Recharts, Next.js, AI API"
+          },
+          {
+            "name": "Interactive Travel Planner",
+            "features": "Drag-and-drop itinerary, Google Maps integration, cost estimation",
+            "stack": "Next.js, Tailwind, Google Maps API"
+          },
+          {
+            "name": "Gamified Habit Tracker",
+            "features": "Streaks, badges, animations, calendar view",
+            "stack": "React, Framer Motion, Firebase"
+          },
+          {
+            "name": "AI Resume Builder",
+            "features": "ATS-friendly resumes, AI suggestions, real-time preview, export PDF/DOC",
+            "stack": "Next.js, Tailwind, OpenAI API"
+          },
+          {
+            "name": "Niche Streaming Platform",
+            "features": "Custom video player, playlists, categories, search filters",
+            "stack": "React, Node.js backend, Video.js"
+          }
+        ]
+      }
+    ]
+  }
+  
