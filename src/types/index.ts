@@ -2,10 +2,12 @@ export interface RoadmapModule {
   title: string;
   description: string;
   isCore: boolean;
+  subtopics?: string[];
+  examples?: string[];
 }
 
 export interface RoadmapStage {
-  title:string;
+  title: string;
   description: string;
   isCore: boolean;
   modules: RoadmapModule[];
