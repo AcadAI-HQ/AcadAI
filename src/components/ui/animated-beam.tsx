@@ -1,13 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
-import { RefObject, useEffect, useId, useState } from "react";
-
+import { animate } from "motion";
+import { RefObject, useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export interface AnimatedBeamProps {
   className?: string;
-  containerRef: RefObject<HTMLElement | null>; // Container ref
+  containerRef: RefObject<HTMLElement | null>;
   fromRef: RefObject<HTMLElement | null>;
   toRef: RefObject<HTMLElement | null>;
   curvature?: number;
@@ -31,7 +30,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   fromRef,
   toRef,
   curvature = 0,
-  reverse = false, // Include the reverse prop
+  reverse = false,
   duration = Math.random() * 3 + 4,
   delay = 0,
   pathColor = "gray",
@@ -47,20 +46,34 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   const id = useId();
   const [pathD, setPathD] = useState("");
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 });
+  const gradientRef = useRef<SVGLinearGradientElement | null>(null);
 
-  // Calculate the gradient coordinates based on the reverse prop
-  const gradientCoordinates = reverse
+  const startCoords = reverse
     ? {
-        x1: ["90%", "-10%"],
-        x2: ["100%", "0%"],
-        y1: ["0%", "0%"],
-        y2: ["0%", "0%"],
+        x1: "90%",
+        x2: "100%",
+        y1: "0%",
+        y2: "0%",
       }
     : {
-        x1: ["10%", "110%"],
-        x2: ["0%", "100%"],
-        y1: ["0%", "0%"],
-        y2: ["0%", "0%"],
+        x1: "10%",
+        x2: "0%",
+        y1: "0%",
+        y2: "0%",
+      };
+
+  const endCoords = reverse
+    ? {
+        x1: "-10%",
+        x2: "0%",
+        y1: "0%",
+        y2: "0%",
+      }
+    : {
+        x1: "110%",
+        x2: "100%",
+        y1: "0%",
+        y2: "0%",
       };
 
   useEffect(() => {
@@ -91,26 +104,12 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
       }
     };
 
-    // Initialize ResizeObserver
-    const resizeObserver = new ResizeObserver((entries) => {
-      // For all entries, recalculate the path
-      for (let entry of entries) {
-        updatePath();
-      }
-    });
+    const resizeObserver = new ResizeObserver(() => updatePath());
+    if (containerRef.current) resizeObserver.observe(containerRef.current);
 
-    // Observe the container element
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
-    // Call the updatePath initially to set the initial path
     updatePath();
 
-    // Clean up the observer on component unmount
-    return () => {
-      resizeObserver.disconnect();
-    };
+    return () => resizeObserver.disconnect();
   }, [
     containerRef,
     fromRef,
@@ -121,6 +120,25 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
     endXOffset,
     endYOffset,
   ]);
+
+  // Animate gradient coordinates using Motion One
+  useEffect(() => {
+    if (gradientRef.current) {
+      animate(
+        gradientRef.current,
+        [
+          startCoords, // from
+          endCoords, // to
+        ],
+        {
+          duration,
+          delay,
+          easing: [0.16, 1, 0.3, 1],
+          repeat: Infinity,
+        },
+      );
+    }
+  }, [duration, delay, startCoords, endCoords]);
 
   return (
     <svg
@@ -149,29 +167,14 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         strokeLinecap="round"
       />
       <defs>
-        <motion.linearGradient
-          className="transform-gpu"
+        <linearGradient
+          ref={gradientRef}
           id={id}
           gradientUnits={"userSpaceOnUse"}
-          initial={{
-            x1: "0%",
-            x2: "0%",
-            y1: "0%",
-            y2: "0%",
-          }}
-          animate={{
-            x1: gradientCoordinates.x1,
-            x2: gradientCoordinates.x2,
-            y1: gradientCoordinates.y1,
-            y2: gradientCoordinates.y2,
-          }}
-          transition={{
-            delay,
-            duration,
-            ease: [0.16, 1, 0.3, 1], // https://easings.net/#easeOutExpo
-            repeat: Infinity,
-            repeatDelay: 0,
-          }}
+          x1={startCoords.x1}
+          x2={startCoords.x2}
+          y1={startCoords.y1}
+          y2={startCoords.y2}
         >
           <stop stopColor={gradientStartColor} stopOpacity="0"></stop>
           <stop stopColor={gradientStartColor}></stop>
@@ -181,7 +184,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
             stopColor={gradientStopColor}
             stopOpacity="0"
           ></stop>
-        </motion.linearGradient>
+        </linearGradient>
       </defs>
     </svg>
   );
