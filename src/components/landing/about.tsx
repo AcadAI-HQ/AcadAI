@@ -4,7 +4,7 @@ import type React from "react"
 import { forwardRef, useRef } from "react"
 
 import { cn } from "@/lib/utils"
-import { AnimatedBeam } from "@/src/ui/animated-beam.tsx"
+import { AnimatedBeam } from "@/src/components/ui/animated-beam.tsx"
 
 const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode }>(
   ({ className, children }, ref) => {
