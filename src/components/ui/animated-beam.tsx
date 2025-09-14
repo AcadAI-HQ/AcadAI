@@ -1,38 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { motion, useSpring } from "framer-motion";
-import React, {
-  SVGProps,
-  useEffect,
-  useRef,
-  useState,
-  type RefObject,
-} from "react";
+import { motion } from "motion/react";
+import { RefObject, useEffect, useId, useState } from "react";
 
-export const AnimatedBeam = ({
-  className,
-  containerRef,
-  fromRef,
-  toRef,
-  curvature = 10,
-  reverse = false,
-  pathColor = "gray",
-  pathWidth = 2,
-  pathOpacity = 0.2,
-  gradientStartColor = "#ff0000",
-  gradientStopColor = "#ff0000",
-  delay = 0,
-  duration = 1,
-  startXOffset = 0,
-  startYOffset = 0,
-  endXOffset = 0,
-  endYOffset = 0,
-}: {
+import { cn } from "@/lib/utils";
+
+export interface AnimatedBeamProps {
   className?: string;
-  containerRef: RefObject<HTMLElement>; // Container ref
-  fromRef: RefObject<HTMLElement>; // From element ref
-  toRef: RefObject<HTMLElement>; // To element ref
+  containerRef: RefObject<HTMLElement | null>; // Container ref
+  fromRef: RefObject<HTMLElement | null>;
+  toRef: RefObject<HTMLElement | null>;
   curvature?: number;
   reverse?: boolean;
   pathColor?: string;
@@ -46,41 +23,94 @@ export const AnimatedBeam = ({
   startYOffset?: number;
   endXOffset?: number;
   endYOffset?: number;
+}
+
+export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
+  className,
+  containerRef,
+  fromRef,
+  toRef,
+  curvature = 0,
+  reverse = false, // Include the reverse prop
+  duration = Math.random() * 3 + 4,
+  delay = 0,
+  pathColor = "gray",
+  pathWidth = 2,
+  pathOpacity = 0.2,
+  gradientStartColor = "#ffaa40",
+  gradientStopColor = "#9c40ff",
+  startXOffset = 0,
+  startYOffset = 0,
+  endXOffset = 0,
+  endYOffset = 0,
 }) => {
-  const [pathD, setPathD] = useState<string | undefined>(undefined);
-  const [svgDimensions, setSvgDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
+  const id = useId();
+  const [pathD, setPathD] = useState("");
+  const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 });
 
-  // Calculate the path's "d" attribute
+  // Calculate the gradient coordinates based on the reverse prop
+  const gradientCoordinates = reverse
+    ? {
+        x1: ["90%", "-10%"],
+        x2: ["100%", "0%"],
+        y1: ["0%", "0%"],
+        y2: ["0%", "0%"],
+      }
+    : {
+        x1: ["10%", "110%"],
+        x2: ["0%", "100%"],
+        y1: ["0%", "0%"],
+        y2: ["0%", "0%"],
+      };
+
   useEffect(() => {
-    const container = containerRef.current;
-    const from = fromRef.current;
-    const to = toRef.current;
+    const updatePath = () => {
+      if (containerRef.current && fromRef.current && toRef.current) {
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const rectA = fromRef.current.getBoundingClientRect();
+        const rectB = toRef.current.getBoundingClientRect();
 
-    if (container && from && to) {
-      const containerRect = container.getBoundingClientRect();
-      const fromRect = from.getBoundingClientRect();
-      const toRect = to.getBoundingClientRect();
+        const svgWidth = containerRect.width;
+        const svgHeight = containerRect.height;
+        setSvgDimensions({ width: svgWidth, height: svgHeight });
 
-      const M_x = fromRect.left - containerRect.left + fromRect.width / 2 + startXOffset;
-      const M_y = fromRect.top - containerRect.top + fromRect.height / 2 + startYOffset;
+        const startX =
+          rectA.left - containerRect.left + rectA.width / 2 + startXOffset;
+        const startY =
+          rectA.top - containerRect.top + rectA.height / 2 + startYOffset;
+        const endX =
+          rectB.left - containerRect.left + rectB.width / 2 + endXOffset;
+        const endY =
+          rectB.top - containerRect.top + rectB.height / 2 + endYOffset;
 
-      const L_x = toRect.left - containerRect.left + toRect.width / 2 + endXOffset;
-      const L_y = toRect.top - containerRect.top + toRect.height / 2 + endYOffset;
+        const controlY = startY - curvature;
+        const d = `M ${startX},${startY} Q ${
+          (startX + endX) / 2
+        },${controlY} ${endX},${endY}`;
+        setPathD(d);
+      }
+    };
 
-      const Q_x = (M_x + L_x) / 2 + curvature;
-      const Q_y = (M_y + L_y) / 2;
+    // Initialize ResizeObserver
+    const resizeObserver = new ResizeObserver((entries) => {
+      // For all entries, recalculate the path
+      for (let entry of entries) {
+        updatePath();
+      }
+    });
 
-      setPathD(
-        `M ${M_x},${M_y} Q ${Q_x},${Q_y} ${L_x},${L_y}`
-      );
-      setSvgDimensions({
-        width: containerRect.width,
-        height: containerRect.height,
-      });
+    // Observe the container element
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
     }
+
+    // Call the updatePath initially to set the initial path
+    updatePath();
+
+    // Clean up the observer on component unmount
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, [
     containerRef,
     fromRef,
@@ -99,8 +129,8 @@ export const AnimatedBeam = ({
       height={svgDimensions.height}
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
-        "pointer-events-none absolute left-0 top-0 transform-gpu",
-        className
+        "pointer-events-none absolute left-0 top-0 transform-gpu stroke-2",
+        className,
       )}
       viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
     >
@@ -114,13 +144,15 @@ export const AnimatedBeam = ({
       <path
         d={pathD}
         strokeWidth={pathWidth}
-        stroke={`url(#${gradientStopColor.replace("#", "")})`}
+        stroke={`url(#${id})`}
+        strokeOpacity="1"
         strokeLinecap="round"
       />
       <defs>
         <motion.linearGradient
-          id={gradientStopColor.replace("#", "")}
-          gradientUnits="userSpaceOnUse"
+          className="transform-gpu"
+          id={id}
+          gradientUnits={"userSpaceOnUse"}
           initial={{
             x1: "0%",
             x2: "0%",
@@ -128,10 +160,10 @@ export const AnimatedBeam = ({
             y2: "0%",
           }}
           animate={{
-            x1: reverse ? "100%" : "0%",
-            y1: reverse ? "100%" : "0%",
-            x2: reverse ? "0%" : "100%",
-            y2: reverse ? "0%" : "100%",
+            x1: gradientCoordinates.x1,
+            x2: gradientCoordinates.x2,
+            y1: gradientCoordinates.y1,
+            y2: gradientCoordinates.y2,
           }}
           transition={{
             delay,
