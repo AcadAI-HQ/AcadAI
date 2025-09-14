@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     question: "Is Acad AI really free?",
-    answer: "Yes! Acad AI is completely free to use. You get access to our comprehensive roadmaps (previously premium content) across all domains without any cost or subscription required.",
+    answer: "Yes! Acad AI is completely free to use. You get access to our comprehensive roadmaps (premium content) across all domains without any cost or subscription required till the end of this year, after which we will be switching to a freemium model!",
   },
 ];
 
