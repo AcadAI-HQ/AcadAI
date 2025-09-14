@@ -17,7 +17,6 @@ export function useUserCount() {
         
        setUserCount(snapshot.data().count);
       } catch(error){
-        console.error("Error fetching user count:' , error);
         setUserCount(100);
       } finally {
         setLoading(false);
