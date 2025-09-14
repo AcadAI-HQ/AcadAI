@@ -21,13 +21,13 @@ export function Pricing() {
 						<div className="rounded-lg border px-4 py-1 font-mono text-white">Our Mission</div>
 					</div>
 					<h2 className="mt-5 text-2xl font-bold tracking-tighter md:text-3xl lg:text-4xl text-white">
-						Completely Free, For Now.
+						Completely Free, till the end of the year!.
 					</h2>
 					<p className="text-muted-foreground mt-5 text-lg">
 						We've been there—stuck in tutorial hell, overwhelmed by choices, and unsure of the right path. We're building Acad AI to be the mentor we wish we had, a tool that shows you exactly what companies are hiring for right now.
 					</p>
           <p className="text-muted-foreground mt-4 text-lg">
-            That's why this platform is currently free. We're covering all the API costs and server expenses from our own pockets. Our only goal is to provide a clear, effective path for students and career-changers, so you don't have to face the same struggles we did.
+            That's why this platform is currently free. We're covering all the API costs and server expenses from our own pockets till the end of this year, after which we will switch to a freemium tier. Our only goal is to provide a clear, effective path for students and career-changers, so you don't have to face the same struggles we did.
           </p>
 				</motion.div>
 
