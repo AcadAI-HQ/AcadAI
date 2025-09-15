@@ -41,20 +41,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
       if (firebaseUser) {
         const userProfile = await fetchUserProfile(firebaseUser);
-        if (userProfile) { 
-          // User has a full profile, we can set the user object
+        // A user profile is considered "complete" if it has the `lastGeneratedDomain` field.
+        if (userProfile && userProfile.lastGeneratedDomain) { 
           setUser(userProfile);
-           if (window.location.pathname.startsWith('/signup')) {
+           // If a complete user is on a signup/login page, redirect them away.
+           if (window.location.pathname.startsWith('/signup') || window.location.pathname.startsWith('/login')) {
              router.push('/dashboard');
            }
         } else {
-           // This is a new user who just signed up but hasn't completed details page
+           // This is a new user (via email or Google) or one who hasn't completed the details page.
            const partialProfile: UserProfile = { 
               uid: firebaseUser.uid, 
               email: firebaseUser.email, 
               displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || ''
            };
            setUser(partialProfile);
+           // Force them to the details page to complete their profile.
            if (window.location.pathname !== '/signup/details') {
              router.push('/signup/details');
            }
@@ -79,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const provider = new GoogleAuthProvider();
     try {
         await signInWithPopup(auth, provider);
-        // onAuthStateChanged will handle the rest
+        // onAuthStateChanged will handle the rest (checking if user is new/existing and redirecting).
     } catch (error) {
         console.error("Google sign-in failed:", error);
         setLoading(false);
@@ -120,12 +122,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
         await runTransaction(db, async (transaction) => {
             const userDoc = await transaction.get(userDocRef);
-            // Only update stats if the user is brand new
-            if (!userDoc.exists()) {
-                 // 1. Set the user document
-                transaction.set(userDocRef, newUserProfile);
+            
+            // Set/update the user document first
+            transaction.set(userDocRef, newUserProfile, { merge: true });
 
-                // 2. Increment total user count
+            // Only update stats if the user is brand new (document didn't exist before)
+            if (!userDoc.exists()) {
+                // 1. Increment total user count
                 const publicStatDoc = await transaction.get(publicStatRef);
                 if (!publicStatDoc.exists()) {
                     transaction.set(publicStatRef, { userCount: 1, lastUpdated: serverTimestamp() });
@@ -133,7 +136,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     transaction.update(publicStatRef, { userCount: increment(1), lastUpdated: serverTimestamp() });
                 }
 
-                // 3. Increment skill usage counts
+                // 2. Increment skill usage counts
                 for (const skill of skills) {
                     const skillDocRef = doc(db, "skillUsage", skill.toLowerCase());
                     const skillDoc = await transaction.get(skillDocRef);
@@ -144,7 +147,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     }
                 }
                 
-                // 4. Increment domain usage count
+                // 3. Increment domain usage count
                 const domainDoc = await transaction.get(domainUsageRef);
                 if (!domainDoc.exists()) {
                   transaction.set(domainUsageRef, { count: 1 });
@@ -152,11 +155,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                   transaction.update(domainUsageRef, { count: increment(1) });
                 }
             } else {
-                 // If user doc exists (e.g. from Google sign in), just update it
-                 transaction.update(userDocRef, {
-                    skills: skills,
-                    lastGeneratedDomain: domain,
-                 });
+                 // For existing users (e.g. from Google sign-in who are completing profile),
+                 // we still need to increment the domain usage if it's their first-time selection.
+                 // This part of logic could be more complex if users can re-select domains later.
+                 // For now, we assume this is a one-time setup.
+                 const domainDoc = await transaction.get(domainUsageRef);
+                 if (!domainDoc.exists()) {
+                   transaction.set(domainUsageRef, { count: 1 });
+                 } else {
+                   transaction.update(domainUsageRef, { count: increment(1) });
+                 }
             }
         });
 
@@ -164,7 +172,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         router.push(`/dashboard/my-roadmap`);
     } catch (error) {
         console.error("Signup completion transaction failed:", error);
-        // If the transaction fails for a new user, we should probably delete the firebase user
+        // If the transaction fails, we might need to clean up.
+        // For a new user, this could mean deleting the Firebase Auth user.
         const userProfile = await getDoc(userDocRef);
         if (!userProfile.exists()) {
             await deleteUser(firebaseUser).catch(delError => console.error("Failed to delete user on signup error", delError));
