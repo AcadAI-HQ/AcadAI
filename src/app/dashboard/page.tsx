@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { DomainCard } from "@/components/dashboard/domain-card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code, Bot, Cpu, Layers, GitBranch, AlertTriangle } from "lucide-react";
+import { Code, Bot, Cpu, Layers, GitBranch, AlertTriangle, Star, TestTubeDiagonal, DatabaseZap, Network } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const domains = [
@@ -14,9 +14,9 @@ const domains = [
   { id: 'fullstack', name: 'Fullstack', icon: Layers, active: true },
   { id: 'ml', name: 'Machine Learning', icon: Bot, active: true },
   { id: 'devops', name: 'DevOps', icon: GitBranch, active: true },
-  { id: 'qa', name: 'QA Engineer', icon: AlertTriangle, active: false },
-  { id: 'data-science', name: 'Data Scientist', icon: AlertTriangle, active: false },
-  { id: 'blockchain', name: 'Blockchain', icon: AlertTriangle, active: false },
+  { id: 'qa', name: 'QA Engineer', icon: TestTubeDiagonal, active: false },
+  { id: 'data-science', name: 'Data Scientist', icon: DatabaseZap, active: false },
+  { id: 'blockchain', name: 'Blockchain', icon: Network, active: false },
 ];
 
 export default function DashboardPage() {
@@ -38,8 +38,7 @@ export default function DashboardPage() {
     useGeneration(domainId);
     router.push(`/dashboard/my-roadmap`);
   };
-
-
+  
   return (
     <>
       <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
@@ -50,7 +49,7 @@ export default function DashboardPage() {
                         <span>Welcome, {user?.displayName}!</span>
                     </CardTitle>
                     <CardDescription className="max-w-lg text-balance leading-relaxed">
-                        Generate unlimited comprehensive roadmaps with professional-level content - completely free!
+                        Select a domain below to generate a new personalized learning roadmap.
                     </CardDescription>
                 </CardHeader>
             </Card>
@@ -71,8 +70,8 @@ export default function DashboardPage() {
         </div>
         
         <div>
-          <h2 className="text-2xl font-headline font-bold tracking-tight my-4 text-center">Choose a Domain to Generate Roadmap</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
+          <h2 className="text-2xl font-headline font-bold tracking-tight my-4">Choose a Domain to Generate Roadmap</h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {domains.map((domain) => (
               <DomainCard
                 key={domain.id}
