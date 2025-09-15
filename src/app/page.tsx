@@ -1,6 +1,6 @@
 import Header from '@/components/landing/header';
 import Hero from '@/components/landing/hero';
-import { AnimatedBeamMultipleOutputDemo } from '@/components/landing/about';
+import AnimatedBeamMultipleOutputDemo  from '@/components/landing/about';
 import HowItWorks from '@/components/landing/how-it-works';
 import Backstory from '@/components/landing/backstory';
 import Pricing from '@/components/landing/pricing';

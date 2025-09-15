@@ -25,12 +25,12 @@ export function DomainCard({ domain, onSelect }: DomainCardProps) {
         className={`h-full flex flex-col justify-between transition-all duration-300 ${
           domain.active
             ? "cursor-pointer hover:border-primary hover:shadow-lg"
-            : "cursor-not-allowed bg-muted/50"
+            : "cursor-not-allowed bg-card/50 text-muted-foreground"
         }`}
       >
         <CardHeader>
           <div className="flex justify-between items-start">
-            <Icon className="h-10 w-10 text-primary mb-4" />
+            <Icon className={`h-10 w-10 mb-4 ${domain.active ? 'text-primary' : ''}`} />
             {!domain.active && (
               <Badge variant="secondary">Coming Soon</Badge>
             )}
