@@ -16,7 +16,7 @@ export interface AuthContextType {
   signup: (email: string, pass: string) => Promise<void>;
   logout: () => void;
   useGeneration: (domain: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: () => Promise<{ isNewUser: boolean } | void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -51,8 +51,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, pass: string) => {
     setLoading(true);
-    await signInWithEmailAndPassword(auth, email, pass);
-    router.push('/dashboard');
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+      // Don't set loading to false here - let onAuthStateChanged handle it
+      router.push('/dashboard');
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
   };
   
   const signInWithGoogle = async () => {
@@ -64,6 +70,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         // Check if user profile already exists
         const existingProfile = await fetchUserProfile(firebaseUser);
+        
+        let isNewUser = false;
         
         if (!existingProfile) {
           // Create a new user profile for Google sign-in
@@ -78,6 +86,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const userDocRef = doc(db, "users", firebaseUser.uid);
           await setDoc(userDocRef, newUserProfile);
           
+          // Set user state immediately for new Google users
+          setUser(newUserProfile);
+          isNewUser = true;
+          
           // Increment user count for new Google users
           try {
             const statsRef = doc(db, 'public', 'stats');
@@ -88,12 +100,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           } catch (error) {
             console.log('⚠️ User count increment failed for Google signup:', error);
           }
+        } else {
+          // Set existing user state
+          setUser(existingProfile);
         }
         
+        setLoading(false);
         router.push('/dashboard');
+        
+        // Return whether this was a new user signup for toast handling
+        return { isNewUser };
     } catch (error) {
         console.error("Google sign-in failed:", error);
         setLoading(false);
+        throw error;
     }
   };
 
@@ -117,20 +137,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Set user state first
       setUser(newUserProfile);
       
-      // Wait a moment for Firebase Auth to fully process, then increment count
-      setTimeout(async () => {
-        try {
-          const statsRef = doc(db, 'public', 'stats');
-          await setDoc(statsRef, {
-            userCount: increment(1),
-            lastUpdated: serverTimestamp()
-          }, { merge: true });
-          console.log('✅ User count incremented successfully after signup');
-        } catch (error) {
-          console.log('⚠️ User count increment failed, but signup succeeded:', error);
-        }
-      }, 1000); // Wait 1 second for auth to fully process
+      // Increment user count immediately
+      try {
+        const statsRef = doc(db, 'public', 'stats');
+        await setDoc(statsRef, {
+          userCount: increment(1),
+          lastUpdated: serverTimestamp()
+        }, { merge: true });
+        console.log('✅ User count incremented successfully after signup');
+      } catch (error) {
+        console.log('⚠️ User count increment failed, but signup succeeded:', error);
+      }
       
+      setLoading(false);
       router.push('/dashboard');
     } catch (error) {
       console.error("Signup failed:", error);

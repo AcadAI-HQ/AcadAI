@@ -52,6 +52,30 @@ export default function LoginPage() {
       });
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      if (result?.isNewUser) {
+        toast({
+          title: "Account Created!",
+          description: "Welcome to Acad AI! Your account has been successfully created.",
+        });
+      } else {
+        toast({
+          title: "Welcome Back!",
+          description: "Successfully signed in to your account.",
+        });
+      }
+    } catch (error: any) {
+      console.error("Google sign-in failed:", error);
+      toast({
+        title: "Sign-in Failed",
+        description: "Failed to sign in with Google. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
   
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -105,7 +129,7 @@ export default function LoginPage() {
                 <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
-          <Button variant="outline" className="w-full" onClick={signInWithGoogle} disabled={loading}>
+          <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={loading}>
             <GoogleIcon />
             <span>Sign in with Google</span>
           </Button>
