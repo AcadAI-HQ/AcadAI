@@ -16,7 +16,7 @@ const Backstory = () => {
           transition={{ duration: 0.6 }}
         >
           <Image
-            src="https://placehold.co/500x500.png"
+            src="public/Profile.jpeg"
             alt="Cofounders of Acad AI"
             data-ai-hint="founder portrait"
             width={500}
