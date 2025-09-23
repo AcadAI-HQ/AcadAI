@@ -16,7 +16,7 @@ const Backstory = () => {
           transition={{ duration: 0.6 }}
         >
           <Image
-            src="../../public/Profile.jpeg"
+            src="/Profile.jpeg"
             alt="Cofounders of Acad AI"
             data-ai-hint="founder portrait"
             width={500}
