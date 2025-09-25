@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { SparklesCore } from '../ui/sparkles';
+import { Component as ShadowOverlay } from '../ui/shadowoverlay';
 import { PulsatingButton } from '../ui/pulsating-button';
 import { ShimmerButton } from '../ui/shimmer-button';
 import { useUserCount } from '@/hooks/use-user-count';
@@ -12,18 +12,22 @@ import { useUserCount } from '@/hooks/use-user-count';
 const Hero = () => {
   const { userCount, loading } = useUserCount();
 
-
   return (
     <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center text-center bg-black">
       <div className="absolute inset-0 z-0">
-        <SparklesCore
-          id="tsparticlesfullpage"
-          background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={100}
+        <ShadowOverlay
+          sizing="fill"
+          color="rgba(75, 85, 99, 0.8)" // A nice gray color with some transparency
+          animation={{
+            preview: false,
+            scale: 30,
+            speed: 15
+          }}
+          noise={{
+            opacity: 0.3,
+            scale: 1
+          }}
           className="w-full h-full"
-          particleColor="#FFFFFF"
         />
       </div>
 
