@@ -42,7 +42,9 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
 ### Recent Changes (2025)
 - **Removed Premium Model**: Eliminated all subscription-based features and payment integration
 - **Enhanced Free Content**: What was previously premium content is now available to all users
-- **Simplified User Profiles**: Removed subscription status and generation limits from user data
+- **Comprehensive User Onboarding**: Multi-step onboarding system collecting user type, background, and learning preferences
+- **Profile Management System**: Complete profile viewing and editing functionality with tabbed interface
+- **Enhanced Navigation**: Integrated sidebar navigation with Dashboard, My Roadmap, and Profile sections
 - **Comprehensive Roadmaps**: All domains now feature detailed, professional-level learning paths
 
 ### Authentication Flow
@@ -57,10 +59,18 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
 - **Theme**: Dark mode by default (`className="dark"` on html element)
 - **Components**: Using shadcn/ui with Radix UI primitives
 
+### User Profile System
+- **Comprehensive Onboarding**: 4-step process collecting user type, background info, and learning preferences
+- **User Types**: Student, Professional, Learner - each with type-specific fields
+- **Profile Completion Tracking**: Prevents roadmap generation until profile is complete
+- **Backward Compatibility**: Migration logic for existing users
+- **Profile Management**: View and edit functionality with tabbed interface (Personal Info, Background, Learning Preferences)
+
 ### Firebase Configuration
 - Authentication, Firestore database integration
-- Simplified user profiles include: uid, email, displayName, skills, lastGeneratedDomain
+- Enhanced user profiles include: uid, email, displayName, skills, lastGeneratedDomain, profileComplete, userType, and type-specific fields
 - Firebase config in `src/lib/firebase.ts`
+- Data filtering prevents undefined/null values in Firestore updates
 - No payment or subscription data stored
 
 ### Roadmap Content Structure
@@ -88,9 +98,22 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
 - Framer Motion for animations and transitions
 - Removed: Pricing components, limit warning dialogs, subscription management UI
 
+### Navigation & Layout System
+- **ConditionalLayout**: Root-level layout handling authentication, sidebar, and navbar
+- **Unified Navigation**: Single sidebar with Dashboard, My Roadmap, and Profile sections
+- **Layout Structure**: ConditionalLayout provides consistent navigation across all dashboard pages
+- **Mobile Support**: Responsive sidebar with mobile toggle functionality
+
 ### Development Notes
 - **No Payment Integration**: All Razorpay and payment-related code has been removed
-- **Simplified Auth Context**: No subscription or payment methods in authentication
+- **Enhanced Auth Context**: Includes profile management and data filtering functionality
 - **Content Loading**: Roadmap pages load premium JSON files directly as free content
 - **User Experience**: All users see comprehensive roadmaps without restrictions
+- **Profile System**: Complete onboarding and profile management with validation
+- **Data Integrity**: Firestore updates filter out undefined/null/empty values
 - **Messaging**: UI emphasizes "comprehensive" and "professional-level" content being free
+
+### Common Issues & Solutions
+- **Next.js Cache Corruption**: If encountering ENOENT errors, remove `.next` directory and restart dev server
+- **Duplicate Navigation**: ConditionalLayout handles all navigation - avoid adding additional layout wrappers
+- **Profile Completion**: Users must complete onboarding before generating roadmaps

@@ -32,4 +32,25 @@ export interface UserProfile {
   displayName: string | null;
   skills?: string[];
   lastGeneratedDomain?: string;
+
+  // Onboarding fields
+  profileComplete?: boolean;
+  userType?: 'student' | 'professional' | 'learner';
+
+  // Student fields
+  degree?: string;
+  startDate?: string;
+  endDate?: string;
+  currentYear?: string;
+
+  // Professional fields
+  currentRole?: string;
+  yearsOfExperience?: number;
+
+  // Learner fields
+  description?: string;
+
+  // Common fields
+  interestedDomain?: string;
+  domainExperience?: string;
 }

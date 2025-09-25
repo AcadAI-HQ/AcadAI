@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/shared/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sidebar, SidebarProvider, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
-import { LayoutDashboard, Route, BrainCircuit } from "lucide-react";
+import { LayoutDashboard, Route, BrainCircuit, User } from "lucide-react";
 
 // Pages that should not show the sidebar
 const NO_SIDEBAR_PAGES = ['/login', '/signup'];
@@ -104,12 +104,23 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
                 </SidebarMenuItem>
                 <SidebarMenuItem>
                   <Link href="/dashboard/my-roadmap" className="w-full">
-                    <SidebarMenuButton 
+                    <SidebarMenuButton
                       isActive={pathname.startsWith('/dashboard/my-roadmap') || pathname.startsWith('/roadmap/')}
                       tooltip={isRoadmapDisabled ? "Generate a roadmap first" : "View your roadmap"}
                     >
                       <Route />
                       <span>My Roadmap</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <Link href="/dashboard/profile" className="w-full">
+                    <SidebarMenuButton
+                      isActive={pathname === '/dashboard/profile'}
+                      tooltip="View and edit your profile"
+                    >
+                      <User />
+                      <span>Profile</span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>
