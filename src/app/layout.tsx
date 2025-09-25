@@ -7,6 +7,9 @@ import { ConditionalLayout } from '@/components/layout/conditional-layout';
 export const metadata: Metadata = {
   title: 'Acad AI: Personalized Learning Paths',
   description: 'AI-powered roadmaps for your tech career.',
+  icons: {
+    icon: '/brain-icon.svg', 
+  },
 };
 
 export default function RootLayout({
