@@ -17,6 +17,7 @@ export interface AuthContextType {
   logout: () => void;
   useGeneration: (domain: string) => Promise<void>;
   signInWithGoogle: () => Promise<{ isNewUser: boolean } | void>;
+  updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,7 +31,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userDocRef = doc(db, "users", firebaseUser.uid);
     const userDoc = await getDoc(userDocRef);
     if (userDoc.exists()) {
-      return userDoc.data() as UserProfile;
+      const userData = userDoc.data() as UserProfile;
+
+      // Migration logic for existing users
+      if (userData.profileComplete === undefined) {
+        const migrationUpdates: any = {
+          profileComplete: false,
+        };
+
+        // Only add fields that have actual values
+        if (userData.lastGeneratedDomain) {
+          migrationUpdates.interestedDomain = userData.lastGeneratedDomain;
+        }
+
+        // Update the user document with migration data
+        await updateDoc(userDocRef, migrationUpdates);
+
+        return { ...userData, ...migrationUpdates };
+      }
+
+      return userData;
     }
     return null;
   };
@@ -52,9 +72,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, pass: string) => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, pass);
-      // Don't set loading to false here - let onAuthStateChanged handle it
-      router.push('/dashboard');
+      const result = await signInWithEmailAndPassword(auth, email, pass);
+      const firebaseUser = result.user;
+
+      // Fetch user profile to check completion status
+      const userProfile = await fetchUserProfile(firebaseUser);
+
+      if (userProfile && !userProfile.profileComplete) {
+        router.push('/onboarding');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (error) {
       setLoading(false);
       throw error;
@@ -81,6 +109,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || '',
             skills: [],
             lastGeneratedDomain: '',
+            profileComplete: false,
           };
 
           const userDocRef = doc(db, "users", firebaseUser.uid);
@@ -106,7 +135,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
         
         setLoading(false);
-        router.push('/dashboard');
+
+        // Redirect based on profile completion status
+        if (isNewUser || !existingProfile?.profileComplete) {
+          router.push('/onboarding');
+        } else {
+          router.push('/dashboard');
+        }
         
         // Return whether this was a new user signup for toast handling
         return { isNewUser };
@@ -129,6 +164,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         displayName: firebaseUser.email?.split('@')[0] ?? '',
         skills: [],
         lastGeneratedDomain: '',
+        profileComplete: false,
       };
 
       const userDocRef = doc(db, "users", firebaseUser.uid);
@@ -150,7 +186,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       setLoading(false);
-      router.push('/dashboard');
+
+      // Redirect to onboarding for profile completion
+      router.push('/onboarding');
     } catch (error) {
       console.error("Signup failed:", error);
       setLoading(false);
@@ -178,9 +216,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser({ ...user, ...updates });
     }
   };
+
+  const updateUserProfile = async (updates: Partial<UserProfile>) => {
+    if (user) {
+      // Filter out undefined values, empty strings, and null values
+      const cleanUpdates = Object.fromEntries(
+        Object.entries(updates).filter(([_, value]) =>
+          value !== undefined && value !== '' && value !== null
+        )
+      );
+
+
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, cleanUpdates);
+      setUser({ ...user, ...updates });
+    }
+  };
   
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, useGeneration, signInWithGoogle }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, useGeneration, signInWithGoogle, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

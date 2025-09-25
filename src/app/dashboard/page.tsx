@@ -1,12 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { DomainCard } from "@/components/dashboard/domain-card";
+import ProfileCompletionBanner from "@/components/dashboard/profile-completion-banner";
+import ProfileCompletionModal from "@/components/dashboard/profile-completion-modal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, Bot, Cpu, Layers, GitBranch, AlertTriangle, Star, TestTubeDiagonal, DatabaseZap, Network } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { UserProfile } from "@/types";
 
 const domains = [
   { id: 'frontend', name: 'Frontend', icon: Code, active: true },
@@ -20,10 +24,13 @@ const domains = [
 ];
 
 export default function DashboardPage() {
-  const { user, useGeneration } = useAuth();
+  const { user, useGeneration, updateUserProfile } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
-  
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [selectedDomainId, setSelectedDomainId] = useState<string | undefined>();
+  const [modalLoading, setModalLoading] = useState(false);
+
   const handleDomainClick = (domainId: string) => {
     const domain = domains.find(d => d.id === domainId);
     if (!domain || !domain.active) {
@@ -35,12 +42,56 @@ export default function DashboardPage() {
       return;
     }
 
+    // Check if profile is complete
+    if (!user?.profileComplete) {
+      setSelectedDomainId(domainId);
+      setShowProfileModal(true);
+      return;
+    }
+
     useGeneration(domainId);
     router.push(`/dashboard/my-roadmap`);
+  };
+
+  const handleCompleteProfile = async (profileData: Partial<UserProfile>) => {
+    if (!user) return;
+
+    setModalLoading(true);
+    try {
+      await updateUserProfile({
+        ...profileData,
+        profileComplete: true,
+      });
+
+      toast({
+        title: "Profile Complete!",
+        description: "Your profile has been saved. Generating your personalized roadmap!",
+      });
+
+      // Generate roadmap for the selected domain
+      if (selectedDomainId) {
+        await useGeneration(selectedDomainId);
+        router.push('/dashboard/my-roadmap');
+      }
+
+      setShowProfileModal(false);
+      setSelectedDomainId(undefined);
+    } catch (error) {
+      console.error("Failed to complete profile:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save your profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setModalLoading(false);
+    }
   };
   
   return (
     <>
+      {user && <ProfileCompletionBanner user={user} />}
+
       <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
             <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-0">
@@ -82,6 +133,21 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Profile Completion Modal */}
+      {user && (
+        <ProfileCompletionModal
+          isOpen={showProfileModal}
+          onClose={() => {
+            setShowProfileModal(false);
+            setSelectedDomainId(undefined);
+          }}
+          onComplete={handleCompleteProfile}
+          initialData={user}
+          loading={modalLoading}
+          domainId={selectedDomainId}
+        />
+      )}
     </>
   );
 }
