@@ -1,0 +1,279 @@
+{
+  "domain": "CyberSecurity",
+  "type": "premium",
+  "overview": "A comprehensive roadmap to master cybersecurity from fundamentals to advanced topics. Covers ethical hacking, information security, digital forensics, incident response, compliance, and practical security implementations aligned with industry certifications and job market demands.",
+  "steps": [
+    {
+      "title": "Cybersecurity Fundamentals",
+      "description": "Build strong foundation in cybersecurity principles and concepts.",
+      "subtopics": [
+        "CIA Triad (Confidentiality, Integrity, Availability)",
+        "Risk management frameworks",
+        "Threat modeling basics",
+        "Security policies and procedures",
+        "Compliance standards (ISO 27001, NIST, SOC 2)",
+        "Business continuity and disaster recovery",
+        "Security awareness and training"
+      ],
+      "resources": [
+        "https://www.sans.org/cybersecurity-fundamentals/",
+        "https://www.coursera.org/learn/intro-cyber-security"
+      ]
+    },
+    {
+      "title": "Network Security",
+      "description": "Master network protocols, monitoring, and defensive techniques.",
+      "subtopics": [
+        "OSI and TCP/IP model deep dive",
+        "Network protocols (HTTP/HTTPS, DNS, DHCP, FTP, SSH)",
+        "Firewalls (stateful, stateless, next-gen)",
+        "Intrusion Detection/Prevention Systems (IDS/IPS)",
+        "VPNs and secure tunneling",
+        "Network segmentation and VLANs",
+        "Wireless security (WPA3, enterprise security)",
+        "Network monitoring tools (Wireshark, tcpdump, Nmap)",
+        "SIEM systems and log analysis"
+      ],
+      "resources": [
+        "https://www.cybrary.it/course/comptia-network-plus/",
+        "https://www.wireshark.org/docs/"
+      ]
+    },
+    {
+      "title": "Operating System Security",
+      "description": "Secure and harden Windows, Linux, and macOS environments.",
+      "subtopics": [
+        "Linux security fundamentals and hardening",
+        "Windows security features (UAC, BitLocker, Windows Defender)",
+        "Access control mechanisms (DAC, MAC, RBAC)",
+        "User and group management",
+        "File system permissions and encryption",
+        "System auditing and logging",
+        "Patch management strategies",
+        "Endpoint detection and response (EDR)",
+        "Mobile device security (MDM, MAM)"
+      ],
+      "resources": [
+        "https://linux-audit.com/linux-security-guide/",
+        "https://docs.microsoft.com/en-us/windows/security/"
+      ]
+    },
+    {
+      "title": "Web Application Security",
+      "description": "Identify and mitigate web application vulnerabilities.",
+      "subtopics": [
+        "OWASP Top 10 vulnerabilities",
+        "SQL injection and prevention",
+        "Cross-Site Scripting (XSS)",
+        "Cross-Site Request Forgery (CSRF)",
+        "Authentication and session management",
+        "Input validation and sanitization",
+        "HTTPS/TLS implementation",
+        "Content Security Policy (CSP)",
+        "API security and OAuth 2.0",
+        "Secure coding practices"
+      ],
+      "resources": [
+        "https://owasp.org/www-project-top-ten/",
+        "https://portswigger.net/web-security"
+      ]
+    },
+    {
+      "title": "Ethical Hacking & Penetration Testing",
+      "description": "Learn offensive security techniques for defensive purposes.",
+      "subtopics": [
+        "Reconnaissance and information gathering",
+        "Vulnerability scanning (Nessus, OpenVAS, Nmap)",
+        "Social engineering techniques",
+        "Password attacks and cracking",
+        "Privilege escalation techniques",
+        "Metasploit framework",
+        "Web application penetration testing",
+        "Wireless network testing",
+        "Report writing and remediation guidance",
+        "Bug bounty hunting methodologies"
+      ],
+      "resources": [
+        "https://www.offensive-security.com/metasploit-unleashed/",
+        "https://portswigger.net/burp"
+      ]
+    },
+    {
+      "title": "Cryptography & PKI",
+      "description": "Understand encryption, hashing, and key management.",
+      "subtopics": [
+        "Symmetric vs asymmetric encryption",
+        "Hash functions (SHA, MD5) and HMAC",
+        "Digital signatures and certificates",
+        "Public Key Infrastructure (PKI)",
+        "Certificate Authority (CA) operations",
+        "Key management lifecycle",
+        "Cryptographic protocols (TLS/SSL)",
+        "Blockchain and cryptocurrency security",
+        "Quantum-resistant cryptography basics"
+      ],
+      "resources": [
+        "https://cryptopals.com/",
+        "https://www.coursera.org/learn/crypto"
+      ]
+    },
+    {
+      "title": "Identity & Access Management",
+      "description": "Implement robust authentication and authorization systems.",
+      "subtopics": [
+        "Identity lifecycle management",
+        "Multi-factor authentication (MFA)",
+        "Single Sign-On (SSO) solutions",
+        "Active Directory and LDAP",
+        "Privileged Access Management (PAM)",
+        "Zero Trust architecture",
+        "Identity federation protocols (SAML, OAuth, OpenID)",
+        "Biometric authentication",
+        "Role-based access control (RBAC)"
+      ],
+      "resources": [
+        "https://www.okta.com/identity-101/",
+        "https://docs.microsoft.com/en-us/azure/active-directory/"
+      ]
+    },
+    {
+      "title": "Digital Forensics",
+      "description": "Learn evidence collection and analysis techniques.",
+      "subtopics": [
+        "Digital evidence handling procedures",
+        "Disk imaging and preservation",
+        "File system analysis (NTFS, ext4, HFS+)",
+        "Memory forensics and live analysis",
+        "Network forensics and packet analysis",
+        "Mobile device forensics",
+        "Malware analysis and reverse engineering",
+        "Timeline analysis and correlation",
+        "Legal and ethical considerations",
+        "Forensic tools (Autopsy, FTK, EnCase)"
+      ],
+      "resources": [
+        "https://www.sans.org/cyber-security-courses/digital-forensics-essentials/",
+        "https://www.autopsy.com/support/training/"
+      ]
+    },
+    {
+      "title": "Incident Response & SOC Operations",
+      "description": "Build skills for detecting, analyzing, and responding to security incidents.",
+      "subtopics": [
+        "Incident response framework (NIST, SANS)",
+        "Threat hunting methodologies",
+        "Security Operations Center (SOC) operations",
+        "SIEM deployment and tuning",
+        "Threat intelligence integration",
+        "Malware sandboxing and analysis",
+        "Containment and eradication strategies",
+        "Post-incident analysis and lessons learned",
+        "Communication and stakeholder management",
+        "Automation and orchestration (SOAR)"
+      ],
+      "resources": [
+        "https://www.sans.org/white-papers/1901/",
+        "https://attack.mitre.org/"
+      ]
+    },
+    {
+      "title": "Cloud Security",
+      "description": "Secure cloud environments and services.",
+      "subtopics": [
+        "Cloud security models (IaaS, PaaS, SaaS)",
+        "AWS security services and best practices",
+        "Azure security center and compliance",
+        "Google Cloud security tools",
+        "Container security (Docker, Kubernetes)",
+        "Serverless security considerations",
+        "Cloud configuration management",
+        "Data loss prevention (DLP) in cloud",
+        "Cloud access security broker (CASB)",
+        "DevSecOps and CI/CD security"
+      ],
+      "resources": [
+        "https://aws.amazon.com/security/",
+        "https://docs.microsoft.com/en-us/azure/security/"
+      ]
+    },
+    {
+      "title": "Governance, Risk & Compliance",
+      "description": "Understand regulatory requirements and risk management.",
+      "subtopics": [
+        "Risk assessment methodologies",
+        "Compliance frameworks (HIPAA, PCI DSS, GDPR)",
+        "Security auditing and assessment",
+        "Business impact analysis",
+        "Vendor risk management",
+        "Security metrics and KPIs",
+        "Policy development and implementation",
+        "Training and awareness programs",
+        "Third-party risk assessment"
+      ],
+      "resources": [
+        "https://www.isaca.org/resources/cobit",
+        "https://www.nist.gov/cyberframework"
+      ]
+    },
+    {
+      "title": "Emerging Security Technologies",
+      "description": "Stay current with cutting-edge security technologies and threats.",
+      "subtopics": [
+        "AI/ML for cybersecurity applications",
+        "IoT security challenges and solutions",
+        "5G network security implications",
+        "Quantum computing impact on cryptography",
+        "Blockchain security applications",
+        "Zero-day vulnerability research",
+        "Advanced persistent threat (APT) analysis",
+        "Threat intelligence platforms",
+        "Security automation and orchestration"
+      ],
+      "resources": [
+        "https://www.darkreading.com/",
+        "https://krebsonsecurity.com/"
+      ]
+    },
+    {
+      "title": "Project Ideas",
+      "description": "Hands-on projects to demonstrate cybersecurity skills and build portfolio.",
+      "examples": [
+        {
+          "name": "Network Security Scanner",
+          "features": "Port scanning, vulnerability detection, service enumeration, report generation",
+          "stack": "Python, Nmap, SQLite, Flask"
+        },
+        {
+          "name": "Password Manager with Encryption",
+          "features": "AES encryption, master password, secure notes, breach monitoring",
+          "stack": "React, Node.js, MongoDB, bcrypt, crypto"
+        },
+        {
+          "name": "Vulnerability Assessment Tool",
+          "features": "Web app scanning, OWASP Top 10 detection, risk scoring, remediation guides",
+          "stack": "Python, Selenium, SQLAlchemy, Flask"
+        },
+        {
+          "name": "Incident Response Dashboard",
+          "features": "Real-time alerts, threat intelligence feeds, case management, reporting",
+          "stack": "React, Node.js, Redis, WebSockets, D3.js"
+        },
+        {
+          "name": "Security Awareness Training Platform",
+          "features": "Phishing simulations, training modules, progress tracking, gamification",
+          "stack": "Next.js, PostgreSQL, Stripe, Nodemailer"
+        },
+        {
+          "name": "Log Analysis System",
+          "features": "Real-time log ingestion, pattern recognition, anomaly detection, alerting",
+          "stack": "Python, ELK Stack, Kafka, Docker"
+        },
+        {
+          "name": "Penetration Testing Toolkit",
+          "features": "Automated reconnaissance, exploit modules, payload generation, reporting",
+          "stack": "Python, Bash, SQLite, Tkinter/CLI"
+        }
+      ]
+    }
+  ]
+}

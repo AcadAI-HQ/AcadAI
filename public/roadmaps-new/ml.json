@@ -238,13 +238,47 @@
               "Write clean deployment & rollback scripts"
             ]
           }
-        ],
-        "freshers_showcase_ways": [
-          "Publish code on GitHub with clean structure, tests & README",
-          "Deploy small apps/API endpoints on free/cloud tiers",
-          "Write blog / notebook explaining the model & lessons learned",
-          "Demonstrate metrics (accuracy, latency, fairness, drift) not just final result",
-          "Participate in Kaggle or similar competitions, share kernels / notebooks"
+        ]
+      },
+      {
+        "title": "Project Ideas",
+        "description": "Practical machine learning projects to demonstrate AI/ML skills and build portfolio.",
+        "examples": [
+          {
+            "name": "Computer Vision Classification System",
+            "features": "Image classification, object detection, real-time inference, model versioning, performance metrics",
+            "stack": "Python, TensorFlow/PyTorch, OpenCV, FastAPI, Docker, AWS/GCP"
+          },
+          {
+            "name": "NLP Sentiment Analysis API",
+            "features": "Text preprocessing, sentiment classification, named entity recognition, API endpoints, batch processing",
+            "stack": "Python, Transformers, spaCy, FastAPI, PostgreSQL, Redis"
+          },
+          {
+            "name": "Recommendation Engine",
+            "features": "Collaborative filtering, content-based filtering, hybrid models, A/B testing, real-time recommendations",
+            "stack": "Python, scikit-learn, TensorFlow, Apache Spark, MongoDB, Redis"
+          },
+          {
+            "name": "Time Series Forecasting Dashboard",
+            "features": "Data visualization, multiple forecasting models, uncertainty quantification, automated retraining",
+            "stack": "Python, Prophet/LSTM, Streamlit/Dash, InfluxDB, Docker"
+          },
+          {
+            "name": "MLOps Model Deployment Pipeline",
+            "features": "Model versioning, CI/CD for ML, monitoring, drift detection, automated rollback, A/B testing",
+            "stack": "MLflow, Kubeflow, Docker, Kubernetes, Prometheus, Grafana"
+          },
+          {
+            "name": "Fraud Detection System",
+            "features": "Anomaly detection, real-time scoring, feature engineering, model explanation, alert system",
+            "stack": "Python, XGBoost/LightGBM, Apache Kafka, Elasticsearch, SHAP"
+          },
+          {
+            "name": "AI Chatbot with RAG",
+            "features": "Document retrieval, context-aware responses, conversation memory, multi-modal input, safety filters",
+            "stack": "Python, LangChain, OpenAI/HuggingFace, Pinecone/Weaviate, FastAPI"
+          }
         ]
       }
     ]

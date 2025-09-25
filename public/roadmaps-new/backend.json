@@ -386,6 +386,47 @@
         ]
       },
       {
+        "title": "Project Ideas",
+        "description": "Hands-on backend projects to demonstrate skills and build portfolio.",
+        "examples": [
+          {
+            "name": "Real-time Chat API with Redis",
+            "features": "WebSocket connections, message persistence, user presence, room management, typing indicators",
+            "stack": "Node.js/Express, Redis, Socket.io, JWT, MongoDB"
+          },
+          {
+            "name": "Multi-tenant SaaS Backend",
+            "features": "Tenant isolation, user management, subscription billing, API rate limiting, analytics",
+            "stack": "Python/FastAPI, PostgreSQL, Redis, Stripe API, Docker"
+          },
+          {
+            "name": "Event-driven Microservices Platform",
+            "features": "Service discovery, event sourcing, CQRS, distributed tracing, circuit breaker",
+            "stack": "Go, Apache Kafka, MongoDB, Docker, Kubernetes"
+          },
+          {
+            "name": "GraphQL Federation Gateway",
+            "features": "Schema federation, caching, authentication, rate limiting, real-time subscriptions",
+            "stack": "Node.js, Apollo Federation, Redis, PostgreSQL, GraphQL"
+          },
+          {
+            "name": "Real-time Analytics Pipeline",
+            "features": "Data ingestion, stream processing, aggregations, real-time dashboards, alerting",
+            "stack": "Python, Apache Kafka, ClickHouse, Grafana, Docker"
+          },
+          {
+            "name": "Serverless Image Processing API",
+            "features": "Image upload, resize/crop, format conversion, CDN integration, cost optimization",
+            "stack": "AWS Lambda, S3, CloudFront, Python/Pillow, API Gateway"
+          },
+          {
+            "name": "OAuth2 Authentication Service",
+            "features": "Multi-provider auth, token management, user profiles, RBAC, audit logging",
+            "stack": "Java/Spring Boot, PostgreSQL, Redis, Docker, OAuth2"
+          }
+        ]
+      },
+      {
         "title": "Continuous Learning / Roadmap Maintenance",
         "description": "How to keep your platform's backend roadmap accurate over time.",
         "subtopics": [

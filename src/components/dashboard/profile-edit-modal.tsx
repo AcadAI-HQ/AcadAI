@@ -33,6 +33,8 @@ const domains = [
   { id: 'fullstack', name: 'Fullstack Development', description: 'Complete web application development' },
   { id: 'ml', name: 'Machine Learning', description: 'From foundations to MLOps and specialized applications' },
   { id: 'devops', name: 'DevOps', description: 'Infrastructure automation, CI/CD, cloud platforms' },
+  { id: 'cybersecurity', name: 'CyberSecurity', description: 'Information security, ethical hacking, and digital defense' },
+  { id: 'data-science', name: 'Data Science', description: 'Statistical analysis, business intelligence, and data-driven insights' },
 ];
 
 export default function ProfileEditModal({ isOpen, onClose, user }: ProfileEditModalProps) {

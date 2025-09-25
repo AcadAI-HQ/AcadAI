@@ -180,54 +180,43 @@
         ]
       },
       {
-        "title": "Capstone Projects & Freshers Showcase Ideas",
-        "description": "Projects that let you display full DevOps pipeline and thinking — more than simple deployment apps.",
-        "projects": [
+        "title": "Project Ideas",
+        "description": "Infrastructure and automation projects to demonstrate DevOps skills and build portfolio.",
+        "examples": [
           {
-            "name": "CI/CD Pipeline End-to-End Demo",
-            "description": "Build a multi-service app (e.g., frontend + backend) and set up a full CI/CD pipeline with automated tests, linting, containerization, and blue/green or canary deploys.",
-            "tech_stack": ["GitHub Actions or GitLab CI", "Docker", "Kubernetes or k3s", "A cloud provider free tier"],
-            "showcase_tips": [
-              "Include rollback strategy",
-              "Show test coverage & linting in pipeline",
-              "Document the pipeline steps clearly"
-            ]
+            "name": "Complete CI/CD Pipeline Setup",
+            "features": "Multi-stage pipeline, automated testing, container builds, blue-green deployment, rollback strategy",
+            "stack": "GitHub Actions/Jenkins, Docker, Kubernetes, Helm, AWS/Azure"
           },
           {
             "name": "Infrastructure as Code Project",
-            "description": "Define infra for an app using Terraform (or equivalent), include networking, storage, compute, IAM policies; deploy and tear down reliably.",
-            "tech_stack": ["Terraform", "AWS or GCP free-tier", "Ansible or similar for configuration"],
-            "showcase_tips": [
-              "Version state, show module reuse",
-              "Include cost estimates and optimization"
-            ]
+            "features": "Multi-environment setup, networking, security groups, monitoring, cost optimization, state management",
+            "stack": "Terraform, AWS/GCP, Ansible, Vault, Terragrunt"
           },
           {
-            "name": "Monitoring & Observability Dashboard",
-            "description": "Deploy sample app + instrument it: logs, metrics, tracing; set up alerts; show dashboards and simulate failures to see alerts triggered.",
-            "tech_stack": ["Prometheus", "Grafana", "sample app (could be simple HTTP server)"],
-            "showcase_tips": [
-              "Simulate load and failures",
-              "Create runbook for incident recovery"
-            ]
+            "name": "Kubernetes Cluster Management",
+            "features": "Cluster setup, ingress controller, service mesh, autoscaling, security policies, backup strategy",
+            "stack": "Kubernetes, Istio, Prometheus, Grafana, ArgoCD, Velero"
           },
           {
-            "name": "Serverless Microservices Setup",
-            "description": "Build microservices functions deployed serverless; integrate IAM, environment variables; autoscaling; minimal latency; integrate with cloud storage or queues.",
-            "tech_stack": ["AWS Lambda / Azure Functions / GCP Functions", "API Gateway / equivalent", "Cloud storage / queues"],
-            "showcase_tips": [
-              "Show cold-start mitigation",
-              "Measure performance under load"
-            ]
+            "name": "Monitoring and Alerting System",
+            "features": "Application metrics, infrastructure monitoring, log aggregation, alerting rules, dashboards",
+            "stack": "Prometheus, Grafana, ELK Stack, PagerDuty, Jaeger"
           },
           {
-            "name": "Multi-Cloud & Cost Optimization Case Study",
-            "description": "Use two cloud providers (free or minimal billing), deploy similar services, compare cost, latency, ease of use; show how to optimize cost/resources.",
-            "tech_stack": ["AWS + GCP / Azure", "Docker / Kubernetes", "IaC tools"],
-            "showcase_tips": [
-              "Publish metrics and configs",
-              "Document trade-offs, regions, pricing"
-            ]
+            "name": "Multi-Cloud Deployment Strategy",
+            "features": "Cross-cloud networking, data replication, disaster recovery, cost optimization, unified monitoring",
+            "stack": "AWS + Azure/GCP, Terraform, Consul, Vault, Datadog"
+          },
+          {
+            "name": "Container Security Scanner",
+            "features": "Vulnerability scanning, compliance checks, policy enforcement, reporting, integration with CI/CD",
+            "stack": "Trivy, Falco, Open Policy Agent, Harbor, Jenkins/GitHub Actions"
+          },
+          {
+            "name": "Infrastructure Cost Optimization Tool",
+            "features": "Resource utilization analysis, cost recommendations, automated scaling, budget alerts, reporting",
+            "stack": "Python/Go, AWS Cost Explorer API, Grafana, CloudWatch, Lambda"
           }
         ]
       }
