@@ -21,7 +21,7 @@ const Hero = () => {
           animation={{
             preview: false,
             scale: 50,
-            speed: 30
+            speed: 60
           }}
           noise={{
             opacity: 0.3,
