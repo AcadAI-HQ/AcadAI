@@ -10,9 +10,11 @@ import Footer from '@/components/landing/footer';
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header />
       <main className="flex-1">
-        <Hero />
+        <div className="relative">
+          <Header />
+          <Hero />
+        </div>        
         <section id="about" className="py-20 md:py-28">
           <div className="container max-w-4xl mx-auto">
             <div className="text-center">
