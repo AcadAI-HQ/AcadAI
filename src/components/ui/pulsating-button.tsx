@@ -1,14 +1,11 @@
-"use client";
+import React from "react"
 
-import React from "react";
-import { cn } from "@/lib/utils";
-import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@/lib/utils"
 
 interface PulsatingButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  pulseColor?: string;
-  duration?: string;
-  asChild?: boolean;
+  pulseColor?: string
+  duration?: string
 }
 
 export const PulsatingButton = React.forwardRef<
@@ -19,23 +16,18 @@ export const PulsatingButton = React.forwardRef<
     {
       className,
       children,
-      pulseColor = "#ffffff",
+      pulseColor = "#808080",
       duration = "1.5s",
-      asChild = false,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const Comp = asChild ? Slot : "button";
-
     return (
-      <Comp
+      <button
         ref={ref}
         className={cn(
-          "relative flex cursor-pointer items-center justify-center rounded-full bg-primary px-8 py-4 text-center text-lg font-semibold text-primary-foreground",
-          "transform-gpu transition-transform duration-300 ease-in-out active:translate-y-px",
-          "before:absolute before:inset-0 before:size-full before:rounded-full before:bg-inherit before:opacity-50 before:animate-pulse",
-          className,
+          "bg-primary text-primary-foreground relative flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-center",
+          className
         )}
         style={
           {
@@ -45,10 +37,11 @@ export const PulsatingButton = React.forwardRef<
         }
         {...props}
       >
-        {children}
-      </Comp>
-    );
-  },
-);
+        <div className="relative z-10">{children}</div>
+        <div className="absolute top-1/2 left-1/2 size-full -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-inherit" />
+      </button>
+    )
+  }
+)
 
-PulsatingButton.displayName = "PulsatingButton";
+PulsatingButton.displayName = "PulsatingButton"

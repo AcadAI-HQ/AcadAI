@@ -52,13 +52,13 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
-            <PulsatingButton asChild className="w-full sm:w-auto shadow-2xl shadow-white/25">
+            <PulsatingButton className="w-full sm:w-auto shadow-2xl shadow-white/25">
               <Link href="/signup">
                 Start Creating
                 <ArrowRight className="ml-2 h-5 w-5 inline" />
               </Link>
             </PulsatingButton>
-            <ShimmerButton className="font-semibold bg-transparent w-full sm:w-auto" asChild>
+            <ShimmerButton className="font-semibold bg-transparent w-full sm:w-auto">
               <Link href="#about">
                 Learn More
               </Link>
@@ -77,7 +77,7 @@ const Hero = () => {
               <div className="text-white/60 text-xs sm:text-sm">Users Joined</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">10k+</div>
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">20k+</div>
               <div className="text-white/60 text-xs sm:text-sm">Jobs Scanned</div>
             </div>
             <div className="text-center">

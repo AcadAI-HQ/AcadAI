@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { BrainCircuit } from 'lucide-react';
+import { PulsatingButton } from '../ui/pulsating-button';
 
 const Header = () => {
   const navLinks = [
@@ -39,9 +40,9 @@ const Header = () => {
           <Button variant="ghost" asChild>
             <Link href="/login">Log In</Link>
           </Button>
-          <Button asChild>
+          <PulsatingButton>
             <Link href="/signup">Sign Up</Link>
-          </Button>
+          </PulsatingButton>
         </div>
       </div>
     </motion.header>
