@@ -20,8 +20,8 @@ const Hero = () => {
           color="rgba(75, 85, 99, 0.8)" // A nice gray color with some transparency
           animation={{
             preview: false,
-            scale: 30,
-            speed: 15
+            scale: 50,
+            speed: 30
           }}
           noise={{
             opacity: 0.3,
