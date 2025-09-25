@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Component as ShadowOverlay } from '../ui/shadowoverlay';
 import { PulsatingButton } from '../ui/pulsating-button';
 import { ShimmerButton } from '../ui/shimmer-button';
 import { useUserCount } from '@/hooks/use-user-count';
@@ -13,24 +12,7 @@ const Hero = () => {
   const { userCount, loading } = useUserCount();
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center text-center bg-black">
-      <div className="absolute inset-0 z-0">
-        <ShadowOverlay
-          sizing="fill"
-          color="rgba(75, 85, 99, 0.8)" // A nice gray color with some transparency
-          animation={{
-            preview: false,
-            scale: 50,
-            speed: 90
-          }}
-          noise={{
-            opacity: 0.3,
-            scale: 1
-          }}
-          className="w-full h-full"
-        />
-      </div>
-
+    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center text-center">
       <motion.div
         className="relative z-10 container"
         initial={{ opacity: 0, y: 20 }}

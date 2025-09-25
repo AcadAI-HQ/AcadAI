@@ -33,13 +33,13 @@ const faqs = [
 
 const FAQ = () => {
   return (
-    <section id="faq" className="py-20 md:py-28 bg-card">
+    <section id="faq" className="py-20 md:py-28">
       <div className="container max-w-4xl mx-auto">
         <div className="text-center">
-          <h2 className="font-headline text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-headline text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Frequently Asked Questions
           </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
+          <p className="mt-4 text-white/80 text-lg">
             Have questions? We have answers. If you can't find what you're looking for, feel free to contact us.
           </p>
         </div>

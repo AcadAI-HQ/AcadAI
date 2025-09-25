@@ -42,10 +42,10 @@ const HowItWorks = () => {
     <section id="how-it-works" className="py-20 md:py-28">
       <div className="container">
         <div className="text-center max-w-3xl mx-auto">
-          <h2 className="font-headline text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-headline text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Your Career Upgrade in Three Simple Steps
           </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
+          <p className="mt-4 text-white/80 text-lg">
             Go from beginner to pro with a clear, guided path.
           </p>
         </div>
