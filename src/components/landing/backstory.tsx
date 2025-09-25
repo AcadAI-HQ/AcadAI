@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const Backstory = () => {
   return (
-    <section id="backstory" className="py-20 md:py-28 bg-card">
+    <section id="backstory" className="py-20 md:py-28">
       <div className="container grid lg:grid-cols-5 gap-16 items-center">
         <motion.div
           className="lg:col-span-2"
@@ -31,18 +31,18 @@ const Backstory = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <h2 className="font-headline text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-headline text-3xl font-bold tracking-tight text-white sm:text-4xl">
             From Frustration to a <span className="text-accent">Solution</span>
           </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
+          <p className="mt-4 text-white/80 text-lg">
             "We were once in your shoes. Scrolling endlessly through tutorials, buying courses we never finished, and feeling overwhelmed by the sheer number of 'essential' technologies to learn. I wasted months, if not years, on inefficient learning."
           </p>
-          <p className="mt-4 text-muted-foreground text-lg">
+          <p className="mt-4 text-white/80 text-lg">
             "That's why we built Acad AI. We envisioned a tool that could provide the mentorship and direction we never had—a smart guide that cuts through the noise and delivers a clear, efficient path to success. This platform is the solution I wish I had when I started my journey."
           </p>
           <div className="mt-6 border-t border-border pt-6">
-            <h3 className="font-semibold text-foreground">Bhaskar and Disshad, Cofounders of Acad AI</h3>
-            <p className="text-sm text-muted-foreground">Developers and lifelong learners</p>
+            <h3 className="font-semibold text-white">Bhaskar and Disshad, Cofounders of Acad AI</h3>
+            <p className="text-sm text-white/60">Developers and lifelong learners</p>
           </div>
         </motion.div>
       </div>
