@@ -8,7 +8,7 @@ import { DomainCard } from "@/components/dashboard/domain-card";
 import ProfileCompletionBanner from "@/components/dashboard/profile-completion-banner";
 import ProfileCompletionModal from "@/components/dashboard/profile-completion-modal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code, Bot, Cpu, Layers, GitBranch, AlertTriangle, Star, TestTubeDiagonal, DatabaseZap, Network } from "lucide-react";
+import { Code, Bot, Cpu, Layers, GitBranch, AlertTriangle, Star, Shield, DatabaseZap, Network } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UserProfile } from "@/types";
 
@@ -18,8 +18,8 @@ const domains = [
   { id: 'fullstack', name: 'Fullstack', icon: Layers, active: true },
   { id: 'ml', name: 'Machine Learning', icon: Bot, active: true },
   { id: 'devops', name: 'DevOps', icon: GitBranch, active: true },
-  { id: 'qa', name: 'QA Engineer', icon: TestTubeDiagonal, active: false },
-  { id: 'data-science', name: 'Data Scientist', icon: DatabaseZap, active: false },
+  { id: 'cybersecurity', name: 'CyberSecurity', icon: Shield, active: true },
+  { id: 'data-science', name: 'Data Scientist', icon: DatabaseZap, active: true },
   { id: 'blockchain', name: 'Blockchain', icon: Network, active: false },
 ];
 

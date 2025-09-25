@@ -1,0 +1,246 @@
+{
+  "domain": "Data Science",
+  "type": "premium",
+  "overview": "A comprehensive roadmap for aspiring and junior data scientists. Focuses on statistical analysis, business intelligence, data-driven insights, and effective communication of findings to stakeholders. Covers the full data science pipeline from collection to actionable business recommendations.",
+  "steps": [
+    {
+      "title": "Mathematics & Statistics Foundation",
+      "description": "Essential statistical concepts for analyzing data and drawing valid conclusions.",
+      "subtopics": [
+        "Descriptive statistics: mean, median, mode, variance, standard deviation",
+        "Probability distributions: normal, binomial, Poisson, uniform",
+        "Inferential statistics: confidence intervals, hypothesis testing",
+        "Statistical tests: t-tests, chi-square, ANOVA, Mann-Whitney U",
+        "Correlation vs causation, confounding variables",
+        "Bayesian thinking and Bayes' theorem",
+        "Experimental design and A/B testing fundamentals",
+        "Sample size calculation and power analysis"
+      ],
+      "resources": [
+        "https://www.khanacademy.org/math/statistics-probability",
+        "https://www.coursera.org/learn/statistical-inferences"
+      ]
+    },
+    {
+      "title": "Programming for Data Science",
+      "description": "Master programming tools essential for data manipulation and analysis.",
+      "subtopics": [
+        "Python fundamentals: data types, loops, functions, libraries",
+        "Pandas: DataFrames, data cleaning, groupby, merging, pivoting",
+        "NumPy: arrays, mathematical operations, broadcasting",
+        "Jupyter notebooks: best practices, documentation, reproducibility",
+        "SQL: joins, subqueries, window functions, CTEs",
+        "Git and version control for data projects",
+        "Python environment management (conda, pip, virtual environments)",
+        "Data structures and algorithms basics"
+      ],
+      "resources": [
+        "https://pandas.pydata.org/pandas-docs/stable/user_guide/",
+        "https://www.w3schools.com/sql/"
+      ]
+    },
+    {
+      "title": "Data Collection & APIs",
+      "description": "Learn to gather data from various sources and APIs.",
+      "subtopics": [
+        "Web scraping with BeautifulSoup and Scrapy",
+        "REST APIs: requests library, authentication, rate limiting",
+        "Database connections: SQLite, PostgreSQL, MySQL",
+        "CSV, JSON, XML data formats",
+        "Survey design and data collection methodology",
+        "Data quality assessment and validation",
+        "Handling missing data and outliers",
+        "Data privacy and GDPR compliance basics"
+      ],
+      "resources": [
+        "https://requests.readthedocs.io/en/latest/",
+        "https://beautiful-soup-4.readthedocs.io/en/latest/"
+      ]
+    },
+    {
+      "title": "Exploratory Data Analysis (EDA)",
+      "description": "Discover patterns, anomalies, and insights in datasets.",
+      "subtopics": [
+        "Data profiling: distributions, missing values, data types",
+        "Univariate analysis: histograms, box plots, summary statistics",
+        "Bivariate analysis: scatter plots, correlation matrices",
+        "Multivariate analysis: pair plots, heatmaps",
+        "Time series exploration: trends, seasonality, autocorrelation",
+        "Categorical data analysis: frequency tables, chi-square tests",
+        "Outlier detection: IQR, Z-score, isolation forests",
+        "Feature engineering and transformation"
+      ],
+      "resources": [
+        "https://seaborn.pydata.org/tutorial.html",
+        "https://matplotlib.org/stable/tutorials/"
+      ]
+    },
+    {
+      "title": "Data Visualization & Storytelling",
+      "description": "Create compelling visualizations and communicate insights effectively.",
+      "subtopics": [
+        "Matplotlib: basic plots, customization, subplots",
+        "Seaborn: statistical plots, aesthetics, color palettes",
+        "Plotly: interactive visualizations, dashboards",
+        "Chart selection: when to use bar charts, line plots, heatmaps",
+        "Color theory and accessibility in data visualization",
+        "Dashboard design principles",
+        "Storytelling with data: narrative structure, audience analysis",
+        "Presenting to technical vs non-technical stakeholders"
+      ],
+      "resources": [
+        "https://plotly.com/python/",
+        "https://storytellingwithdata.com/"
+      ]
+    },
+    {
+      "title": "Statistical Analysis & Modeling",
+      "description": "Apply statistical methods to answer business questions.",
+      "subtopics": [
+        "Linear and logistic regression: assumptions, interpretation",
+        "Time series analysis: ARIMA, seasonal decomposition, forecasting",
+        "Clustering: k-means, hierarchical, DBSCAN",
+        "Classification: decision trees, random forests, evaluation metrics",
+        "Dimensionality reduction: PCA, t-SNE, feature selection",
+        "A/B testing: design, sample size, statistical significance",
+        "Cohort analysis and retention metrics",
+        "Customer lifetime value (CLV) modeling"
+      ],
+      "resources": [
+        "https://scikit-learn.org/stable/user_guide.html",
+        "https://www.statsmodels.org/stable/user-guide.html"
+      ]
+    },
+    {
+      "title": "Business Intelligence & Analytics",
+      "description": "Transform data into actionable business insights.",
+      "subtopics": [
+        "KPI definition and metric development",
+        "Business case development and ROI analysis",
+        "Customer segmentation and personas",
+        "Marketing attribution modeling",
+        "Sales funnel analysis and conversion optimization",
+        "Churn prediction and retention strategies",
+        "Pricing analysis and elasticity modeling",
+        "Market basket analysis and recommendation systems"
+      ],
+      "resources": [
+        "https://www.coursera.org/learn/business-analytics",
+        "https://www.tableau.com/learn/training"
+      ]
+    },
+    {
+      "title": "Big Data Tools & Cloud Platforms",
+      "description": "Handle large datasets and leverage cloud computing for data science.",
+      "subtopics": [
+        "SQL databases: optimization, indexing, query performance",
+        "NoSQL databases: MongoDB, document storage concepts",
+        "Apache Spark: DataFrames, distributed computing basics",
+        "AWS data services: S3, RDS, Redshift, Athena",
+        "Google Cloud Platform: BigQuery, Cloud Storage, Dataflow",
+        "Data warehousing concepts: fact tables, dimensions, ETL",
+        "Data lakes vs data warehouses",
+        "Stream processing basics: Kafka, real-time analytics"
+      ],
+      "resources": [
+        "https://spark.apache.org/docs/latest/sql-programming-guide.html",
+        "https://aws.amazon.com/getting-started/hands-on/"
+      ]
+    },
+    {
+      "title": "Advanced Analytics Techniques",
+      "description": "Apply sophisticated analytical methods for complex business problems.",
+      "subtopics": [
+        "Causal inference: randomized experiments, natural experiments",
+        "Marketing mix modeling and attribution",
+        "Survival analysis and event prediction",
+        "Text analytics: sentiment analysis, topic modeling",
+        "Network analysis: social networks, recommendation systems",
+        "Optimization: linear programming, constraint optimization",
+        "Simulation and Monte Carlo methods",
+        "Multi-armed bandit testing and online experimentation"
+      ],
+      "resources": [
+        "https://www.coursera.org/learn/causal-inference",
+        "https://nltk.org/book/"
+      ]
+    },
+    {
+      "title": "Data Ethics & Communication",
+      "description": "Ensure ethical data practices and effective stakeholder communication.",
+      "subtopics": [
+        "Data privacy: GDPR, CCPA, anonymization techniques",
+        "Algorithmic bias: detection, mitigation, fairness metrics",
+        "Reproducible research: documentation, version control",
+        "Peer review and validation of analytical findings",
+        "Executive reporting: executive summaries, key insights",
+        "Data governance and quality frameworks",
+        "Building data-driven culture in organizations",
+        "Communicating uncertainty and limitations"
+      ],
+      "resources": [
+        "https://www.coursera.org/learn/data-science-ethics",
+        "https://medium.com/towards-data-science"
+      ]
+    },
+    {
+      "title": "Tools & Platforms Mastery",
+      "description": "Become proficient with industry-standard data science tools.",
+      "subtopics": [
+        "Tableau: advanced visualizations, calculated fields, parameters",
+        "Power BI: data modeling, DAX formulas, report design",
+        "Excel: advanced functions, pivot tables, statistical analysis",
+        "R basics: data manipulation, ggplot2, statistical packages",
+        "Docker: containerizing data science workflows",
+        "Airflow: workflow orchestration, data pipelines",
+        "MLflow: experiment tracking, model versioning",
+        "GitHub: collaborative data science, project organization"
+      ],
+      "resources": [
+        "https://www.tableau.com/learn",
+        "https://docs.microsoft.com/en-us/power-bi/"
+      ]
+    },
+    {
+      "title": "Project Ideas",
+      "description": "Comprehensive data science projects to demonstrate analytical skills and business impact.",
+      "examples": [
+        {
+          "name": "Customer Segmentation Analysis",
+          "features": "RFM analysis, clustering algorithms, customer personas, marketing recommendations, interactive dashboard",
+          "stack": "Python, Pandas, Scikit-learn, Plotly, Tableau, SQL"
+        },
+        {
+          "name": "Sales Forecasting Dashboard",
+          "features": "Time series modeling, seasonality analysis, demand forecasting, inventory optimization, executive reporting",
+          "stack": "Python, Prophet, Statsmodels, Plotly Dash, PostgreSQL"
+        },
+        {
+          "name": "A/B Testing Platform",
+          "features": "Experiment design, statistical power analysis, significance testing, confidence intervals, automated reporting",
+          "stack": "Python, SciPy, Streamlit, SQL, Docker"
+        },
+        {
+          "name": "Marketing Attribution Modeling",
+          "features": "Multi-touch attribution, conversion funnel analysis, ROI measurement, budget allocation optimization",
+          "stack": "Python, Google Analytics API, Pandas, Seaborn, Tableau"
+        },
+        {
+          "name": "Churn Prediction & Analytics",
+          "features": "Survival analysis, customer retention modeling, intervention strategies, cohort analysis, predictive scoring",
+          "stack": "Python, Scikit-learn, Lifelines, Plotly, AWS S3"
+        },
+        {
+          "name": "Financial Risk Assessment",
+          "features": "Credit scoring models, portfolio analysis, stress testing, regulatory reporting, risk dashboards",
+          "stack": "Python, XGBoost, Pandas, Risk metrics, Power BI"
+        },
+        {
+          "name": "Social Media Analytics Suite",
+          "features": "Sentiment analysis, engagement metrics, trend detection, influencer analysis, competitive benchmarking",
+          "stack": "Python, NLTK, Twitter API, MongoDB, Tableau"
+        }
+      ]
+    }
+  ]
+}

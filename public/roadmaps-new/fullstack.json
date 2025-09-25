@@ -253,13 +253,47 @@
                         "Show scaling considerations"
                     ]
                 }
-            ],
-            "freshers_showcase_ways": [
-                "Host full code on GitHub with README, tests, CI/CD setup, and deployment on free tiers (Vercel, Render, AWS free tier)",
-                "Write blog posts / case studies about architecture decisions & trade-offs",
-                "Record demo videos showcasing features & performance",
-                "Contribute to open-source or clone popular products with your own twist",
-                "Add load/performance tests and observability (metrics, logs) to projects"
+            ]
+        },
+        {
+            "title": "Project Ideas",
+            "description": "Comprehensive fullstack applications to demonstrate end-to-end development skills.",
+            "examples": [
+                {
+                    "name": "Social Media Platform Clone",
+                    "features": "User profiles, posts, comments, likes, real-time notifications, image/video uploads, messaging",
+                    "stack": "React/Next.js, Node.js/Express, MongoDB, Redis, Socket.io, AWS S3"
+                },
+                {
+                    "name": "E-commerce Marketplace",
+                    "features": "Product catalog, shopping cart, payment processing, order management, seller dashboard, reviews",
+                    "stack": "Vue.js/Nuxt.js, Python/Django, PostgreSQL, Stripe, Docker, CI/CD"
+                },
+                {
+                    "name": "Project Management Tool",
+                    "features": "Task boards, team collaboration, time tracking, file sharing, reporting, integrations",
+                    "stack": "React, Node.js/NestJS, PostgreSQL, WebSockets, AWS, Jira API"
+                },
+                {
+                    "name": "Online Learning Platform",
+                    "features": "Course creation, video streaming, quizzes, progress tracking, certificates, payment system",
+                    "stack": "Next.js, Node.js, MongoDB, AWS CloudFront, Vimeo API, Stripe"
+                },
+                {
+                    "name": "Real-time Collaboration Suite",
+                    "features": "Document editing, video conferencing, whiteboard, file sharing, team workspaces",
+                    "stack": "React, Node.js, WebRTC, Socket.io, MongoDB, Redis, AWS"
+                },
+                {
+                    "name": "Food Delivery Application",
+                    "features": "Restaurant listings, menu management, order tracking, payment, delivery routing, ratings",
+                    "stack": "React Native/Flutter, Node.js, PostgreSQL, Google Maps, Stripe, Push notifications"
+                },
+                {
+                    "name": "Multi-tenant CRM System",
+                    "features": "Lead management, pipeline tracking, email automation, reporting, role-based access, integrations",
+                    "stack": "Angular, .NET Core, SQL Server, Redis, SendGrid, Power BI"
+                }
             ]
         }
     ]
