@@ -5,32 +5,17 @@ import HowItWorks from '@/components/landing/how-it-works';
 import Backstory from '@/components/landing/backstory';
 import Pricing from '@/components/landing/pricing';
 import FAQ from '@/components/landing/faq';
-import Footer from '@/components/landing/footer';
-import { Component as ShadowOverlay } from '@/components/ui/shadowoverlay';
+import AnimFooter from '@/components/landing/footer';
+
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black relative">
-      <div className="fixed inset-0 z-0">
-        <ShadowOverlay
-          sizing="fill"
-          color="rgba(75, 85, 99, 0.8)"
-          animation={{
-            preview: false,
-            scale: 20,
-            speed: 85
-          }}
-          noise={{
-            opacity: 0.2,
-            scale: 0.5
-          }}
-          className="w-full h-full"
-        />
-      </div>
       <main className="flex-1 relative z-10">
         <div className="relative">
           <Header />
           <Hero />
+          
         </div>
         <section id="about" className="py-20 md:py-28">
           <div className="container max-w-4xl mx-auto">
@@ -50,7 +35,7 @@ export default function LandingPage() {
         <Pricing />
         <FAQ />
       </main>
-      <Footer />
+      <AnimFooter />
     </div>
   );
 }
