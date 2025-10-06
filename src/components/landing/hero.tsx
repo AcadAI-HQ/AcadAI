@@ -9,6 +9,8 @@ import { motion } from 'framer-motion';
 import { PulsatingButton } from '@/components/ui/pulsating-button';
 import { ShimmerButton } from '@/components/ui/shimmer-button';
 import { useUserCount } from '@/hooks/use-user-count';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { MorphingText } from "../ui/morphing-text";
 
 function ShaderBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -185,11 +187,10 @@ export default function HeroWithShader() {
         <div className="mx-auto max-w-4xl text-center">
           <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-tight font-headline">
             <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              AI powered
-            </span>{" "}
-            <span className="block sm:inline">hyperpersonalized</span>
-            <br className="hidden sm:block" />
-            career roadmap
+              AI That
+            </span>
+            <span className="my-3 sm:my-4 p-2"><MorphingText texts={["Shapes", "Saves"]}/></span>
+            <span>Your Tech Career</span>
           </h1>
 
           <p className="mb-8 sm:mb-10 text-base sm:text-lg lg:text-xl xl:text-2xl leading-7 sm:leading-8 text-white/80 max-w-2xl lg:max-w-3xl mx-auto px-2">
@@ -210,24 +211,65 @@ export default function HeroWithShader() {
             </ShimmerButton>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-xl sm:max-w-2xl mx-auto px-4">
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">
-                {loading ? (
-                  <span className="animate-pulse">...</span>
-                ) : (
-                  `${userCount.toLocaleString()}+`
-                )}
-              </div>
-              <div className="text-white/60 text-xs sm:text-sm">Users Joined</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">20k+</div>
-              <div className="text-white/60 text-xs sm:text-sm">Jobs Scanned</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">24/7</div>
-              <div className="text-white/60 text-xs sm:text-sm">Support</div>
+          <div className="flex flex-col items-center gap-3">
+            {/* Text with user count */}
+            <p className="text-white/80 text-sm sm:text-base">
+              Join{" "}
+              {loading ? (
+                <span className="animate-pulse">...</span>
+              ) : (
+                <span className="font-semibold text-white">{userCount.toLocaleString()}+</span>
+              )}{" "}
+              other students and devs on the platform.
+            </p>
+
+            {/* Avatar Stack with count in last circle */}
+            <div className="flex -space-x-3">
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=1" alt="User 1" />
+                <AvatarFallback>U1</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=2" alt="User 2" />
+                <AvatarFallback>U2</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=3" alt="User 3" />
+                <AvatarFallback>U3</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="User 4" />
+                <AvatarFallback>U4</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=5" alt="User 5" />
+                <AvatarFallback>U5</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=6" alt="User 6" />
+                <AvatarFallback>U6</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=7" alt="User 7" />
+                <AvatarFallback>U7</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=8" alt="User 8" />
+                <AvatarFallback>U8</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=9" alt="User 9" />
+                <AvatarFallback>U9</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-8 border-2 border-black">
+                <AvatarImage src="https://i.pravatar.cc/150?img=10" alt="User 10" />
+                <AvatarFallback>U10</AvatarFallback>
+              </Avatar>
+              <Avatar className="h-8 w-auto border-2 border-black bg-black p-2">
+                <AvatarFallback className="text-white text-xs font-semibold">
+                  {loading ? "..." : `${userCount.toLocaleString()}+`} using Acad AI to streamline their learning path
+                </AvatarFallback>
+              </Avatar>
             </div>
           </div>
         </div>
