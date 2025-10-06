@@ -95,6 +95,14 @@ export default {
             height: '0',
           },
         },
+        aurora: {
+          '0%, 100%': {
+            backgroundPosition: '0% 50%',
+          },
+          '50%': {
+            backgroundPosition: '100% 50%',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -102,6 +110,7 @@ export default {
         "pulse-ring":
           "pulse-ring var(--duration) cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "shimmer": "shimmer 3s linear infinite",
+        "aurora": "aurora 8s ease-in-out infinite alternate",
       },
     },
   },
