@@ -118,7 +118,7 @@ export function Backstory() {
                         Our Story
                     </h2>
                     <p className="text-lg md:text-xl text-gray-300 mb-8 text-center">
-                        This is how Acad AI started.
+                        This is how Acad AI started. 
                     </p>
 
                     {/* Chat Container */}
@@ -200,7 +200,7 @@ export function Backstory() {
                             >
                                 <div className="flex flex-col items-center p-4 w-32">
                                     <p className="text-lg font-bold text-white mb-3">Bhaskar</p>
-                                    <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#29ABE2]">
+                                    <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-white">
                                         <Image
                                             src={BHASKAR_PFP}
                                             alt="Bhaskar"
@@ -220,7 +220,7 @@ export function Backstory() {
                             >
                                 <div className="flex flex-col items-center p-4 w-32">
                                     <p className="text-lg font-bold text-white mb-3">Arstos</p>
-                                    <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#8E2DE2]">
+                                    <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-white">
                                         <Image
                                             src={ARSTOS_PFP}
                                             alt="Arstos"
