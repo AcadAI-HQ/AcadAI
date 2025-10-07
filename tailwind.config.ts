@@ -103,6 +103,22 @@ export default {
             backgroundPosition: '100% 50%',
           },
         },
+        marquee: {
+          from: {
+            transform: 'translateX(0)',
+          },
+          to: {
+            transform: 'translateX(calc(-100% - var(--gap)))',
+          },
+        },
+        'marquee-vertical': {
+          from: {
+            transform: 'translateY(0)',
+          },
+          to: {
+            transform: 'translateY(calc(-100% - var(--gap)))',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -111,6 +127,8 @@ export default {
           "pulse-ring var(--duration) cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "shimmer": "shimmer 3s linear infinite",
         "aurora": "aurora 8s ease-in-out infinite alternate",
+        "marquee": "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
     },
   },

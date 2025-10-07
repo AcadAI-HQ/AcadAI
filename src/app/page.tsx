@@ -2,6 +2,7 @@ import Header from '@/components/landing/header';
 import Hero from '@/components/landing/hero';
 import Bento from '@/components/landing/bento';
 import { Backstory } from '@/components/landing/backstory';
+import Testimonials from '@/components/landing/testimonials';
 import Pricing from '@/components/landing/pricing';
 import FAQ from '@/components/landing/faq';
 import AnimFooter from '@/components/landing/footer';
@@ -21,6 +22,7 @@ export default function LandingPage() {
         <MarqueeSec/>
         <Bento />
         <Backstory />
+        <Testimonials/>
         <Pricing />
         <FAQ />
       </main>
