@@ -224,7 +224,7 @@ export default function HeroWithShader() {
             </p>
 
             {/* Avatar Stack with count in last circle */}
-            <div className="flex -space-x-3">
+            <div className="flex -space-x-3 flex-wrap justify-center gap-y-2 sm:flex-nowrap sm:gap-y-0">
               <Avatar className="h-8 w-8 border-2 border-black">
                 <AvatarImage src="https://i.pravatar.cc/150?img=1" alt="User 1" />
                 <AvatarFallback>U1</AvatarFallback>
@@ -245,29 +245,29 @@ export default function HeroWithShader() {
                 <AvatarImage src="https://i.pravatar.cc/150?img=5" alt="User 5" />
                 <AvatarFallback>U5</AvatarFallback>
               </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
+              <Avatar className="h-8 w-8 border-2 border-black hidden sm:block">
                 <AvatarImage src="https://i.pravatar.cc/150?img=6" alt="User 6" />
                 <AvatarFallback>U6</AvatarFallback>
               </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
+              <Avatar className="h-8 w-8 border-2 border-black hidden sm:block">
                 <AvatarImage src="https://i.pravatar.cc/150?img=7" alt="User 7" />
                 <AvatarFallback>U7</AvatarFallback>
               </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
+              <Avatar className="h-8 w-8 border-2 border-black hidden md:block">
                 <AvatarImage src="https://i.pravatar.cc/150?img=8" alt="User 8" />
                 <AvatarFallback>U8</AvatarFallback>
               </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
+              <Avatar className="h-8 w-8 border-2 border-black hidden md:block">
                 <AvatarImage src="https://i.pravatar.cc/150?img=9" alt="User 9" />
                 <AvatarFallback>U9</AvatarFallback>
               </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
+              <Avatar className="h-8 w-8 border-2 border-black hidden lg:block">
                 <AvatarImage src="https://i.pravatar.cc/150?img=10" alt="User 10" />
                 <AvatarFallback>U10</AvatarFallback>
               </Avatar>
-              <Avatar className="h-8 w-auto border-2 border-black bg-black p-2">
-                <AvatarFallback className="text-white text-xs font-semibold">
-                  {loading ? "..." : `${userCount.toLocaleString()}+`} using Acad AI to streamline their learning path
+              <Avatar className="h-8 w-auto max-w-[200px] sm:max-w-none border-2 border-black bg-black p-2">
+                <AvatarFallback className="text-white text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+                  {loading ? "..." : `${userCount.toLocaleString()}+`} <span className="hidden sm:inline">using Acad AI</span>
                 </AvatarFallback>
               </Avatar>
             </div>

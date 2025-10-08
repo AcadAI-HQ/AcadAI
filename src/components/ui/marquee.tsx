@@ -1,3 +1,5 @@
+"use client"
+
 import { ComponentPropsWithoutRef } from "react"
 
 import { cn } from "@/lib/utils"
@@ -45,8 +47,14 @@ export function Marquee({
   return (
     <div
       {...props}
+      style={
+        {
+          "--gap": "1rem",
+          "--duration": "40s",
+        } as React.CSSProperties
+      }
       className={cn(
-        "group flex [gap:var(--gap)] overflow-hidden p-2 [--duration:40s] [--gap:1rem]",
+        "group flex gap-[var(--gap)] overflow-hidden p-2",
         {
           "flex-row": !vertical,
           "flex-col": vertical,
@@ -59,7 +67,7 @@ export function Marquee({
         .map((_, i) => (
           <div
             key={i}
-            className={cn("flex shrink-0 justify-around [gap:var(--gap)]", {
+            className={cn("flex shrink-0 justify-around gap-[var(--gap)]", {
               "animate-marquee flex-row": !vertical,
               "animate-marquee-vertical flex-col": vertical,
               "group-hover:[animation-play-state:paused]": pauseOnHover,
