@@ -72,7 +72,7 @@ export function Backstory() {
                     observer.disconnect();
                 }
             },
-            { threshold: 0.1 }
+            { threshold: 0.3 }
         );
 
         if (chatRef.current) {
