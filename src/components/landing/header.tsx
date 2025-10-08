@@ -21,10 +21,10 @@ const Header = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <BrainCircuit className="h-7 w-7 text-white" />
-          <span className="font-headline text-xl font-bold text-white">Acad AI</span>
+          <BrainCircuit className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
+          <span className="font-headline text-lg sm:text-xl font-bold text-white">Acad AI</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1 rounded-full bg-white/5 border border-white/10 p-1">
           {navLinks.map((link) => (
@@ -37,11 +37,13 @@ const Header = () => {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" asChild>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Button variant="ghost" asChild className="text-sm px-2 sm:px-4">
             <Link href="/login">Log In</Link>
           </Button>
-          <InteractiveHoverButton>Sign Up</InteractiveHoverButton>
+          <InteractiveHoverButton className="text-sm px-3 sm:px-4">
+            <Link href="/signup">Sign Up</Link>
+          </InteractiveHoverButton>
         </div>
       </div>
     </motion.header>

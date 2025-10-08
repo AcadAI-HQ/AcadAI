@@ -65,7 +65,7 @@ export default function Bento() {
         <BentoGrid className="grid-cols-1 md:grid-cols-4 gap-4">
           <BentoCard
             name="Global Market Analysis"
-            className="md:col-span-2 md:row-span-2 border border-gray-800"
+            className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 border border-gray-800"
             background={
               <div className="absolute bottom-0 right-0 w-[100%] h-[100%]">
                 <Globe className="h-full w-full" config={DARK_GLOBE_CONFIG} />
@@ -78,37 +78,37 @@ export default function Bento() {
 
           <BentoCard
             name="Roadmaps for Any Domain"
-            className="md:col-span-2 border border-gray-800"
+            className="col-span-1 md:col-span-2 border border-gray-800"
             background={
               isRoadmapHovered ? (
                 <AnimatedList
-                  className="absolute inset-0 p-6 flex flex-col justify-center"
+                  className="absolute inset-0 p-3 sm:p-4 md:p-6 flex flex-col justify-center"
                   delay={2000}
                 >
                   {domains.map((domain) => (
                     <div
                       key={domain}
-                      className="flex items-center gap-3 rounded-lg bg-black p-3 backdrop-blur-sm"
+                      className="flex items-center gap-2 sm:gap-3 rounded-lg bg-black p-2 sm:p-3 backdrop-blur-sm"
                       style={{ boxShadow: "0 2px 8px rgba(255,255,255,0.2)" }}
                     >
-                      <div className="h-2 w-2 rounded-full bg-white" />
-                      <span className="text-base text-white/70">{domain}</span>
+                      <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-white" />
+                      <span className="text-sm sm:text-base text-white/70">{domain}</span>
                     </div>
                   ))}
                 </AnimatedList>
               ) : (
-                <div className="absolute inset-0 flex flex-col justify-start p-6 space-y-4">
+                <div className="absolute inset-0 flex flex-col justify-start p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
                   {domains.slice(0, 3).map((domain, i) => (
                     <div
                       key={domain}
-                      className="flex items-center gap-3 rounded-lg bg-black p-3 backdrop-blur-sm"
+                      className="flex items-center gap-2 sm:gap-3 rounded-lg bg-black p-2 sm:p-3 backdrop-blur-sm"
                       style={{
                         opacity: 1 - i * 0.2,
                         boxShadow: "0 2px 8px rgba(255,255,255,0.2)",
                       }}
                     >
-                      <div className="h-2 w-2 rounded-full bg-white" />
-                      <span className="text-base text-white/70">{domain}</span>
+                      <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-white" />
+                      <span className="text-sm sm:text-base text-white/70">{domain}</span>
                     </div>
                   ))}
                 </div>
@@ -123,7 +123,7 @@ export default function Bento() {
 
           <BentoCard
             name="Hyperpersonalization"
-            className="md:col-span-1 border border-gray-800"
+            className="col-span-1 md:col-span-1 border border-gray-800"
             background={
               <InteractiveGridPattern/>
             }
@@ -132,15 +132,15 @@ export default function Bento() {
             cta="Coming Soon"
           />
 
-          <div className="md:col-span-1 flex flex-col items-center justify-center p-6 rounded-xl bg-background shadow-lg border border-gray-800">
-            <h3 className="mb-4 text-xl md:text-2xl font-bold text-white text-center">
+          <div className="col-span-1 md:col-span-1 flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl bg-background shadow-lg border border-gray-800">
+            <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl font-bold text-white text-center">
               Join {userCount.toLocaleString()}+ devs and students
             </h3>
-            <p className="mb-6 text-sm text-white/70 align-center">
+            <p className="mb-4 sm:mb-6 text-xs sm:text-sm text-white/70 text-center">
               Don't trust us. Trust the market data.
             </p>
             <InteractiveHoverButton
-              className="bg-[#000000] text-white hover:bg-[#29ABE2]/90"
+              className="bg-[#000000] text-white hover:bg-[#29ABE2]/90 text-sm sm:text-base"
             >
               <a href="/signup">
                 Get Started Free
