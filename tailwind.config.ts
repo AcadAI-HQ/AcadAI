@@ -119,6 +119,16 @@ export default {
             transform: 'translateY(calc(-100% - var(--gap)))',
           },
         },
+        ripple: {
+          '0%': {
+            transform: 'translate(-50%, -50%) scale(0.5)',
+            opacity: '0.6',
+          },
+          '100%': {
+            transform: 'translate(-50%, -50%) scale(1)',
+            opacity: '1',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -129,6 +139,7 @@ export default {
         "aurora": "aurora 8s ease-in-out infinite alternate",
         "marquee": "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+        "ripple": "ripple 3.5s ease-out infinite",
       },
     },
   },

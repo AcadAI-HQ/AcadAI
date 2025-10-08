@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Marquee } from '../ui/marquee';
 import { AuroraText } from '../ui/aurora-text';
 import { HoverBorderGradient } from '../ui/hover-border-gradient';
+import Link from 'next/link';
 
 
 // Unique reviews data
@@ -109,7 +110,9 @@ export default function Testimonials() {
           <AuroraText className="text-l md:text-xl font-semibold tracking-lighter capitalize pl-4" colors={["#8A2BE2", "#9932CC", "#BA55D3", "#DDA0DD"]} speed={1}>Trusted by devs and students worldwide</AuroraText>
           <h1 className='text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight p-4 pr-8'>What our users are saying about Acad AI</h1>
           <div className='ml-4 mt-8'>
-            <HoverBorderGradient>Join Them Today</HoverBorderGradient>
+            <Link href="/signup">
+              <HoverBorderGradient>Join Them Today</HoverBorderGradient>
+            </Link>
           </div>
       </div>
 

@@ -4,7 +4,6 @@ const Footer = () => {
   const socialLinks = [
     { href: "#", label: "Twitter" },
     { href: "#", label: "LinkedIn" },
-    { href: "#", label: "GitHub" },
   ];
   const otherLinks = [
     { href: "#", label: "Home" },

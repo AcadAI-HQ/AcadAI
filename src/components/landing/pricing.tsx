@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export function Pricing() {
 	return (
-		<section className="relative overflow-hidden py-24">
+		<section className="relative overflow-hidden py-24 mt-32">
 			<div id="pricing" className="mx-auto w-full max-w-4xl space-y-8 px-4">
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
