@@ -10,6 +10,14 @@ export default {
   safelist: [
     'animate-marquee',
     'animate-marquee-vertical',
+    'animate-shimmer-slide',
+    'animate-spin-around',
+    {
+      pattern: /group-hover:\[animation-play-state:paused\]/, // For pauseOnHover
+    },
+    {
+      pattern: /\[animation-direction:reverse\]/, // For reverse marquee
+    },
   ],
   theme: {
     container: {
@@ -20,6 +28,7 @@ export default {
       },
     },
     extend: {
+
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Space Grotesk', 'sans-serif'],
@@ -139,7 +148,6 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         "pulse-ring":
           "pulse-ring var(--duration) cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "shimmer": "shimmer 3s linear infinite",
         "aurora": "aurora 8s ease-in-out infinite alternate",
         "marquee": "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",

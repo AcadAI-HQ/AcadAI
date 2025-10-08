@@ -129,25 +129,25 @@ export default function Testimonials() {
         >
           {/* Show 2 columns on mobile, 4 on desktop */}
           {/* Vertical Marquee (downwards) */}
-          <Marquee vertical pauseOnHover repeat={3} className="[--duration:40s]">
+          <Marquee vertical pauseOnHover repeat={3}>
             {testimonials.map((review, idx) => (
               <TestimonialCard key={`${review.username}-1-${idx}`} {...review} />
             ))}
           </Marquee>
           {/* Vertical Marquee (upwards) */}
-          <Marquee vertical pauseOnHover reverse repeat={3} className="[--duration:40s]">
+          <Marquee vertical pauseOnHover reverse repeat={3}>
             {testimonials.map((review, idx) => (
               <TestimonialCard key={`${review.username}-2-${idx}`} {...review} />
             ))}
           </Marquee>
           {/* Vertical Marquee (downwards) - Hidden on small screens */}
-          <Marquee vertical pauseOnHover repeat={3} className="[--duration:40s] hidden md:block">
+          <Marquee vertical pauseOnHover repeat={3} className="hidden md:block">
             {testimonials.map((review, idx) => (
               <TestimonialCard key={`${review.username}-3-${idx}`} {...review} />
             ))}
           </Marquee>
           {/* Vertical Marquee (upwards) - Hidden on small screens */}
-          <Marquee vertical pauseOnHover reverse repeat={3} className="[--duration:40s] hidden md:block">
+          <Marquee vertical pauseOnHover reverse repeat={3} className="hidden md:block">
             {testimonials.map((review, idx) => (
               <TestimonialCard key={`${review.username}-4-${idx}`} {...review} />
             ))}
