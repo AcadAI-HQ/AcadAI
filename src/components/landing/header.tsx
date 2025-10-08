@@ -41,7 +41,7 @@ const Header = () => {
           <Button variant="ghost" asChild className="text-sm px-2 sm:px-4">
             <Link href="/login">Log In</Link>
           </Button>
-          <InteractiveHoverButton className="text-sm px-3 sm:px-4">
+          <InteractiveHoverButton className="text-sm sm:text-base px-4 sm:px-4 pl-2">
             <Link href="/signup">Sign Up</Link>
           </InteractiveHoverButton>
         </div>
