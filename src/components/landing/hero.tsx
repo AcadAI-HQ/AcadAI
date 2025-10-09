@@ -267,7 +267,7 @@ export default function HeroWithShader() {
               </Avatar>
               <Avatar className="h-8 w-auto max-w-[200px] sm:max-w-none border-2 border-black bg-black p-2">
                 <AvatarFallback className="text-white text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
-                  {loading ? "..." : `${userCount.toLocaleString()}+`} <span className="hidden sm:inline">using Acad AI</span>
+                  {loading ? "..." : `${userCount.toLocaleString()}+`} <span className="hidden sm:inline"> users using Acad AI</span>
                 </AvatarFallback>
               </Avatar>
             </div>

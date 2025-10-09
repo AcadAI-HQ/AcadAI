@@ -25,8 +25,8 @@ export function Backstory() {
     const [visibleMessages, setVisibleMessages] = useState<MessageWithDelay[]>([]);
 
     // Profile pictures - change images here
-    const BHASKAR_PFP = url("/Bhaskar.png");
-    const ARSTOS_PFP = url("/Disshad.png");
+    const BHASKAR_PFP = '/Bhaskar.png';
+    const ARSTOS_PFP = '/Disshad.png';
 
     // Messages from your provided text
     const messages: Message[] = [
