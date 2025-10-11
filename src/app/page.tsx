@@ -8,15 +8,29 @@ import FAQ from '@/components/landing/faq';
 import AnimFooter from '@/components/landing/footer';
 import About from '@/components/landing/about';
 import MarqueeSec from '@/components/landing/marqueesec';
-
+import { generateFAQSchema, generateHowToSchema } from '@/lib/geo-content';
 
 export default function LandingPage() {
+  const faqSchema = generateFAQSchema();
+  const howToSchema = generateHowToSchema();
+
   return (
     <div className="flex flex-col min-h-screen bg-black relative">
+      {/* GEO: FAQ Schema for AI engines */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      {/* GEO: HowTo Schema for AI parsing */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+
       <main className="flex-1 relative z-10">
         <div className="relative">
           <Header />
-          <Hero />         
+          <Hero />
         </div>
         <About />
         <MarqueeSec/>

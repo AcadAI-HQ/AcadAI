@@ -1,0 +1,21 @@
+# robots.txt for Acad AI
+# Allow all crawlers
+
+User-agent: *
+Allow: /
+
+# Disallow admin and authentication pages
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /signup
+Disallow: /onboarding
+Disallow: /test-firebase
+
+# Allow public roadmap pages
+Allow: /roadmap/
+
+# Sitemap location
+Sitemap: https://acadai.com/sitemap.xml
+
+# Crawl-delay (optional, adjust as needed)
+Crawl-delay: 1
