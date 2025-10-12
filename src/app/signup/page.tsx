@@ -47,7 +47,7 @@ export default function SignupPage() {
       await signup(email, password);
       toast({
         title: "Account Created!",
-        description: "Just one more step to personalize your experience.",
+        description: "Please check your email for a verification link before logging in.",
       });
     } catch (error: any) {
        if (error instanceof FirebaseError && error.code === 'auth/email-already-in-use') {
