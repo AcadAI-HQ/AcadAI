@@ -37,19 +37,50 @@ const GoogleIcon = () => (
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, signInWithGoogle, loading } = useAuth();
+  const [showResendVerification, setShowResendVerification] = useState(false);
+  const [resending, setResending] = useState(false);
+  const { login, signInWithGoogle, loading, resendVerificationEmail } = useAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       await login(email, password);
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.code === 'auth/email-not-verified') {
+        setShowResendVerification(true);
+        toast({
+          title: "Email Not Verified",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Login Failed",
+          description: "Please check your credentials and try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setResending(true);
+    try {
+      await resendVerificationEmail(email, password);
       toast({
-        title: "Login Failed",
-        description: "Please check your credentials and try again.",
+        title: "Verification Email Sent",
+        description: "Please check your inbox for the verification link.",
+      });
+      setShowResendVerification(false);
+    } catch (error: any) {
+      toast({
+        title: "Failed to Resend Email",
+        description: error.message || "Please try again later.",
         variant: "destructive",
       });
+    } finally {
+      setResending(false);
     }
   };
 
@@ -121,6 +152,22 @@ export default function LoginPage() {
               {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
+          {showResendVerification && (
+            <div className="mt-4 p-3 bg-muted rounded-md">
+              <p className="text-sm text-muted-foreground mb-2">
+                Haven&apos;t received the verification email?
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={handleResendVerification}
+                disabled={resending}
+              >
+                {resending ? "Sending..." : "Resend Verification Email"}
+              </Button>
+            </div>
+          )}
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />

@@ -3,7 +3,7 @@
 
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
 import { auth, db } from '@/lib/firebase';
 import type { UserProfile } from '@/types';
@@ -18,6 +18,7 @@ export interface AuthContextType {
   useGeneration: (domain: string) => Promise<void>;
   signInWithGoogle: () => Promise<{ isNewUser: boolean } | void>;
   updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
+  resendVerificationEmail: (email: string, password: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -74,6 +75,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, pass);
       const firebaseUser = result.user;
+
+      // Check if email is verified
+      if (!firebaseUser.emailVerified) {
+        setLoading(false);
+        const error = new Error('Please verify your email before logging in. Check your inbox for the verification link.');
+        (error as any).code = 'auth/email-not-verified';
+        throw error;
+      }
 
       // Fetch user profile to check completion status
       const userProfile = await fetchUserProfile(firebaseUser);
@@ -157,7 +166,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
       const firebaseUser = userCredential.user;
-      
+
+      // Send email verification
+      try {
+        await sendEmailVerification(firebaseUser);
+        console.log('✅ Verification email sent to:', firebaseUser.email);
+      } catch (verificationError) {
+        console.error('⚠️ Failed to send verification email:', verificationError);
+        // Don't throw - continue with signup even if email fails
+      }
+
       const newUserProfile: UserProfile = {
         uid: firebaseUser.uid,
         email: firebaseUser.email,
@@ -169,10 +187,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const userDocRef = doc(db, "users", firebaseUser.uid);
       await setDoc(userDocRef, newUserProfile);
-      
+
       // Set user state first
       setUser(newUserProfile);
-      
+
       // Increment user count immediately
       try {
         const statsRef = doc(db, 'public', 'stats');
@@ -184,7 +202,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (error) {
         console.log('⚠️ User count increment failed, but signup succeeded:', error);
       }
-      
+
       setLoading(false);
 
       // Redirect to onboarding for profile completion
@@ -232,9 +250,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser({ ...user, ...updates });
     }
   };
-  
+
+  const resendVerificationEmail = async (email: string, password: string) => {
+    try {
+      // Sign in the user temporarily to get their auth object
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const firebaseUser = result.user;
+
+      // Check if already verified
+      if (firebaseUser.emailVerified) {
+        throw new Error('Email is already verified. You can now log in.');
+      }
+
+      // Send verification email
+      await sendEmailVerification(firebaseUser);
+
+      // Sign out the user since they're not fully logged in yet
+      await signOut(auth);
+
+      console.log('✅ Verification email resent to:', firebaseUser.email);
+    } catch (error: any) {
+      console.error('Failed to resend verification email:', error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, useGeneration, signInWithGoogle, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, useGeneration, signInWithGoogle, updateUserProfile, resendVerificationEmail }}>
       {children}
     </AuthContext.Provider>
   );
