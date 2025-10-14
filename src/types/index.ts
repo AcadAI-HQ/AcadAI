@@ -51,6 +51,7 @@ export interface UserProfile {
   description?: string;
 
   // Common fields
-  interestedDomain?: string;
+  interestedDomain?: string; // Deprecated - kept for backward compatibility
+  interestedDomains?: string[]; // New field for multiple domains
   domainExperience?: string;
 }
