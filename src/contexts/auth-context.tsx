@@ -35,19 +35,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userData = userDoc.data() as UserProfile;
 
       // Migration logic for existing users
+      const migrationUpdates: any = {};
+      let needsMigration = false;
+
       if (userData.profileComplete === undefined) {
-        const migrationUpdates: any = {
-          profileComplete: false,
-        };
+        migrationUpdates.profileComplete = false;
+        needsMigration = true;
 
         // Only add fields that have actual values
         if (userData.lastGeneratedDomain) {
           migrationUpdates.interestedDomain = userData.lastGeneratedDomain;
         }
+      }
 
-        // Update the user document with migration data
+      // Migrate interestedDomain to interestedDomains array
+      if (userData.interestedDomain && !userData.interestedDomains) {
+        migrationUpdates.interestedDomains = [userData.interestedDomain];
+        needsMigration = true;
+      }
+
+      // Update the user document with migration data if needed
+      if (needsMigration) {
         await updateDoc(userDocRef, migrationUpdates);
-
         return { ...userData, ...migrationUpdates };
       }
 
@@ -104,12 +113,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
         const result = await signInWithPopup(auth, provider);
         const firebaseUser = result.user;
-        
+
         // Check if user profile already exists
         const existingProfile = await fetchUserProfile(firebaseUser);
-        
+
         let isNewUser = false;
-        
+
         if (!existingProfile) {
           // Create a new user profile for Google sign-in
           const newUserProfile: UserProfile = {
@@ -123,11 +132,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
           const userDocRef = doc(db, "users", firebaseUser.uid);
           await setDoc(userDocRef, newUserProfile);
-          
+
           // Set user state immediately for new Google users
           setUser(newUserProfile);
           isNewUser = true;
-          
+
           // Increment user count for new Google users
           try {
             const statsRef = doc(db, 'public', 'stats');
@@ -142,7 +151,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // Set existing user state
           setUser(existingProfile);
         }
-        
+
         setLoading(false);
 
         // Redirect based on profile completion status
@@ -151,7 +160,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } else {
           router.push('/dashboard');
         }
-        
+
         // Return whether this was a new user signup for toast handling
         return { isNewUser };
     } catch (error) {

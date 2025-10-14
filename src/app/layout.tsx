@@ -21,9 +21,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: '/brain-icon.svg',
-    shortcut: '/brain-icon.svg',
-    apple: '/brain-icon.svg',
+    icon: '/brain-icon.ico',
+    shortcut: '/brain-icon.ico',
+    apple: '/brain-icon.ico',
   },
   openGraph: {
     type: 'website',

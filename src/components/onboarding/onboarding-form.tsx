@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserProfile } from "@/types";
@@ -39,7 +40,7 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
     currentRole: '',
     yearsOfExperience: undefined,
     description: '',
-    interestedDomain: '',
+    interestedDomains: [],
     domainExperience: '',
     ...initialData,
   });
@@ -61,7 +62,13 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await onComplete({ ...formData, profileComplete: true });
+    // For backward compatibility, set interestedDomain to the first selected domain
+    const submissionData = {
+      ...formData,
+      profileComplete: true,
+      interestedDomain: formData.interestedDomains?.[0] || '',
+    };
+    await onComplete(submissionData);
   };
 
   const updateFormData = (key: keyof UserProfile, value: any) => {
@@ -84,7 +91,7 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
         }
         return false;
       case 3:
-        return !!formData.interestedDomain;
+        return !!(formData.interestedDomains && formData.interestedDomains.length > 0);
       case 4:
         return !!formData.domainExperience && formData.domainExperience.length >= 20;
       default:
@@ -288,27 +295,51 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
               >
                 <div className="text-center mb-6">
                   <Target className="h-12 w-12 mx-auto mb-4 text-primary" />
-                  <h3 className="text-lg font-semibold">What domain interests you?</h3>
-                  <p className="text-muted-foreground">Choose the area you want to focus on</p>
+                  <h3 className="text-lg font-semibold">What domains interest you?</h3>
+                  <p className="text-muted-foreground">Select one or more areas you want to focus on</p>
                 </div>
 
-                <RadioGroup
-                  value={formData.interestedDomain || ''}
-                  onValueChange={(value) => updateFormData('interestedDomain', value)}
-                  className="grid gap-4"
-                >
-                  {domains.map((domain) => (
-                    <div key={domain.id} className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-accent/50 cursor-pointer">
-                      <RadioGroupItem value={domain.id} id={domain.id} />
-                      <Label htmlFor={domain.id} className="cursor-pointer flex-1">
-                        <div>
-                          <div className="font-medium">{domain.name}</div>
-                          <div className="text-sm text-muted-foreground">{domain.description}</div>
-                        </div>
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
+                <div className="grid gap-4">
+                  {domains.map((domain) => {
+                    const isChecked = formData.interestedDomains?.includes(domain.id) || false;
+                    return (
+                      <div
+                        key={domain.id}
+                        className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-accent/50 cursor-pointer"
+                        onClick={() => {
+                          const currentDomains = formData.interestedDomains || [];
+                          const newDomains = isChecked
+                            ? currentDomains.filter(d => d !== domain.id)
+                            : [...currentDomains, domain.id];
+                          updateFormData('interestedDomains', newDomains);
+                        }}
+                      >
+                        <Checkbox
+                          id={domain.id}
+                          checked={isChecked}
+                          onCheckedChange={(checked) => {
+                            const currentDomains = formData.interestedDomains || [];
+                            const newDomains = checked
+                              ? [...currentDomains, domain.id]
+                              : currentDomains.filter(d => d !== domain.id);
+                            updateFormData('interestedDomains', newDomains);
+                          }}
+                        />
+                        <Label htmlFor={domain.id} className="cursor-pointer flex-1">
+                          <div>
+                            <div className="font-medium">{domain.name}</div>
+                            <div className="text-sm text-muted-foreground">{domain.description}</div>
+                          </div>
+                        </Label>
+                      </div>
+                    );
+                  })}
+                </div>
+                {formData.interestedDomains && formData.interestedDomains.length > 0 && (
+                  <p className="text-sm text-muted-foreground text-center">
+                    {formData.interestedDomains.length} domain{formData.interestedDomains.length > 1 ? 's' : ''} selected
+                  </p>
+                )}
               </motion.div>
             )}
 
@@ -324,7 +355,18 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
                 <div className="text-center mb-6">
                   <BookOpen className="h-12 w-12 mx-auto mb-4 text-primary" />
                   <h3 className="text-lg font-semibold">Your Experience & Knowledge</h3>
-                  <p className="text-muted-foreground">Tell us about your existing skills and experience in {domains.find(d => d.id === formData.interestedDomain)?.name}</p>
+                  <p className="text-muted-foreground">
+                    Tell us about your existing skills and experience in{' '}
+                    {formData.interestedDomains && formData.interestedDomains.length > 0 ? (
+                      formData.interestedDomains.length === 1 ? (
+                        domains.find(d => d.id === formData.interestedDomains![0])?.name
+                      ) : (
+                        `${formData.interestedDomains.length} selected domains`
+                      )
+                    ) : (
+                      'your selected domains'
+                    )}
+                  </p>
                 </div>
 
                 <div>
