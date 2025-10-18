@@ -2,7 +2,7 @@ import AnimatedFooter from "@/components/ui/animated-footer";
 
 const Footer = () => {
   const socialLinks = [
-    { href: "#", label: "Twitter" },
+    { href: "https://x.com/acadaiwizard", label: "Twitter" },
     { href: "#", label: "LinkedIn" },
   ];
   const otherLinks = [
