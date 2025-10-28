@@ -46,6 +46,7 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
 - **Profile Management System**: Complete profile viewing and editing functionality with tabbed interface
 - **Enhanced Navigation**: Integrated sidebar navigation with Dashboard, My Roadmap, and Profile sections
 - **Comprehensive Roadmaps**: All domains now feature detailed, professional-level learning paths
+- **Personalized Roadmap Storage**: User roadmaps now stored in Firestore for future AI customization with Google Gemini
 
 ### Authentication Flow
 - Firebase Auth manages authentication
@@ -72,9 +73,14 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
 - Firebase config in `src/lib/firebase.ts`
 - Data filtering prevents undefined/null values in Firestore updates
 - No payment or subscription data stored
+- **Personalized Roadmaps**: Stored in `users/{userId}/roadmaps/{domain}` subcollection
+  - Each user gets their own copy of roadmaps for AI customization
+  - Base templates from `/public/roadmaps-new/` used as fallback
+  - Tracks modifications, version, and customization status
 
 ### Roadmap Content Structure
-- **Location**: `/public/roadmaps/{domain}/premium.json` (now served as free content)
+- **Base Templates**: `/public/roadmaps-new/{domain}.json` (served as default content)
+- **Personalized Storage**: `users/{userId}/roadmaps/{domain}` in Firestore
 - **Format**: JSON files with domain, overview, and detailed learning steps
 - **Content Quality**: Professional-level, comprehensive coverage including:
   - Foundational concepts and advanced topics
@@ -82,6 +88,7 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
   - Best practices and current job market requirements
   - Testing, deployment, and production considerations
   - Specialized applications and career paths
+- **Customization**: Prepared for Google Gemini AI integration to personalize roadmaps per user
 
 ### Environment Variables Required
 - `NEXT_PUBLIC_FIREBASE_API_KEY` - Firebase Web API Key
@@ -90,6 +97,7 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
 - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` - Firebase Storage Bucket
 - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` - Firebase Messaging Sender ID
 - `NEXT_PUBLIC_FIREBASE_APP_ID` - Firebase App ID
+- `GOOGLE_GEMINI_API_KEY` - (Future) Google Gemini API key for AI customization
 
 ### Component Patterns
 - Components organized by feature in `src/components/`
@@ -107,11 +115,13 @@ This is **Acad AI**, a completely free Next.js 15 application for comprehensive 
 ### Development Notes
 - **No Payment Integration**: All Razorpay and payment-related code has been removed
 - **Enhanced Auth Context**: Includes profile management and data filtering functionality
-- **Content Loading**: Roadmap pages load premium JSON files directly as free content
+- **Content Loading**: Roadmap pages load from Firestore if personalized, otherwise base templates
 - **User Experience**: All users see comprehensive roadmaps without restrictions
 - **Profile System**: Complete onboarding and profile management with validation
 - **Data Integrity**: Firestore updates filter out undefined/null/empty values
 - **Messaging**: UI emphasizes "comprehensive" and "professional-level" content being free
+- **Roadmap Service**: Centralized service at `src/lib/roadmap-service.ts` handles all roadmap CRUD operations
+- **AI Integration Ready**: Prepared for Google Gemini integration via `src/lib/gemini-service.ts` (placeholder)
 
 ### Common Issues & Solutions
 - **Next.js Cache Corruption**: If encountering ENOENT errors, remove `.next` directory and restart dev server

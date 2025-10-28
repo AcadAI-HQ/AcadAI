@@ -5,28 +5,12 @@ import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { RoadmapView } from "@/components/roadmap/roadmap-view";
-import type { Roadmap } from "@/types";
-import { Bot, AlertTriangle, ArrowLeft } from "lucide-react";
+import { ChatDialog } from "@/components/chat/chat-dialog";
+import { RoadmapAssessmentDialog } from "@/components/roadmap/roadmap-assessment-dialog";
+import type { Roadmap, RoadmapFile } from "@/types";
+import { Bot, AlertTriangle, ArrowLeft, Sparkles, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-// Helper type for roadmap JSON structure
-interface RoadmapStep {
-  title: string;
-  description: string;
-  subtopics?: string[];
-  examples?: {
-    name: string;
-    features: string;
-    stack: string;
-  }[];
-  resources?: string[];
-}
-interface RoadmapFile {
-  domain: string;
-  type: 'premium';
-  overview: string;
-  steps: RoadmapStep[];
-}
+import { getRoadmapForUser, isRoadmapCustomized } from "@/lib/roadmap-service";
 
 // Convert JSON structure to our app's Roadmap structure
 const transformRoadmapData = (data: RoadmapFile, domain: string): Roadmap => {
@@ -58,62 +42,103 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+  const [isPersonalized, setIsPersonalized] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [showAssessment, setShowAssessment] = useState(false);
+  const [checkingCustomization, setCheckingCustomization] = useState(true);
+
   useEffect(() => {
-    const fetchRoadmap = async () => {
+    const checkAndLoadRoadmap = async () => {
       if (!user) return;
 
-      setLoading(true);
-      setError(null);
-
-      // Use new roadmap format from roadmaps-new folder
-      const roadmapFile = `/roadmaps-new/${domain}.json`;
+      setCheckingCustomization(true);
 
       try {
-        const response = await fetch(roadmapFile, { cache: 'no-cache' });
-        if (!response.ok) {
-           if (response.status === 404) {
-            // Handle cases where a roadmap for a specific domain doesn't exist yet
-            const safeResponse = await fetch(`/roadmaps-new/frontend.json`, { cache: 'no-cache' });
-            if (!safeResponse.ok) {
-               throw new Error(`Default roadmap for 'frontend' also not found.`);
-            }
-            const data: RoadmapFile = await safeResponse.json();
-             // Simulate AI generation time
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setRoadmap(transformRoadmapData(data, 'frontend'));
-            return;
-          }
-          throw new Error(`Roadmap not found at ${roadmapFile}. Please ensure the file exists.`);
+        // Check if user already has a customized roadmap
+        const hasCustomRoadmap = await isRoadmapCustomized(user.uid, domain);
+
+        if (hasCustomRoadmap) {
+          // Load customized roadmap
+          loadRoadmap();
+        } else {
+          // Show assessment dialog first
+          setShowAssessment(true);
+          setCheckingCustomization(false);
         }
-        const data: RoadmapFile = await response.json();
-        
-        // Simulate AI generation time
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        setRoadmap(transformRoadmapData(data, domain));
-
-      } catch (err: any) {
-        setError(err.message || "Failed to load the roadmap.");
-        console.error(err);
-      } finally {
-        setLoading(false);
+      } catch (error) {
+        console.error('Error checking customization:', error);
+        // Fallback to loading roadmap
+        loadRoadmap();
       }
     };
 
-    if (user) { // Only fetch if user is loaded
-        fetchRoadmap();
+    if (user) {
+      checkAndLoadRoadmap();
     }
-
   }, [domain, user]);
 
+  const loadRoadmap = async () => {
+    if (!user) return;
 
-  if (loading) {
+    setLoading(true);
+    setError(null);
+    setCheckingCustomization(false);
+
+    try {
+      // Fetch roadmap from Firestore or base template
+      const { roadmap: roadmapData, isPersonalized: personalized } =
+        await getRoadmapForUser(user.uid, domain);
+
+      // Transform to app format
+      const transformedRoadmap = transformRoadmapData(roadmapData, domain);
+      setRoadmap(transformedRoadmap);
+      setIsPersonalized(personalized);
+
+    } catch (err: any) {
+      setError(err.message || "Failed to load the roadmap.");
+      console.error('Roadmap fetch error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAssessmentComplete = async (customizedRoadmap: RoadmapFile | null) => {
+    setShowAssessment(false);
+
+    if (customizedRoadmap) {
+      // Transform and display the customized roadmap
+      const transformedRoadmap = transformRoadmapData(customizedRoadmap, domain);
+      setRoadmap(transformedRoadmap);
+      setIsPersonalized(true);
+      setLoading(false);
+    } else {
+      // Fallback to loading default roadmap
+      await loadRoadmap();
+    }
+  };
+
+
+  // Show assessment dialog if needed
+  if (showAssessment) {
+    return (
+      <RoadmapAssessmentDialog
+        open={showAssessment}
+        domain={domain}
+        onComplete={handleAssessmentComplete}
+      />
+    );
+  }
+
+  if (loading || checkingCustomization) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">
         <Bot className="h-16 w-16 text-primary animate-pulse" />
-        <h1 className="text-2xl font-headline mt-4">Crafting Your Personalized Roadmap...</h1>
-        <p className="text-muted-foreground">Our AI is analyzing the latest trends to build your path.</p>
+        <h1 className="text-2xl font-headline mt-4">
+          {checkingCustomization ? 'Preparing Your Experience...' : 'Crafting Your Personalized Roadmap...'}
+        </h1>
+        <p className="text-muted-foreground">
+          {checkingCustomization ? 'Just a moment...' : 'Our AI is analyzing the latest trends to build your path.'}
+        </p>
       </div>
     );
   }
@@ -137,15 +162,33 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
 
   return (
     <>
-      <Button asChild variant="ghost" size="sm" className="mb-4">
-        <Link href="/dashboard">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
-        </Link>
-      </Button>
-      <h1 className="text-4xl font-headline font-bold">{roadmap.title}</h1>
+      <div className="flex items-center justify-between mb-4">
+        <Button asChild variant="ghost" size="sm">
+          <Link href="/dashboard">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Link>
+        </Button>
+        <Button onClick={() => setChatOpen(true)} size="sm" className="gap-2">
+          <MessageCircle className="h-4 w-4" />
+          AI Assistant
+        </Button>
+      </div>
+
+      <div className="flex items-center gap-3 mb-2">
+        <h1 className="text-4xl font-headline font-bold">{roadmap.title}</h1>
+        {isPersonalized && (
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+            <Sparkles className="h-3 w-3" />
+            Personalized
+          </span>
+        )}
+      </div>
       <p className="text-lg text-muted-foreground mt-2">{roadmap.description}</p>
       <RoadmapView roadmap={roadmap} />
+
+      {/* Chat Dialog */}
+      <ChatDialog open={chatOpen} onOpenChange={setChatOpen} domain={domain} />
     </>
   );
 }

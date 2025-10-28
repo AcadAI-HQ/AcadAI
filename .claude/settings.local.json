@@ -4,7 +4,12 @@
       "WebSearch",
       "Bash(npm run build:*)",
       "Bash(rm:*)",
-      "Bash(npm run dev)"
+      "Bash(npm run dev)",
+      "Bash(npm run typecheck:*)",
+      "Bash(firebase deploy:*)",
+      "Bash(firebase firestore:rules:get:*)",
+      "Bash(npm install:*)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []
