@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrainCircuit, Home, Route, User, Settings, LogOut } from "lucide-react";
+import { BrainCircuit, Home, Route, User, Settings, LogOut, Crown } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -37,12 +37,21 @@ const navigationItems = [
     url: "/dashboard/profile",
     icon: User,
     description: "View and edit your profile"
+  },
+  {
+    title: "Upgrade to Premium",
+    url: "/subscription",
+    icon: Crown,
+    description: "Unlock premium features",
+    isPremium: true
   }
 ];
 
 export function DashboardSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+
+  const isPremium = user?.subscription?.tier === 'premium' && user?.subscription?.status === 'active';
 
   return (
     <Sidebar>
@@ -62,16 +71,22 @@ export function DashboardSidebar() {
                 const isActive = pathname === item.url ||
                   (item.url !== "/dashboard" && pathname.startsWith(item.url));
 
+                // Hide premium upgrade link if user is already premium
+                if (item.isPremium && isPremium) {
+                  return null;
+                }
+
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
                       tooltip={item.description}
+                      className={item.isPremium ? "bg-gradient-to-r from-[#29ABE2]/10 to-[#8E2DE2]/10 hover:from-[#29ABE2]/20 hover:to-[#8E2DE2]/20" : ""}
                     >
                       <Link href={item.url}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.title}</span>
+                        <item.icon className={`h-4 w-4 ${item.isPremium ? 'text-[#29ABE2]' : ''}`} />
+                        <span className={item.isPremium ? 'bg-gradient-to-r from-[#29ABE2] to-[#8E2DE2] bg-clip-text text-transparent font-medium' : ''}>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

@@ -54,6 +54,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         needsMigration = true;
       }
 
+      // Initialize subscription if not present
+      if (!userData.subscription) {
+        migrationUpdates.subscription = {
+          tier: 'free',
+          status: 'active',
+        };
+        needsMigration = true;
+      }
+
       // Update the user document with migration data if needed
       if (needsMigration) {
         await updateDoc(userDocRef, migrationUpdates);
@@ -128,6 +137,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             skills: [],
             lastGeneratedDomain: '',
             profileComplete: false,
+            subscription: {
+              tier: 'free',
+              status: 'active',
+            },
           };
 
           const userDocRef = doc(db, "users", firebaseUser.uid);
@@ -192,6 +205,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         skills: [],
         lastGeneratedDomain: '',
         profileComplete: false,
+        subscription: {
+          tier: 'free',
+          status: 'active',
+        },
       };
 
       const userDocRef = doc(db, "users", firebaseUser.uid);
