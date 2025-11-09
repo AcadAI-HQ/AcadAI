@@ -11,6 +11,8 @@ import type { Roadmap, RoadmapFile } from "@/types";
 import { Bot, AlertTriangle, ArrowLeft, Sparkles, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getRoadmapForUser, isRoadmapCustomized } from "@/lib/roadmap-service";
+import { useFeatureAccess } from "@/hooks/use-feature-access";
+import { UpgradePrompt, FeatureLockedBadge } from "@/components/shared/upgrade-prompt";
 
 // Convert JSON structure to our app's Roadmap structure
 const transformRoadmapData = (data: RoadmapFile, domain: string): Roadmap => {
@@ -39,6 +41,8 @@ const transformRoadmapData = (data: RoadmapFile, domain: string): Roadmap => {
 export default function RoadmapPage({ params }: { params: Promise<{ domain: string }> }) {
   const { domain } = use(params);
   const { user } = useAuth();
+  const { hasAccess: hasHyperpersonalization } = useFeatureAccess('hyperpersonalization');
+  const { hasAccess: hasChatAccess } = useFeatureAccess('chat');
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +50,8 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
   const [chatOpen, setChatOpen] = useState(false);
   const [showAssessment, setShowAssessment] = useState(false);
   const [checkingCustomization, setCheckingCustomization] = useState(true);
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState<'hyperpersonalization' | 'chat'>('chat');
 
   useEffect(() => {
     const checkAndLoadRoadmap = async () => {
@@ -160,6 +166,15 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
     return <div className="text-center">No roadmap data available.</div>;
   }
 
+  const handleChatClick = () => {
+    if (!hasChatAccess) {
+      setUpgradeFeature('chat');
+      setShowUpgradePrompt(true);
+    } else {
+      setChatOpen(true);
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-between mb-4">
@@ -169,9 +184,10 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
             Back to Dashboard
           </Link>
         </Button>
-        <Button onClick={() => setChatOpen(true)} size="sm" className="gap-2">
+        <Button onClick={handleChatClick} size="sm" className="gap-2">
           <MessageCircle className="h-4 w-4" />
           AI Assistant
+          {!hasChatAccess && <FeatureLockedBadge onClick={handleChatClick} className="ml-2" />}
         </Button>
       </div>
 
@@ -180,15 +196,43 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
         {isPersonalized && (
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
             <Sparkles className="h-3 w-3" />
-            Personalized
+            Hyperpersonalized
           </span>
+        )}
+        {!isPersonalized && hasHyperpersonalization && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAssessment(true)}
+            className="gap-2"
+          >
+            <Sparkles className="h-4 w-4" />
+            Personalize
+          </Button>
+        )}
+        {!isPersonalized && !hasHyperpersonalization && (
+          <FeatureLockedBadge
+            onClick={() => {
+              setUpgradeFeature('hyperpersonalization');
+              setShowUpgradePrompt(true);
+            }}
+          />
         )}
       </div>
       <p className="text-lg text-muted-foreground mt-2">{roadmap.description}</p>
       <RoadmapView roadmap={roadmap} />
 
-      {/* Chat Dialog */}
-      <ChatDialog open={chatOpen} onOpenChange={setChatOpen} domain={domain} />
+      {/* Chat Dialog - only show if user has access */}
+      {hasChatAccess && (
+        <ChatDialog open={chatOpen} onOpenChange={setChatOpen} domain={domain} />
+      )}
+
+      {/* Upgrade Prompt */}
+      <UpgradePrompt
+        isOpen={showUpgradePrompt}
+        onClose={() => setShowUpgradePrompt(false)}
+        feature={upgradeFeature}
+      />
     </>
   );
 }

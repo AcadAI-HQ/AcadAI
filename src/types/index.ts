@@ -60,12 +60,30 @@ export interface RoadmapModification {
   modifiedBy: 'gemini' | 'user' | 'system';
 }
 
+// Subscription types
+export type SubscriptionTier = 'free' | 'premium';
+
+export interface SubscriptionData {
+  tier: SubscriptionTier;
+  razorpaySubscriptionId?: string;
+  razorpayCustomerId?: string;
+  subscriptionStartDate?: Date;
+  subscriptionEndDate?: Date;
+  status: 'active' | 'cancelled' | 'expired' | 'payment_failed';
+  autoRenew?: boolean;
+  currency?: 'USD' | 'INR';
+  amount?: number; // Amount in smallest currency unit (cents for USD, paise for INR)
+}
+
 export interface UserProfile {
   uid: string;
   email: string | null;
   displayName: string | null;
   skills?: string[];
   lastGeneratedDomain?: string;
+
+  // Subscription fields
+  subscription?: SubscriptionData;
 
   // Onboarding fields
   profileComplete?: boolean;
