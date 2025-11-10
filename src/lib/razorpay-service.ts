@@ -57,26 +57,16 @@ export function loadRazorpayScript(): Promise<boolean> {
 
 /**
  * Create a subscription on server-side
+ * @deprecated Use api-client.ts createSubscription instead
  */
 export async function createSubscription(
   userId: string,
   planId: string,
   currency: 'USD' | 'INR'
 ): Promise<{ subscriptionId: string; customerId: string }> {
-  const response = await fetch('/api/subscription/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId, planId, currency }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to create subscription');
-  }
-
-  const data = await response.json();
-  return data;
+  // This function is deprecated. Use the backend API client instead.
+  // Import from '@/lib/api-client' and use createSubscription
+  throw new Error('This function is deprecated. Use createSubscription from @/lib/api-client instead.');
 }
 
 /**
@@ -120,6 +110,7 @@ export async function openRazorpayCheckout(
 
 /**
  * Verify payment signature on server-side
+ * @deprecated Use api-client.ts verifyPayment instead
  */
 export async function verifyPayment(
   razorpaySubscriptionId: string,
@@ -127,25 +118,9 @@ export async function verifyPayment(
   razorpaySignature: string,
   userId: string
 ): Promise<boolean> {
-  const response = await fetch('/api/subscription/verify', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      razorpaySubscriptionId,
-      razorpayPaymentId,
-      razorpaySignature,
-      userId,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to verify payment');
-  }
-
-  const data = await response.json();
-  return data.verified;
+  // This function is deprecated. Use the backend API client instead.
+  // Import from '@/lib/api-client' and use verifyPayment
+  throw new Error('This function is deprecated. Use verifyPayment from @/lib/api-client instead.');
 }
 
 /**
@@ -170,22 +145,15 @@ export async function updateUserSubscription(
 
 /**
  * Cancel subscription
+ * @deprecated Use api-client.ts cancelSubscription instead
  */
 export async function cancelSubscription(
   userId: string,
   subscriptionId: string
 ): Promise<void> {
-  const response = await fetch('/api/subscription/cancel', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId, subscriptionId }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to cancel subscription');
-  }
+  // This function is deprecated. Use the backend API client instead.
+  // Import from '@/lib/api-client' and use cancelSubscription
+  throw new Error('This function is deprecated. Use cancelSubscription from @/lib/api-client instead.');
 }
 
 /**

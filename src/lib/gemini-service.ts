@@ -1,11 +1,15 @@
 /**
  * Google Gemini AI Service for Roadmap Customization
  *
- * This service will use Google Gemini to personalize roadmaps based on:
- * - User profile (type, experience, skills)
- * - Learning preferences
- * - Career goals
- * - Current knowledge level
+ * @deprecated This frontend service is deprecated.
+ * All Gemini AI operations are now handled securely by the backend.
+ * Use the api-client.ts customizeRoadmap function instead.
+ *
+ * Previous functionality:
+ * - User profile analysis
+ * - Learning preference customization
+ * - Career goal alignment
+ * - Knowledge level adaptation
  */
 
 import type { RoadmapFile, UserProfile } from '@/types';
@@ -13,6 +17,7 @@ import type { RoadmapFile, UserProfile } from '@/types';
 /**
  * Customize a roadmap using Google Gemini AI
  *
+ * @deprecated Use customizeRoadmap from @/lib/api-client instead
  * @param baseRoadmap - The base roadmap template
  * @param userProfile - User's profile data
  * @returns Customized roadmap tailored to the user
@@ -21,170 +26,17 @@ export async function customizeRoadmapWithGemini(
   baseRoadmap: RoadmapFile,
   userProfile: UserProfile
 ): Promise<RoadmapFile> {
-  // TODO: Implement Gemini API integration
-  // This is a placeholder for future implementation
-
-  try {
-    // Step 1: Build context from user profile
-    const userContext = buildUserContext(userProfile);
-
-    // Step 2: Create prompt for Gemini
-    const prompt = buildCustomizationPrompt(baseRoadmap, userContext);
-
-    // Step 3: Call Gemini API (to be implemented)
-    // const response = await callGeminiAPI(prompt);
-
-    // Step 4: Parse and validate response
-    // const customizedRoadmap = parseGeminiResponse(response);
-
-    // Step 5: Return customized roadmap
-    // return customizedRoadmap;
-
-    // For now, return base roadmap with a note
-    console.warn('Gemini integration not yet implemented');
-    return baseRoadmap;
-
-  } catch (error) {
-    console.error('Error customizing roadmap with Gemini:', error);
-    // Fallback to base roadmap on error
-    return baseRoadmap;
-  }
+  // This function is deprecated. All Gemini AI calls are now handled by the secure backend.
+  // Import from '@/lib/api-client' and use customizeRoadmap instead.
+  throw new Error(
+    'customizeRoadmapWithGemini is deprecated. ' +
+    'Use customizeRoadmap from @/lib/api-client instead. ' +
+    'The Gemini API key is now secured on the backend.'
+  );
 }
 
-/**
- * Build user context string from profile
- */
-function buildUserContext(userProfile: UserProfile): string {
-  const context: string[] = [];
-
-  // User type
-  context.push(`User Type: ${userProfile.userType || 'learner'}`);
-
-  // Experience level
-  if (userProfile.userType === 'professional' && userProfile.yearsOfExperience) {
-    context.push(`Years of Experience: ${userProfile.yearsOfExperience}`);
-    context.push(`Current Role: ${userProfile.currentRole || 'Not specified'}`);
-  }
-
-  if (userProfile.userType === 'student') {
-    context.push(`Education: ${userProfile.degree || 'Not specified'}`);
-    context.push(`Academic Year: ${userProfile.currentYear || 'Not specified'}`);
-  }
-
-  // Skills
-  if (userProfile.skills && userProfile.skills.length > 0) {
-    context.push(`Existing Skills: ${userProfile.skills.join(', ')}`);
-  }
-
-  // Domain experience
-  if (userProfile.domainExperience) {
-    context.push(`Domain Experience: ${userProfile.domainExperience}`);
-  }
-
-  // Interested domains
-  if (userProfile.interestedDomains && userProfile.interestedDomains.length > 0) {
-    context.push(`Interested Domains: ${userProfile.interestedDomains.join(', ')}`);
-  }
-
-  return context.join('\n');
-}
-
-/**
- * Build customization prompt for Gemini
- */
-function buildCustomizationPrompt(
-  baseRoadmap: RoadmapFile,
-  userContext: string
-): string {
-  return `
-You are an expert learning path designer. Your task is to customize a learning roadmap based on the user's profile and experience level.
-
-USER PROFILE:
-${userContext}
-
-BASE ROADMAP:
-Domain: ${baseRoadmap.domain}
-Overview: ${baseRoadmap.overview}
-
-STEPS:
-${JSON.stringify(baseRoadmap.steps, null, 2)}
-
-TASK:
-Customize this roadmap by:
-1. Adjusting step difficulty based on user's experience level
-2. Reordering steps if the user already has certain skills
-3. Adding or removing subtopics based on user's background
-4. Suggesting personalized examples relevant to their interests
-5. Highlighting resources that match their learning style
-6. Emphasizing areas that align with their career goals
-
-IMPORTANT:
-- Maintain the same JSON structure
-- Keep all core concepts, but adjust depth and focus
-- For beginners: Add more foundational content and explanations
-- For experienced users: Focus on advanced topics and best practices
-- Ensure the roadmap remains comprehensive and actionable
-
-Return the customized roadmap in the exact same JSON format as the base roadmap.
-`;
-}
-
-/**
- * Call Gemini API (to be implemented)
- */
-async function callGeminiAPI(prompt: string): Promise<any> {
-  // TODO: Implement actual Gemini API call
-  // Example structure:
-
-  /*
-  const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
-
-  if (!apiKey) {
-    throw new Error('GOOGLE_GEMINI_API_KEY not configured');
-  }
-
-  const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': apiKey,
-    },
-    body: JSON.stringify({
-      contents: [{
-        parts: [{
-          text: prompt
-        }]
-      }],
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 8192,
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Gemini API error: ${response.statusText}`);
-  }
-
-  return await response.json();
-  */
-
-  throw new Error('Gemini API not yet implemented');
-}
-
-/**
- * Parse Gemini response and validate structure
- */
-function parseGeminiResponse(response: any): RoadmapFile {
-  // TODO: Implement response parsing and validation
-  // Extract roadmap JSON from response
-  // Validate structure matches RoadmapFile interface
-  // Handle any errors or malformed responses
-
-  throw new Error('Response parsing not yet implemented');
-}
+// All helper functions have been moved to the secure backend.
+// See: backend/app/services/gemini_service.py
 
 /**
  * Quick customization for MVP (rule-based, no AI)

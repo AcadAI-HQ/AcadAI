@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: acadai-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./firebase-service-account.json:/app/firebase-service-account.json:ro
+      - ./app:/app/app
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=False
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

@@ -1,7 +1,7 @@
 // Razorpay configuration and pricing
+// Note: Key secret is now stored securely in the backend
 export const RAZORPAY_CONFIG = {
-  keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-  keySecret: process.env.RAZORPAY_KEY_SECRET!, // Only used server-side
+  keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // Public key for checkout UI only
 };
 
 // Pricing configuration with localized pricing
