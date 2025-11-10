@@ -6,9 +6,9 @@ const Footer = () => {
     { href: "#", label: "LinkedIn" },
   ];
   const otherLinks = [
-    { href: "#", label: "Home" },
-    { href: "#", label: "About" },
-    { href: "#", label: "Contact" },
+    { href: "/", label: "Home" },
+    { href: "/privacy", label: "Privacy Policy" },
+    { href: "/terms", label: "Terms of Service" },
   ];
   const copyrightText = "© 2025 Acad AI. All rights reserved.";
 

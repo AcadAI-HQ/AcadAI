@@ -175,6 +175,15 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
     }
   };
 
+  const handleHyperpersonalizationClick = () => {
+    if (!hasHyperpersonalization) {
+      setUpgradeFeature('hyperpersonalization');
+      setShowUpgradePrompt(true);
+    } else {
+      setShowAssessment(true);
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-between mb-4">
@@ -184,42 +193,46 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
             Back to Dashboard
           </Link>
         </Button>
-        <Button onClick={handleChatClick} size="sm" className="gap-2">
-          <MessageCircle className="h-4 w-4" />
-          AI Assistant
-          {!hasChatAccess && <FeatureLockedBadge onClick={handleChatClick} className="ml-2" />}
-        </Button>
       </div>
 
-      <div className="flex items-center gap-3 mb-2">
-        <h1 className="text-4xl font-headline font-bold">{roadmap.title}</h1>
-        {isPersonalized && (
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-            <Sparkles className="h-3 w-3" />
-            Hyperpersonalized
-          </span>
-        )}
-        {!isPersonalized && hasHyperpersonalization && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowAssessment(true)}
-            className="gap-2"
-          >
-            <Sparkles className="h-4 w-4" />
-            Personalize
+      <div className="flex items-start justify-between gap-4 mb-6">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-4xl font-headline font-bold">{roadmap.title}</h1>
+            {isPersonalized && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                <Sparkles className="h-3 w-3" />
+                Hyperpersonalized
+              </span>
+            )}
+          </div>
+          <p className="text-lg text-muted-foreground">{roadmap.description}</p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 shrink-0">
+          {/* Hyperpersonalization Button */}
+          {!isPersonalized && (
+            <Button
+              onClick={handleHyperpersonalizationClick}
+              variant="default"
+              size="default"
+              className="gap-2"
+            >
+              <Sparkles className="h-4 w-4" />
+              Hyperpersonalize
+              {!hasHyperpersonalization && <FeatureLockedBadge onClick={handleHyperpersonalizationClick} className="ml-2" />}
+            </Button>
+          )}
+
+          {/* Chat Assistant Button */}
+          <Button onClick={handleChatClick} variant="default" size="default" className="gap-2">
+            <MessageCircle className="h-4 w-4" />
+            AI Assistant
+            {!hasChatAccess && <FeatureLockedBadge onClick={handleChatClick} className="ml-2" />}
           </Button>
-        )}
-        {!isPersonalized && !hasHyperpersonalization && (
-          <FeatureLockedBadge
-            onClick={() => {
-              setUpgradeFeature('hyperpersonalization');
-              setShowUpgradePrompt(true);
-            }}
-          />
-        )}
+        </div>
       </div>
-      <p className="text-lg text-muted-foreground mt-2">{roadmap.description}</p>
       <RoadmapView roadmap={roadmap} />
 
       {/* Chat Dialog - only show if user has access */}
