@@ -42,12 +42,15 @@ async def customize_roadmap(
     """
     Customize a roadmap using Gemini AI based on user profile
 
+    **PREMIUM FEATURE**: This endpoint is only accessible to premium users.
+
     This endpoint:
-    1. Checks if user already has a personalized roadmap
-    2. If not, loads the base template
-    3. Uses Gemini AI to customize based on user profile
-    4. Falls back to rule-based customization if AI fails
-    5. Saves the customized roadmap for the user
+    1. Verifies user has premium subscription
+    2. Checks if user already has a personalized roadmap
+    3. If not, loads the base template
+    4. Uses Gemini AI to customize based on user profile
+    5. Falls back to rule-based customization if AI fails
+    6. Saves the customized roadmap for the user
     """
     try:
         uid = current_user.get("uid")
@@ -57,6 +60,23 @@ async def customize_roadmap(
             raise HTTPException(status_code=403, detail="User ID mismatch")
 
         logger.info(f"Customizing roadmap for user {uid}, domain: {request.domain}")
+
+        # Get user profile to check subscription status
+        user_data = await get_user_profile(uid)
+        if not user_data:
+            raise HTTPException(status_code=404, detail="User profile not found")
+
+        # Check if user has premium subscription
+        subscription = user_data.get("subscription", {})
+        tier = subscription.get("tier", "free")
+        status = subscription.get("status", "inactive")
+
+        if tier != "premium" or status != "active":
+            logger.warning(f"User {uid} attempted to access premium feature without active premium subscription")
+            raise HTTPException(
+                status_code=403,
+                detail="Hyperpersonalization is a premium feature. Please upgrade to premium to access AI-customized roadmaps."
+            )
 
         # Check if user already has a personalized roadmap
         existing_roadmap = await get_user_roadmap(uid, request.domain)

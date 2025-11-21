@@ -28,9 +28,12 @@ def initialize_firebase() -> None:
     try:
         # Check if service account file exists
         if not os.path.exists(settings.FIREBASE_SERVICE_ACCOUNT_PATH):
-            raise FileNotFoundError(
+            logger.warning(
                 f"Firebase service account file not found at: {settings.FIREBASE_SERVICE_ACCOUNT_PATH}"
             )
+            logger.warning("Backend will run with limited functionality. Frontend authentication will still work.")
+            logger.warning("To enable full backend features, add firebase-service-account.json to the backend directory.")
+            return
 
         # Initialize with service account
         cred = credentials.Certificate(settings.FIREBASE_SERVICE_ACCOUNT_PATH)
@@ -40,13 +43,16 @@ def initialize_firebase() -> None:
         logger.info("Firebase Admin SDK initialized successfully")
     except Exception as e:
         logger.error(f"Failed to initialize Firebase: {e}")
-        raise
+        logger.warning("Backend will run with limited functionality.")
 
 
 def get_firestore_client() -> firestore.Client:
     """Get Firestore client instance"""
     if _db is None:
-        raise RuntimeError("Firebase not initialized. Call initialize_firebase() first.")
+        raise RuntimeError(
+            "Firebase not initialized. Add firebase-service-account.json to the backend directory. "
+            "Get it from Firebase Console > Project Settings > Service Accounts > Generate New Private Key"
+        )
     return _db
 
 

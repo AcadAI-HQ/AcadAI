@@ -65,14 +65,35 @@ export type SubscriptionTier = 'free' | 'premium';
 
 export interface SubscriptionData {
   tier: SubscriptionTier;
+  status: 'active' | 'cancelled' | 'expired' | 'payment_failed';
+
+  // Stripe fields (primary payment processor)
+  stripeSubscriptionId?: string;
+  stripeCustomerId?: string;
+  stripePriceId?: string;
+
+  // Legacy Razorpay fields (for backwards compatibility)
   razorpaySubscriptionId?: string;
   razorpayCustomerId?: string;
-  subscriptionStartDate?: Date;
-  subscriptionEndDate?: Date;
-  status: 'active' | 'cancelled' | 'expired' | 'payment_failed';
-  autoRenew?: boolean;
-  currency?: 'USD' | 'INR';
+
+  // Subscription details
+  interval?: 'month' | 'year';
   amount?: number; // Amount in smallest currency unit (cents for USD, paise for INR)
+  currency?: string; // 'usd', 'inr', 'eur', etc.
+
+  // Dates
+  subscriptionStartDate?: Date; // Legacy field
+  subscriptionEndDate?: Date; // Legacy field
+  currentPeriodStart?: Date; // Stripe field
+  currentPeriodEnd?: Date; // Stripe field
+  cancelAtPeriodEnd?: boolean;
+  cancelledAt?: Date;
+  lastPaymentDate?: Date;
+  lastPaymentAttempt?: Date;
+  updatedAt?: Date;
+
+  // Legacy field
+  autoRenew?: boolean;
 }
 
 export interface UserProfile {
