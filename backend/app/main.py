@@ -7,7 +7,9 @@ from fastapi.responses import JSONResponse
 import logging
 
 from app.config import settings
-from app.routers import auth, roadmap, payment
+from app.routers import auth, roadmap
+# payment router commented out - app is now completely free
+# from app.routers import payment
 from app.services.firebase_service import initialize_firebase
 
 # Configure logging
@@ -40,7 +42,8 @@ app.add_middleware(
 # Include routers
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(roadmap.router, prefix="/api/roadmap", tags=["Roadmap"])
-app.include_router(payment.router, prefix="/api/payment", tags=["Payment"])
+# Payment router commented out - app is now completely free
+# app.include_router(payment.router, prefix="/api/payment", tags=["Payment"])
 
 
 @app.get("/")
@@ -61,7 +64,7 @@ async def health_check():
         "status": "healthy",
         "firebase": "connected",
         "gemini": "configured" if settings.GOOGLE_GEMINI_API_KEY else "not configured",
-        "razorpay": "configured" if settings.RAZORPAY_KEY_ID else "not configured"
+        "app_type": "free - no payment required"
     }
 
 

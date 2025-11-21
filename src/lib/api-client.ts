@@ -82,15 +82,24 @@ export async function getCurrentUserProfile() {
 
 /**
  * Customize roadmap with AI based on user profile
+ * Now uses Next.js API route instead of backend
  */
-export async function customizeRoadmap(domain: string, userId: string) {
-  const response = await authenticatedFetch('/roadmap/customize', {
+export async function customizeRoadmap(
+  roadmapData: any,
+  userProfile: any,
+  domain: string
+) {
+  // Call Next.js API route (not backend)
+  const response = await fetch('/api/roadmap/customize', {
     method: 'POST',
-    body: JSON.stringify({ domain, userId }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ roadmapData, userProfile, domain }),
   });
 
   if (!response.ok) {
-    const error = await response.json();
+    const error = await response.json().catch(() => ({ message: 'Failed to customize roadmap' }));
     throw new Error(error.message || 'Failed to customize roadmap');
   }
 

@@ -67,9 +67,15 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
           // Load customized roadmap
           loadRoadmap();
         } else {
-          // Show assessment dialog first
-          setShowAssessment(true);
-          setCheckingCustomization(false);
+          // Only show assessment dialog for premium users
+          // Free users will just see the base roadmap
+          if (hasHyperpersonalization) {
+            setShowAssessment(true);
+            setCheckingCustomization(false);
+          } else {
+            // Load base roadmap for free users
+            loadRoadmap();
+          }
         }
       } catch (error) {
         console.error('Error checking customization:', error);
@@ -81,7 +87,7 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
     if (user) {
       checkAndLoadRoadmap();
     }
-  }, [domain, user]);
+  }, [domain, user, hasHyperpersonalization]);
 
   const loadRoadmap = async () => {
     if (!user) return;

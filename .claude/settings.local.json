@@ -10,7 +10,19 @@
       "Bash(firebase firestore:rules:get:*)",
       "Bash(npm install:*)",
       "Bash(git branch:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(source venv/bin/activate)",
+      "Bash(pip install:*)",
+      "Bash(firebase login:ci:*)",
+      "Bash(firebase firestore:get:*)",
+      "Bash(node scripts/list-premium-users.js:*)",
+      "Bash(firebase --version:*)",
+      "Bash(firebase projects:list:*)",
+      "Bash(firebase firestore:*)",
+      "Bash(gcloud auth application-default login:*)",
+      "Bash(firebase firestore:delete:*)",
+      "Bash(./scripts/list-premium-users-simple.sh:*)",
+      "Bash(firebase login:list:*)"
     ],
     "deny": [],
     "ask": []

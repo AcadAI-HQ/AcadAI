@@ -273,7 +273,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const userDocRef = doc(db, "users", user.uid);
       await updateDoc(userDocRef, cleanUpdates);
-      setUser({ ...user, ...updates });
+      // Update local state with the same cleaned data that was sent to Firestore
+      setUser({ ...user, ...cleanUpdates });
     }
   };
 

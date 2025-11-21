@@ -28,12 +28,12 @@ class Settings(BaseSettings):
     # Google Gemini API
     GOOGLE_GEMINI_API_KEY: str
 
-    # Razorpay
-    RAZORPAY_KEY_ID: str
-    RAZORPAY_KEY_SECRET: str
+    # Razorpay (deprecated - app is now free)
+    RAZORPAY_KEY_ID: str = ""
+    RAZORPAY_KEY_SECRET: str = ""
 
     # Security
-    JWT_SECRET_KEY: str
+    JWT_SECRET_KEY: str = "default-dev-secret-key-change-in-production"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 

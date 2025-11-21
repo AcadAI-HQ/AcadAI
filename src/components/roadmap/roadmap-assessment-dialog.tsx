@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useFeatureAccess } from "@/hooks/use-feature-access";
 import { updateUserRoadmap } from "@/lib/roadmap-service";
 import type { ChatMessage } from "@/types";
 import {
@@ -89,6 +90,7 @@ export function RoadmapAssessmentDialog({
   onComplete,
 }: RoadmapAssessmentDialogProps) {
   const { user } = useAuth();
+  const { hasAccess: hasHyperpersonalization } = useFeatureAccess('hyperpersonalization');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
@@ -244,6 +246,22 @@ export function RoadmapAssessmentDialog({
   const customizeRoadmap = async () => {
     if (!user) return;
 
+    // Check if user has access to hyperpersonalization
+    if (!hasHyperpersonalization) {
+      const errorMsg: ChatMessage = {
+        id: `error_${Date.now()}`,
+        role: "assistant",
+        content: "I'm sorry, but hyperpersonalization is a premium feature. Please upgrade to premium to get AI-customized roadmaps tailored to your needs.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+
+      setTimeout(() => {
+        onComplete(null);
+      }, 2000);
+      return;
+    }
+
     setIsCustomizing(true);
 
     // Show customization message
@@ -263,11 +281,20 @@ export function RoadmapAssessmentDialog({
         answer: answers[i] || "Not specified",
       }));
 
-      // Call API to customize roadmap
+      // Get the user's Firebase auth token
+      const { auth } = await import('@/lib/firebase');
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        throw new Error('User not authenticated');
+      }
+      const idToken = await currentUser.getIdToken();
+
+      // Call API to customize roadmap with auth token
       const response = await fetch("/api/roadmap/customize", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${idToken}`,
         },
         body: JSON.stringify({
           userId: user.uid,
@@ -283,7 +310,13 @@ export function RoadmapAssessmentDialog({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.details || "Failed to customize roadmap");
+
+        // Handle premium feature requirement specifically
+        if (response.status === 403 && errorData.isPremiumFeature) {
+          throw new Error(errorData.message || "This feature requires a premium subscription");
+        }
+
+        throw new Error(errorData.message || errorData.details || "Failed to customize roadmap");
       }
 
       const data = await response.json();

@@ -305,14 +305,7 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
                     return (
                       <div
                         key={domain.id}
-                        className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-accent/50 cursor-pointer"
-                        onClick={() => {
-                          const currentDomains = formData.interestedDomains || [];
-                          const newDomains = isChecked
-                            ? currentDomains.filter(d => d !== domain.id)
-                            : [...currentDomains, domain.id];
-                          updateFormData('interestedDomains', newDomains);
-                        }}
+                        className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-accent/50"
                       >
                         <Checkbox
                           id={domain.id}

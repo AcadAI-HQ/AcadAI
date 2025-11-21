@@ -5,6 +5,7 @@ import type { SubscriptionTier } from '@/types';
 
 export type Feature = 'hyperpersonalization' | 'chat' | 'prioritySupport' | 'weeklyResources';
 
+// Premium features require active premium subscription
 const FEATURE_ACCESS_MAP: Record<Feature, SubscriptionTier[]> = {
   hyperpersonalization: ['premium'],
   chat: ['premium'],
@@ -26,7 +27,7 @@ export function useFeatureAccess(feature: Feature): {
       ? 'premium'
       : 'free';
 
-  // Check if user has access to the feature
+  // Check if user has access to the feature based on their tier
   const hasAccess = FEATURE_ACCESS_MAP[feature].includes(tier);
 
   return {
@@ -54,8 +55,8 @@ export function useAllFeatures() {
       chat: tier === 'premium',
       prioritySupport: tier === 'premium',
       weeklyResources: tier === 'premium',
-      roadmapGeneration: true, // Always available
-      monthlyResources: true, // Always available
+      roadmapGeneration: true, // Always available to all users
+      monthlyResources: true, // Always available to all users
     },
   };
 }
