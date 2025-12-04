@@ -101,7 +101,7 @@ export default function TermsOfServicePage() {
             </ul>
             <p className="text-muted-foreground leading-relaxed mt-4">
               We offer a 7-day money-back guarantee for first-time subscribers. To request a refund, contact us
-              at support@acadai.com within 7 days of your initial purchase.
+              at bhaskarjyotipathak8@gmail.com within 7 days of your initial purchase.
             </p>
           </section>
 
@@ -254,9 +254,8 @@ export default function TermsOfServicePage() {
               If you have any questions about these Terms of Service, please contact us at:
             </p>
             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-              <p className="text-muted-foreground">Email: legal@acadai.com</p>
-              <p className="text-muted-foreground">Support: support@acadai.com</p>
-              <p className="text-muted-foreground">Website: https://acadai.com</p>
+              <p className="text-muted-foreground">Email: bhaskarjyotipathak8@gmail.com</p>
+              <p className="text-muted-foreground">Website: https://acadai.org</p>
             </div>
           </section>
 
