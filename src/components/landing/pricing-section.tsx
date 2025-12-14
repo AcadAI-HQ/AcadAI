@@ -112,7 +112,7 @@ export function PricingSection() {
 											Premium
 											<Crown className="h-4 w-4 text-primary" />
 										</h3>
-										<Badge>Popular</Badge>
+										<Badge variant="secondary">Coming Soon</Badge>
 									</div>
 									<p className="text-muted-foreground text-sm">Unlock your full potential</p>
 								</div>
@@ -149,16 +149,21 @@ export function PricingSection() {
 										</li>
 									</ul>
 
-									<Button className="w-full mt-auto" asChild>
-										<Link href="/signup">Start Free Trial</Link>
+									<Button className="w-full mt-auto" disabled variant="outline">
+										Coming Soon
 									</Button>
 								</div>
 							</div>
 						</div>
 
-						<div className="text-muted-foreground flex items-center justify-center gap-x-2 text-sm">
-							<ShieldCheckIcon className="size-4" />
-							<span>No credit card required • Cancel anytime</span>
+						<div className="text-muted-foreground space-y-2 text-center">
+							<div className="flex items-center justify-center gap-x-2 text-sm">
+								<ShieldCheckIcon className="size-4" />
+								<span>No credit card required • Cancel anytime</span>
+							</div>
+							<p className="text-xs">
+								Premium features launching soon with AI-powered personalization
+							</p>
 						</div>
 					</motion.div>
 				</div>
