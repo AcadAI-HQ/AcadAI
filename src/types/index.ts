@@ -67,10 +67,10 @@ export interface SubscriptionData {
   tier: SubscriptionTier;
   status: 'active' | 'cancelled' | 'expired' | 'payment_failed';
 
-  // Stripe fields (primary payment processor)
-  stripeSubscriptionId?: string;
-  stripeCustomerId?: string;
-  stripePriceId?: string;
+  // Payment processor fields (for future integration)
+  subscriptionId?: string;
+  customerId?: string;
+  priceId?: string;
 
   // Legacy Razorpay fields (for backwards compatibility)
   razorpaySubscriptionId?: string;
@@ -82,17 +82,17 @@ export interface SubscriptionData {
   currency?: string; // 'usd', 'inr', 'eur', etc.
 
   // Dates
-  subscriptionStartDate?: Date; // Legacy field
-  subscriptionEndDate?: Date; // Legacy field
-  currentPeriodStart?: Date; // Stripe field
-  currentPeriodEnd?: Date; // Stripe field
+  subscriptionStartDate?: Date;
+  subscriptionEndDate?: Date;
+  currentPeriodStart?: Date;
+  currentPeriodEnd?: Date;
   cancelAtPeriodEnd?: boolean;
   cancelledAt?: Date;
   lastPaymentDate?: Date;
   lastPaymentAttempt?: Date;
   updatedAt?: Date;
 
-  // Legacy field
+  // Auto-renewal
   autoRenew?: boolean;
 }
 

@@ -1,59 +1,24 @@
 "use client";
 
-import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, CreditCard, Calendar, Loader2, ExternalLink } from 'lucide-react';
+import { Sparkles, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import { formatPrice } from '@/lib/stripe';
-import { toast } from 'sonner';
 
 export function SubscriptionTab() {
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
 
   const subscription = user?.subscription;
   const tier = subscription?.tier || 'free';
   const status = subscription?.status || 'inactive';
   const isPremium = tier === 'premium' && status === 'active';
 
-  const handleManageSubscription = async () => {
-    setLoading(true);
-
-    try {
-      // Get Firebase auth token
-      const { auth } = await import('@/lib/firebase');
-      const currentUser = auth.currentUser;
-      if (!currentUser) {
-        throw new Error('User not authenticated');
-      }
-      const idToken = await currentUser.getIdToken();
-
-      // Create portal session
-      const response = await fetch('/api/stripe/create-portal-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${idToken}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create portal session');
-      }
-
-      const { url } = await response.json();
-
-      // Redirect to Stripe Customer Portal
-      window.location.href = url;
-    } catch (error: any) {
-      console.error('Portal session error:', error);
-      toast.error(error.message || 'Failed to open subscription management');
-      setLoading(false);
-    }
+  // Format price
+  const formatPrice = (amount: number, currency: string = 'USD') => {
+    const symbol = currency === 'USD' ? '$' : '₹';
+    return `${symbol}${amount.toFixed(2)}`;
   };
 
   // Format dates
@@ -136,29 +101,10 @@ export function SubscriptionTab() {
                 )}
               </div>
 
-              {/* Manage Subscription Button */}
+              {/* Subscription Status */}
               <div className="pt-4 border-t">
-                <Button
-                  onClick={handleManageSubscription}
-                  disabled={loading}
-                  variant="outline"
-                  className="w-full"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Loading...
-                    </>
-                  ) : (
-                    <>
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      Manage Subscription
-                      <ExternalLink className="ml-2 h-3 w-3" />
-                    </>
-                  )}
-                </Button>
-                <p className="text-xs text-muted-foreground text-center mt-2">
-                  Update payment method, view invoices, or cancel subscription
+                <p className="text-sm text-muted-foreground text-center">
+                  Thank you for being a premium member!
                 </p>
               </div>
             </>

@@ -1,88 +1,53 @@
 "use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Check, Sparkles, Loader2, ArrowLeft } from 'lucide-react';
+import { Check, Sparkles, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { PRICING_PLANS, formatPrice, getPriceId } from '@/lib/stripe';
-import { getStripe } from '@/lib/stripe';
-import { toast } from 'sonner';
+
+// Pricing plans configuration
+const PRICING_PLANS = {
+  free: {
+    name: 'Free',
+    description: 'Perfect for getting started',
+    price: 0,
+    features: [
+      'All Learning Roadmaps',
+      'Monthly Learning Resources',
+      'Progress Tracking',
+      'Community Support'
+    ]
+  },
+  premium: {
+    name: 'Premium',
+    description: 'Unlock your full potential',
+    price: 9.99,
+    yearlyPrice: 99,
+    popular: true,
+    features: [
+      'Everything in Free',
+      'AI Hyperpersonalization',
+      'Interactive Chat Assistant',
+      'Weekly Learning Resources',
+      'Priority Support'
+    ]
+  }
+};
 
 export default function PricingPage() {
   const { user } = useAuth();
-  const router = useRouter();
   const [isYearly, setIsYearly] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubscribe = async () => {
-    if (!user) {
-      router.push('/login?redirect=/pricing');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      // Get Firebase auth token
-      const { auth } = await import('@/lib/firebase');
-      const currentUser = auth.currentUser;
-      if (!currentUser) {
-        throw new Error('User not authenticated');
-      }
-      const idToken = await currentUser.getIdToken();
-
-      // Get the price ID based on interval
-      const priceId = getPriceId(isYearly ? 'year' : 'month');
-
-      if (!priceId) {
-        throw new Error('Stripe price ID not configured. Please check your environment variables.');
-      }
-
-      // Create checkout session
-      const response = await fetch('/api/stripe/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${idToken}`,
-        },
-        body: JSON.stringify({
-          priceId,
-          interval: isYearly ? 'year' : 'month',
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create checkout session');
-      }
-
-      const { sessionId } = await response.json();
-
-      // Redirect to Stripe Checkout
-      const stripe = await getStripe();
-      if (!stripe) {
-        throw new Error('Failed to load Stripe');
-      }
-
-      const { error } = await stripe.redirectToCheckout({ sessionId });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-    } catch (error: any) {
-      console.error('Checkout error:', error);
-      toast.error(error.message || 'Failed to start checkout');
-      setLoading(false);
-    }
-  };
 
   const currentTier = user?.subscription?.tier || 'free';
   const isCurrentlyPremium = currentTier === 'premium' && user?.subscription?.status === 'active';
+
+  const formatPrice = (price: number) => {
+    return `$${price}`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -116,7 +81,6 @@ export default function PricingPage() {
             <Switch
               checked={isYearly}
               onCheckedChange={setIsYearly}
-              disabled={loading}
             />
             <span className={`text-sm font-medium ${isYearly ? 'text-foreground' : 'text-muted-foreground'}`}>
               Yearly
@@ -208,19 +172,10 @@ export default function PricingPage() {
             <CardFooter>
               <Button
                 className="w-full"
-                onClick={handleSubscribe}
-                disabled={loading || isCurrentlyPremium}
+                disabled
+                variant="outline"
               >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Processing...
-                  </>
-                ) : isCurrentlyPremium ? (
-                  'Current Plan'
-                ) : (
-                  'Upgrade to Premium'
-                )}
+                Coming Soon
               </Button>
             </CardFooter>
           </Card>
@@ -241,7 +196,7 @@ export default function PricingPage() {
             <div>
               <h3 className="font-semibold mb-2">What payment methods do you accept?</h3>
               <p className="text-muted-foreground">
-                We accept all major credit cards (Visa, Mastercard, American Express) through our secure payment processor, Stripe.
+                We accept all major credit cards (Visa, Mastercard, American Express) through our secure payment processor.
               </p>
             </div>
             <div>
