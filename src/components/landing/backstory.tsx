@@ -194,7 +194,7 @@ export function Backstory() {
 
                      <div className="hidden lg:block absolute -left-10 top-1/2 -translate-y-1/2">
                             <PinContainer
-                                title="Co-Founder, CEO"
+                                title="Co-Founder"
                                 containerClassName="w-full"
                             >
                                 <div className="flex flex-col items-center p-4 w-32">
@@ -214,7 +214,7 @@ export function Backstory() {
                         {/* Arstos Card - Right */}
                         <div className="hidden lg:block absolute -right-10 top-1/2 -translate-y-1/2">
                             <PinContainer
-                                title="Co-Founder, CTO"
+                                title="Co-Founder"
                                 containerClassName="w-full"
                             >
                                 <div className="flex flex-col items-center p-4 w-32">
@@ -243,7 +243,7 @@ export function Backstory() {
                                 />
                             </div>
                             <p className="text-base sm:text-lg font-bold text-white">Bhaskar</p>
-                            <p className="text-xs sm:text-sm text-gray-400">Co-Founder, CEO</p>
+                            <p className="text-xs sm:text-sm text-gray-400">Co-Founder</p>
                         </div>
                         <div className="flex flex-col items-center">
                             <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden border-2 border-white mb-2">
@@ -255,7 +255,7 @@ export function Backstory() {
                                 />
                             </div>
                             <p className="text-base sm:text-lg font-bold text-white">Arstos</p>
-                            <p className="text-xs sm:text-sm text-gray-400">Co-Founder, CTO</p>
+                            <p className="text-xs sm:text-sm text-gray-400">Co-Founder</p>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ export function PricingSection() {
 
 	return (
 		<section className="relative min-h-screen overflow-hidden py-24 mt-16">
-			<div id="pricing" className="mx-auto w-full max-w-6xl space-y-5 px-32">
+			<div id="pricing" className="mx-auto w-full max-w-6xl space-y-5 px-4 sm:px-8 md:px-16 lg:px-32">
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ export function PricingSection() {
 						viewport={{ once: true }}
 						className="mx-auto w-full max-w-2xl space-y-2"
 					>
-						<div className="grid md:grid-cols-2 bg-background relative border p-4">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-0 bg-background relative border p-4">
 							<PlusIcon className="absolute -top-3 -left-3  size-5.5" />
 							<PlusIcon className="absolute -top-3 -right-3 size-5.5" />
 							<PlusIcon className="absolute -bottom-3 -left-3 size-5.5" />
