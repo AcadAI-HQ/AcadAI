@@ -156,7 +156,7 @@ export default function PrivacyPolicyPage() {
               If you have any questions about this privacy policy or our data practices, please contact us at:
             </p>
             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-              <p className="text-muted-foreground">Email: privacy@acadai.com</p>
+              <p className="text-muted-foreground">Email: bhaskarjyotipathak8@gmail.com</p>
               <p className="text-muted-foreground">Website: https://acadai.com</p>
             </div>
           </section>
