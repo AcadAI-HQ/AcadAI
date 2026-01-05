@@ -214,7 +214,7 @@ export function Backstory() {
                         {/* Arstos Card - Right */}
                         <div className="hidden lg:block absolute -right-10 top-1/2 -translate-y-1/2">
                             <PinContainer
-                                title="Co-Founder"
+                                title=""
                                 containerClassName="w-full"
                             >
                                 <div className="flex flex-col items-center p-4 w-32">
