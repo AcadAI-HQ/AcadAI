@@ -1,279 +1,231 @@
 {
-  "cybersecurityRoadmap": {
-    "introduction": "This comprehensive roadmap provides a structured path for individuals looking to start and advance a career in cybersecurity. It covers foundational knowledge, core principles, specializations, practical projects, certifications, and continuous learning resources. Contrary to the common belief that cybersecurity is only about bug bounties, building a portfolio of projects is a fantastic way to showcase practical skills to potential employers.",
-    "foundationalITKnowledge": {
-      "title": "Stage 1: Foundational IT Knowledge 💻",
-      "description": "Before diving into security, a strong understanding of the underlying technology is essential. This stage focuses on the bedrock of IT: networking, operating systems, and scripting.",
-      "areas": [
-        {
-          "name": "Networking",
-          "description": "Understanding how data travels across networks is fundamental to network security.",
-          "keyTopics": [
-            "The OSI and TCP/IP Models: Understand the function of each layer (Physical, Data Link, Network, Transport, Session, Presentation, Application).",
-            "IP Addressing: IPv4 vs. IPv6, Subnetting, and CIDR.",
-            "Core Protocols: TCP, UDP, HTTP/S, FTP, SMTP, DNS, DHCP.",
-            "Network Hardware: Routers, Switches, Firewalls, and Access Points.",
-            "Network Utilities: `ping`, `traceroute`/`tracert`, `ipconfig`/`ifconfig`, `nslookup`, `netstat`."
-          ]
-        },
-        {
-          "name": "Operating Systems",
-          "description": "Proficiency in both Windows and Linux environments is non-negotiable, as they are the primary targets and platforms for security operations.",
-          "keyTopics": [
-            "Linux: Filesystem hierarchy, command-line interface (CLI) with Bash (`ls`, `cd`, `grep`, `awk`, `sed`, `chmod`), user/group permissions, package management (APT/YUM).",
-            "Windows: Filesystem (NTFS), command line (CMD and PowerShell), user/group permissions, Active Directory fundamentals, Windows Registry.",
-            "Virtualization: Using software like VirtualBox or VMware to create sandboxed lab environments."
-          ]
-        },
-        {
-          "name": "Scripting & Automation",
-          "description": "Automation is key to efficiency in cybersecurity. Scripting allows you to automate repetitive tasks, from scanning networks to parsing logs.",
-          "keyTopics": [
-            "Python: The de-facto language for cybersecurity. Learn data types, loops, functions, and file I/O. Key libraries include `requests` (for web interaction), `Scapy` (for packet crafting), `Nmap` (for network scanning), and `Pandas` (for data analysis).",
-            "Bash Scripting: Automating tasks within the Linux command line by combining commands into scripts."
-          ]
-        }
-      ]
-    },
-    "coreCybersecurityPrinciples": {
-      "title": "Stage 2: Core Cybersecurity Principles 🛡️",
-      "description": "With a solid IT foundation, you can now learn the core concepts that govern the practice of cybersecurity.",
-      "principles": [
-        {
-          "name": "The CIA Triad",
-          "description": "The foundational model for security policy.",
-          "concepts": [
-            "Confidentiality: Ensuring data is accessible only to authorized individuals.",
-            "Integrity: Maintaining the consistency, accuracy, and trustworthiness of data.",
-            "Availability: Ensuring systems and data are accessible to authorized users when needed."
-          ]
-        },
-        {
-          "name": "Risk Management",
-          "description": "The process of identifying, assessing, and controlling threats to an organization's capital and earnings.",
-          "concepts": [
-            "Asset Identification: What are you trying to protect?",
-            "Vulnerability Assessment: What are the weaknesses?",
-            "Threat Identification: Who or what could cause harm?",
-            "Risk Analysis: What is the likelihood and impact of a threat exploiting a vulnerability?",
-            "Frameworks: Familiarize yourself with frameworks like the NIST Risk Management Framework (RMF)."
-          ]
-        },
-        {
-          "name": "Threat Modeling",
-          "description": "A proactive approach to identify threats and vulnerabilities early in the development lifecycle.",
-          "concepts": [
-            "STRIDE Model: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege.",
-            "PASTA (Process for Attack Simulation and Threat Analysis)."
-          ]
-        },
-        {
-          "name": "Common Attacks and Vulnerabilities",
-          "description": "Understanding the enemy's tactics is crucial for defense.",
-          "concepts": [
-            "OWASP Top 10: A standard awareness document for web application security, covering critical risks like Injection, Broken Authentication, Cross-Site Scripting (XSS), etc.",
-            "Malware: Viruses, Worms, Ransomware, Spyware, Trojans.",
-            "Social Engineering: Phishing, Vishing, Baiting.",
-            "Network Attacks: Denial-of-Service (DoS/DDoS), Man-in-the-Middle (MitM)."
-          ]
-        }
-      ]
-    },
-    "majorSpecializations": {
-      "title": "Stage 3: Choose Your Specialization 🎯",
-      "description": "Cybersecurity is a broad field. This section outlines major career paths. It's common to start in a broader role (like a SOC Analyst) and specialize later.",
-      "paths": [
-        {
-          "roleTitle": "Offensive Security (Red Team)",
-          "description": "Focuses on simulating attacks to find and fix security vulnerabilities before malicious actors do. Includes roles like Penetration Tester and Ethical Hacker.",
-          "keyResponsibilities": [
-            "Conducting penetration tests on networks, web applications, and cloud infrastructure.",
-            "Performing vulnerability assessments.",
-            "Developing custom exploits and tools.",
-            "Writing detailed reports of findings for stakeholders."
-          ],
-          "essentialTools": ["Metasploit", "Burp Suite", "Nmap", "Wireshark", "John the Ripper", "Hashcat"]
-        },
-        {
-          "roleTitle": "Defensive Security (Blue Team)",
-          "description": "Focuses on protecting an organization's assets from threats. Includes roles like SOC Analyst, Incident Responder, and Digital Forensics Analyst.",
-          "keyResponsibilities": [
-            "Monitoring networks and systems for security incidents.",
-            "Analyzing security alerts and logs.",
-            "Responding to and mitigating security incidents.",
-            "Performing forensic analysis on compromised systems.",
-            "Hardening systems and configuring security tools."
-          ],
-          "essentialTools": ["SIEM (e.g., Splunk, ELK Stack)", "Wireshark", "Snort", "Zeek (Bro)", "Volatility Framework", "Autopsy"]
-        },
-        {
-          "roleTitle": "Cloud Security",
-          "description": "Focuses on securing cloud-based infrastructure and services (AWS, Azure, GCP).",
-          "keyResponsibilities": [
-            "Implementing and managing cloud security controls.",
-            "Ensuring compliance with security standards in the cloud.",
-            "Automating security processes (DevSecOps).",
-            "Monitoring cloud environments for threats.",
-            "Configuring Identity and Access Management (IAM)."
-          ],
-          "essentialTools": ["Cloud-native tools (AWS GuardDuty, Azure Sentinel, Google Security Command Center)", "Terraform", "Docker", "Kubernetes", "Wiz", "Prisma Cloud"]
-        },
-        {
-          "roleTitle": "Application Security (AppSec)",
-          "description": "Focuses on finding and fixing vulnerabilities within software and applications throughout the Software Development Life Cycle (SDLC).",
-          "keyResponsibilities": [
-            "Performing code reviews and static analysis (SAST).",
-            "Conducting dynamic analysis of applications (DAST).",
-            "Integrating security into the CI/CD pipeline.",
-            "Educating developers on secure coding practices.",
-            "Managing bug bounty programs."
-          ],
-          "essentialTools": ["Burp Suite", "OWASP ZAP", "SonarQube", "Checkmarx", "Snyk", "Veracode"]
-        }
-      ]
-    },
-    "certifications": {
-      "title": "Stage 4: Get Certified 📜",
-      "description": "Certifications validate your knowledge and can be crucial for landing a job, especially early in your career. They are organized by level and specialization.",
-      "levels": [
-        {
-          "level": "Entry-Level",
-          "certs": [
-            {"name": "CompTIA Security+", "focus": "General/Foundational"},
-            {"name": "CompTIA Network+", "focus": "Networking"},
-            {"name": "(ISC)² Certified in Cybersecurity (CC)", "focus": "General/Foundational"}
-          ]
-        },
-        {
-          "level": "Intermediate",
-          "certs": [
-            {"name": "eLearnSecurity Junior Penetration Tester (eJPT)", "focus": "Offensive Security"},
-            {"name": "CompTIA CySA+", "focus": "Defensive Security"},
-            {"name": "Certified Ethical Hacker (CEH)", "focus": "Offensive Security"},
-            {"name": "AWS/Azure/GCP Cloud Security Specialty", "focus": "Cloud Security"}
-          ]
-        },
-        {
-          "level": "Advanced",
-          "certs": [
-            {"name": "Offensive Security Certified Professional (OSCP)", "focus": "Offensive Security (Highly Respected)"},
-            {"name": "GIAC Certified Incident Handler (GCIH)", "focus": "Defensive Security"},
-            {"name": "Certified Information Systems Security Professional (CISSP)", "focus": "Management/General (Requires Experience)"}
-          ]
-        }
-      ]
-    },
-    "projectShowcase": {
-      "title": "Stage 5: Showcase Your Skills (Projects) 📂",
-      "description": "A project portfolio is your proof of practical skill. It shows you can apply theoretical knowledge to solve real-world problems. This is often more impressive than certifications alone.",
-      "projectIdeas": [
-        {
-          "title": "Build a Home Lab",
-          "description": "Set up a virtual network using VirtualBox/VMware with multiple machines (e.g., a Kali Linux attacker machine, a vulnerable Windows machine, and a Linux server). This is a foundational project for practicing almost any cybersecurity skill.",
-          "skillsDemonstrated": ["Networking", "Virtualization", "System Administration", "Vulnerability Assessment"],
-          "relevantSpecialization": ["All"]
-        },
-        {
-          "title": "Deploy a Security Information and Event Management (SIEM)",
-          "description": "Set up an open-source SIEM like Wazuh or the ELK Stack in your home lab. Forward logs from your virtual machines to it, and then write detection rules to identify simulated malicious activity.",
-          "skillsDemonstrated": ["Log Analysis", "Threat Detection", "System Configuration", "Data Management"],
-          "relevantSpecialization": ["Defensive Security"]
-        },
-        {
-          "title": "Automate Scans with Python",
-          "description": "Write a Python script that takes a list of URLs or IP addresses and uses the `nmap` library to perform port scans. The script should then parse the results and output a clean report.",
-          "skillsDemonstrated": ["Python Scripting", "Automation", "Network Scanning", "Data Parsing"],
-          "relevantSpecialization": ["Offensive Security", "Defensive Security"]
-        },
-        {
-          "title": "Capture the Flag (CTF) Write-ups",
-          "description": "Participate in CTF challenges on platforms like HackTheBox or TryHackMe. Create a personal blog or GitHub repository where you post detailed write-ups explaining how you solved the challenges. This demonstrates your problem-solving process.",
-          "skillsDemonstrated": ["Problem Solving", "Technical Writing", "Vulnerability Exploitation"],
-          "relevantSpecialization": ["Offensive Security"]
-        },
-        {
-          "title": "Deploy a Vulnerable Web Application",
-          "description": "Deploy a deliberately vulnerable application like OWASP Juice Shop in a Docker container. Use tools like Burp Suite or OWASP ZAP to find and exploit the vulnerabilities, documenting your findings as if you were a penetration tester.",
-          "skillsDemonstrated": ["Web Application Security", "Vulnerability Assessment", "Penetration Testing Tools"],
-          "relevantSpecialization": ["Application Security", "Offensive Security"]
-        }
-      ]
-    },
-    "continuousLearning": {
-      "title": "Stage 6: Continuous Learning & Community Engagement 🌐",
-      "description": "Cybersecurity is a constantly evolving field. Staying current with new threats, technologies, and techniques is essential for a long-term career.",
-      "resources": [
-        {
-          "type": "Online Labs & CTFs",
-          "platforms": [
-            {"name": "TryHackMe", "description": "Guided learning paths and labs, great for beginners."},
-            {"name": "Hack The Box", "description": "Challenges you with realistic vulnerable machines."},
-            {"name": "Immersive Labs", "description": "Gamified labs covering a wide range of cyber skills."},
-            {"name": "PortSwigger Web Security Academy", "description": "The best resource for learning web application security, from the creators of Burp Suite."}
-          ]
-        },
-        {
-          "type": "Recommended Books",
-          "books": [
-            {"title": "The Web Application Hacker's Handbook", "author": "Dafydd Stuttard", "focus": "Application Security"},
-            {"title": "Hacking: The Art of Exploitation", "author": "Jon Erickson", "focus": "Offensive Security/Foundations"},
-            {"title": "The Practice of Network Security Monitoring", "author": "Richard Bejtlich", "focus": "Defensive Security"},
-            {"title": "Linux Basics for Hackers", "author": "OccupyTheWeb", "focus": "Foundational IT"}
-          ]
-        },
-        {
-          "type": "Communities & News",
-          "sources": [
-            {"name": "Twitter / X", "description": "Follow security researchers and companies. Often the first place news breaks."},
-            {"name": "Reddit", "description": "Subreddits like r/netsec, r/cybersecurity, and r/blueteamsec are great for discussion and news."},
-            {"name": "The Hacker News", "description": "A leading cybersecurity news source."},
-            {"name": "Bleeping Computer", "description": "Excellent source for news on the latest threats and ransomware attacks."}
-          ]
-        }
-      ]
-    },
-    "aiInCybersecurity": {
-      "title": "Stage 7: The AI Differentiator 🤖",
-      "description": "The integration of Artificial Intelligence (AI) and Machine Learning (ML) is revolutionizing cybersecurity. Developing skills in this area is a significant career differentiator, enabling you to build and manage next-generation security solutions.",
-      "useCases": [
-        {
-          "area": "Defensive AI",
-          "description": "AI models can analyze massive datasets to detect patterns and anomalies that are invisible to humans, drastically reducing response times.",
-          "applications": [
-            "Intelligent Threat Detection: AI-powered SIEMs and Endpoint Detection & Response (EDR) tools can identify subtle indicators of compromise.",
-            "Behavioral Analysis: Models learn the 'normal' behavior of users and systems and flag deviations that could signal an attack.",
-            "Automated Incident Response: AI can automate initial response tasks like quarantining a device or blocking a malicious IP address."
-          ]
-        },
-        {
-          "area": "Offensive AI",
-          "description": "AI can also be used to enhance attack capabilities, and understanding these techniques is crucial for building better defenses.",
-          "applications": [
-            "Automated Vulnerability Discovery: AI can analyze code or applications to find novel vulnerabilities more efficiently.",
-            "Intelligent Phishing: AI can generate highly convincing, personalized phishing emails at scale.",
-            "Password Cracking: ML models can learn password patterns to crack hashes more effectively than traditional brute-force methods."
-          ]
-        },
-        {
-          "area": "AI for Security Operations",
-          "description": "Large Language Models (LLMs) are becoming powerful assistants for security analysts.",
-          "applications": [
-            "Threat Intelligence Summarization: LLMs can parse and summarize hundreds of threat reports into concise, actionable intelligence.",
-            "Code Analysis: AI can assist in reviewing code for security flaws, explaining complex functions to an analyst.",
-            "Report Generation: Automatically generate initial drafts of incident reports or vulnerability findings."
-          ]
-        }
+  "domain": "Blockchain Development",
+  "type": "premium",
+  "overview": "A comprehensive roadmap for becoming a blockchain developer. Covers fundamental concepts, smart contract development, DeFi protocols, and real-world application building for Web3.",
+  "steps": [
+    {
+      "title": "Blockchain Fundamentals",
+      "description": "Understand the core concepts of blockchain technology and distributed systems.",
+      "subtopics": [
+        "What is blockchain? Distributed ledger technology basics",
+        "Cryptographic hash functions and digital signatures",
+        "Consensus mechanisms: PoW, PoS, DPoS, and BFT",
+        "Block structure and chain formation",
+        "Public vs Private blockchains",
+        "Bitcoin architecture and transaction flow",
+        "Ethereum basics and account models",
+        "Gas, fees, and transaction ordering"
       ],
-      "howToGetStarted": {
-        "description": "To specialize in this area, you'll need to combine your cybersecurity knowledge with data science principles.",
-        "steps": [
-          "Strengthen Python & Math Skills: Master Python and refresh your knowledge of statistics and linear algebra.",
-          "Learn Core ML Concepts: Understand supervised vs. unsupervised learning, regression, classification, and neural networks.",
-          "Master ML Libraries: Gain proficiency in key libraries like `Scikit-learn`, `TensorFlow`, `PyTorch`, `Pandas`, and `NumPy`.",
-          "Find Cyber-Specific Datasets: Work with datasets like `NSL-KDD` for intrusion detection or `PhishTank` for phishing data.",
-          "Project Idea: Build a Network Intrusion Detection System. Use a dataset like NSL-KDD to train a machine learning model (e.g., a Random Forest or Neural Network) to classify network traffic as either benign or malicious. This is a classic project that combines networking, security, and ML skills."
-        ]
-      }
+      "resources": [
+        "https://bitcoin.org/bitcoin.pdf",
+        "https://ethereum.org/en/whitepaper/",
+        "https://www.coursera.org/learn/blockchain-basics"
+      ]
+    },
+    {
+      "title": "Programming Foundations",
+      "description": "Master the programming languages essential for blockchain development.",
+      "subtopics": [
+        "JavaScript/TypeScript for Web3 dApps",
+        "Solidity fundamentals for smart contracts",
+        "Data structures: Merkle trees, Patricia tries",
+        "Cryptography basics: ECDSA, SHA-256, Keccak-256",
+        "Object-oriented programming concepts",
+        "Asynchronous programming and promises",
+        "JSON-RPC and Web3 API integration"
+      ],
+      "resources": [
+        "https://docs.soliditylang.org/",
+        "https://cryptozombies.io/",
+        "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/"
+      ]
+    },
+    {
+      "title": "Smart Contract Development",
+      "description": "Learn to write, test, and deploy secure smart contracts on Ethereum.",
+      "subtopics": [
+        "Solidity syntax: variables, functions, modifiers",
+        "Contract structure and inheritance",
+        "Events and logging",
+        "Storage vs Memory vs Calldata",
+        "Interfaces and abstract contracts",
+        "Libraries and using OpenZeppelin",
+        "Error handling and require/assert/revert",
+        "Gas optimization techniques",
+        "Common vulnerabilities: reentrancy, overflow/underflow",
+        "Security best practices and audit patterns"
+      ],
+      "resources": [
+        "https://docs.openzeppelin.com/contracts/",
+        "https://remix.ethereum.org/",
+        "https://ethernaut.openzeppelin.com/"
+      ]
+    },
+    {
+      "title": "Development Tools & Environment",
+      "description": "Set up professional blockchain development tools and workflows.",
+      "subtopics": [
+        "Hardhat framework setup and configuration",
+        "Testing with Mocha, Chai, and Waffle",
+        "Local blockchain with Hardhat Network",
+        "Deployment scripts and migrations",
+        "Ethers.js for blockchain interaction",
+        "Web3.js basics",
+        "MetaMask integration",
+        "Infura/Alchemy for node access",
+        "Testnet deployment: Sepolia, Goerli",
+        "Contract verification on Etherscan"
+      ],
+      "resources": [
+        "https://hardhat.org/getting-started/",
+        "https://docs.ethers.org/",
+        "https://docs.metamask.io/"
+      ]
+    },
+    {
+      "title": "Token Standards & NFTs",
+      "description": "Implement industry-standard token contracts and NFT marketplaces.",
+      "subtopics": [
+        "ERC-20: Fungible token standard",
+        "ERC-721: Non-fungible tokens (NFTs)",
+        "ERC-1155: Multi-token standard",
+        "Token minting and burning",
+        "Allowances and approvals",
+        "Metadata and IPFS storage",
+        "NFT marketplace mechanics",
+        "Royalty standards (ERC-2981)",
+        "Token economics and tokenomics"
+      ],
+      "resources": [
+        "https://eips.ethereum.org/EIPS/eip-20",
+        "https://eips.ethereum.org/EIPS/eip-721",
+        "https://docs.ipfs.tech/"
+      ]
+    },
+    {
+      "title": "DeFi Protocols",
+      "description": "Build decentralized finance applications and understand DeFi primitives.",
+      "subtopics": [
+        "Automated Market Makers (AMMs) and Uniswap",
+        "Liquidity pools and yield farming",
+        "Lending protocols (Aave, Compound)",
+        "Flash loans and arbitrage",
+        "Staking and staking rewards",
+        "Decentralized exchanges (DEXs)",
+        "Price oracles (Chainlink)",
+        "Governance tokens and DAOs",
+        "DeFi security and smart contract auditing"
+      ],
+      "resources": [
+        "https://docs.uniswap.org/",
+        "https://docs.aave.com/",
+        "https://chain.link/education"
+      ]
+    },
+    {
+      "title": "Frontend dApp Development",
+      "description": "Create user-friendly Web3 applications with modern frameworks.",
+      "subtopics": [
+        "React.js for dApp interfaces",
+        "Web3Modal for wallet connections",
+        "RainbowKit and Wagmi hooks",
+        "Reading blockchain data",
+        "Sending transactions and handling confirmations",
+        "Event listening and real-time updates",
+        "ENS (Ethereum Name Service) integration",
+        "IPFS for decentralized storage",
+        "Responsive design for Web3",
+        "Error handling and user feedback"
+      ],
+      "resources": [
+        "https://wagmi.sh/",
+        "https://www.rainbowkit.com/",
+        "https://web3modal.com/"
+      ]
+    },
+    {
+      "title": "Advanced Blockchain Concepts",
+      "description": "Explore Layer 2 solutions, cross-chain bridges, and emerging technologies.",
+      "subtopics": [
+        "Layer 2 scaling: Optimistic Rollups, ZK-Rollups",
+        "Polygon, Arbitrum, and Optimism",
+        "Cross-chain bridges and interoperability",
+        "EVM vs non-EVM chains (Solana, Cosmos)",
+        "Account abstraction (ERC-4337)",
+        "Zero-knowledge proofs basics",
+        "Privacy-preserving blockchains",
+        "IPFS and decentralized storage",
+        "The Graph for indexing blockchain data",
+        "MEV (Maximal Extractable Value)"
+      ],
+      "resources": [
+        "https://polygon.technology/",
+        "https://docs.arbitrum.io/",
+        "https://thegraph.com/docs/"
+      ]
+    },
+    {
+      "title": "Security & Auditing",
+      "description": "Learn to identify vulnerabilities and secure blockchain applications.",
+      "subtopics": [
+        "Common attack vectors: reentrancy, front-running",
+        "Access control vulnerabilities",
+        "Integer overflow and underflow",
+        "Timestamp dependence issues",
+        "Gas limit and denial of service",
+        "Using Slither and Mythril for static analysis",
+        "Manual code review techniques",
+        "Writing comprehensive test suites",
+        "Bug bounty programs and responsible disclosure",
+        "Understanding audit reports"
+      ],
+      "resources": [
+        "https://swcregistry.io/",
+        "https://github.com/crytic/slither",
+        "https://consensys.github.io/smart-contract-best-practices/"
+      ]
+    },
+    {
+      "title": "Real-World Projects",
+      "description": "Build portfolio projects that demonstrate blockchain expertise.",
+      "subtopics": [
+        "Build a DEX with liquidity pools",
+        "Create an NFT marketplace with royalties",
+        "Develop a DAO governance system",
+        "Implement a staking/yield farming protocol",
+        "Build a lending/borrowing platform",
+        "Create a multi-signature wallet",
+        "Develop a decentralized crowdfunding platform",
+        "Build a supply chain tracking system",
+        "Create a prediction market",
+        "Deploy on mainnet and document your work"
+      ],
+      "resources": [
+        "https://github.com/scaffold-eth/scaffold-eth-2",
+        "https://speedrunethereum.com/",
+        "https://buildspace.so/"
+      ]
+    },
+    {
+      "title": "Career & Best Practices",
+      "description": "Prepare for blockchain development roles and stay current with the ecosystem.",
+      "subtopics": [
+        "Building a blockchain developer portfolio",
+        "Contributing to open-source Web3 projects",
+        "Following Ethereum Improvement Proposals (EIPs)",
+        "Staying updated: Twitter, Discord, research papers",
+        "Understanding tokenomics and business models",
+        "Legal and regulatory considerations",
+        "Remote work and DAO employment",
+        "Blockchain job boards and opportunities",
+        "Networking in Web3 communities",
+        "Continuous learning: conferences, hackathons"
+      ],
+      "resources": [
+        "https://ethereum-magicians.org/",
+        "https://ethglobal.com/",
+        "https://cryptocurrencyjobs.co/"
+      ]
     }
-  }
+  ]
 }

@@ -22,13 +22,18 @@
         },
         {
             "title": "2. Modern UI & UX Excellence",
-            "description": "Mastering Apple’s design philosophy to build 'premium' feeling apps.",
+            "description": "Mastering Apple's design philosophy to build 'premium' feeling apps.",
             "subtopics": [
                 "SwiftUI Mastery: State management (@State, @Binding, @Observable macro) and Layouts",
                 "Apple Human Interface Guidelines (HIG): Spacing, typography, and motion standards",
                 "Accessibility (A11y): Dynamic Type, VoiceOver, and high-contrast support",
                 "Advanced Animations: Phase-based animations and custom transitions for polish",
                 "UIKit Interoperability: Managing legacy codebases using UIViewControllerRepresentable"
+            ],
+            "resources": [
+                "https://developer.apple.com/design/human-interface-guidelines/",
+                "https://www.hackingwithswift.com/quick-start/swiftui",
+                "https://www.youtube.com/c/SwiftfulThinking"
             ]
         },
         {
@@ -40,6 +45,11 @@
                 "Networking: URLSession with async/await, Codable, and Alamofire",
                 "Dependency Management: Swift Package Manager (SPM) and CocoaPods",
                 "CloudKit: Seamless data syncing across the Apple ecosystem"
+            ],
+            "resources": [
+                "https://developer.apple.com/documentation/swiftdata",
+                "https://developer.apple.com/icloud/cloudkit/",
+                "https://www.raywenderlich.com/books/advanced-ios-app-architecture"
             ]
         },
         {
@@ -51,6 +61,11 @@
                 "Core ML & Create ML: Running and training custom vision/NLP models on-device",
                 "Writing Tools & Image Playground: Integrating system-wide AI capabilities",
                 "Privacy-First AI: Local processing and Private Cloud Compute principles"
+            ],
+            "resources": [
+                "https://developer.apple.com/machine-learning/core-ml/",
+                "https://developer.apple.com/documentation/appintents",
+                "https://machinelearning.apple.com/"
             ]
         },
         {
@@ -62,6 +77,11 @@
                 "Performance Optimization: Using Instruments to profile CPU, memory, and battery",
                 "CI/CD & DevOps: GitHub Actions, Jenkins, and Fastlane automation",
                 "Security: Keychain storage, Biometrics, and HTTPS/TLS best practices"
+            ],
+            "resources": [
+                "https://developer.apple.com/visionos/",
+                "https://developer.apple.com/documentation/healthkit",
+                "https://docs.fastlane.tools/"
             ]
         },
         {
@@ -72,6 +92,11 @@
                 "Portfolio: Host apps on the App Store with clear READMEs and demo videos",
                 "Soft Skills: Communication, critical thinking, and team player attitude",
                 "App Store Connect: Handling certificates, provisioning profiles, and App Store rules"
+            ],
+            "resources": [
+                "https://www.leetcode.com/",
+                "https://developer.apple.com/app-store/review/guidelines/",
+                "https://github.com/raywenderlich/ios-interview"
             ]
         }
     ]
