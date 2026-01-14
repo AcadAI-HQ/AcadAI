@@ -86,7 +86,7 @@ export default function DomainResourcesPage({ params }: PageProps) {
               );
 
               const progress = await Promise.race([progressPromise, timeoutPromise]);
-              const totalResources = resource.resources.length + 1; // +1 for main article
+              const totalResources = (resource.resources?.length || 0) + 1; // +1 for main article
               const completedCount = progress?.completedResources.length || 0;
 
               progressMap[resource.weekNumber] = {
@@ -96,7 +96,7 @@ export default function DomainResourcesPage({ params }: PageProps) {
               };
             } catch (error) {
               console.warn(`Failed to load progress for week ${resource.weekNumber}:`, error);
-              const totalResources = resource.resources.length + 1;
+              const totalResources = (resource.resources?.length || 0) + 1;
               progressMap[resource.weekNumber] = {
                 completed: 0,
                 total: totalResources,
@@ -169,7 +169,7 @@ export default function DomainResourcesPage({ params }: PageProps) {
         {resources.map((resource) => {
           const progress = progressData[resource.weekNumber] || {
             completed: 0,
-            total: resource.resources.length + 1,
+            total: (resource.resources?.length || 0) + 1,
             isCompleted: false,
           };
 

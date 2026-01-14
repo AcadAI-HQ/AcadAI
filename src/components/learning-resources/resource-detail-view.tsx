@@ -30,7 +30,7 @@ export function ResourceDetailView({
     advanced: 'bg-red-500/10 text-red-500 border-red-500/20',
   };
 
-  const totalResources = resource.resources.length + 1; // +1 for main article
+  const totalResources = (resource.resources?.length || 0) + 1; // +1 for main article
   const completedCount = completedResources.length;
   const progress = Math.round((completedCount / totalResources) * 100);
   const isFullyCompleted = progress === 100;
@@ -96,13 +96,15 @@ export function ResourceDetailView({
         </div>
 
         {/* Topics */}
-        <div className="flex flex-wrap gap-2">
-          {resource.topics.map((topic) => (
-            <Badge key={topic} variant="secondary">
-              {topic}
-            </Badge>
-          ))}
-        </div>
+        {resource.topics && resource.topics.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {resource.topics.map((topic) => (
+              <Badge key={topic} variant="secondary">
+                {topic}
+              </Badge>
+            ))}
+          </div>
+        )}
 
         {/* Progress */}
         <Card className="bg-gray-800/50">
@@ -146,24 +148,26 @@ export function ResourceDetailView({
       <Separator />
 
       {/* Supplementary Resources */}
-      <div>
-        <h3 className="text-xl font-semibold text-white mb-4">
-          Supplementary Resources ({resource.resources.length})
-        </h3>
-        <div className="space-y-3">
-          {resource.resources.map((item) => (
-            <ResourceItem
-              key={item.id}
-              resource={item}
-              isCompleted={completedResources.includes(item.id)}
-              onToggleCompletion={onToggleCompletion}
-            />
-          ))}
+      {resource.resources && resource.resources.length > 0 && (
+        <div>
+          <h3 className="text-xl font-semibold text-white mb-4">
+            Supplementary Resources ({resource.resources.length})
+          </h3>
+          <div className="space-y-3">
+            {resource.resources.map((item) => (
+              <ResourceItem
+                key={item.id}
+                resource={item}
+                isCompleted={completedResources.includes(item.id)}
+                onToggleCompletion={onToggleCompletion}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Keywords */}
-      {resource.keywords.length > 0 && (
+      {resource.keywords && resource.keywords.length > 0 && (
         <>
           <Separator />
           <div>
