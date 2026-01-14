@@ -10,6 +10,7 @@ import {
   Clock,
   ExternalLink,
   BookOpen,
+  GraduationCap,
 } from 'lucide-react';
 import { ResourceItem as ResourceItemType } from '@/types/weekly-resources';
 import { useState } from 'react';
@@ -34,6 +35,7 @@ export function ResourceItem({
     video: Video,
     tutorial: Code,
     project: Trophy,
+    course: GraduationCap,
   };
 
   const typeColors = {
@@ -41,6 +43,7 @@ export function ResourceItem({
     video: 'text-red-400',
     tutorial: 'text-green-400',
     project: 'text-purple-400',
+    course: 'text-orange-400',
   };
 
   const difficultyColors = {
@@ -49,7 +52,7 @@ export function ResourceItem({
     advanced: 'bg-red-500/10 text-red-500 border-red-500/20',
   };
 
-  const Icon = typeIcons[resource.type];
+  const Icon = typeIcons[resource.type as keyof typeof typeIcons] || FileText;
 
   const handleCheckboxChange = async (checked: boolean) => {
     setIsUpdating(true);
@@ -91,7 +94,7 @@ export function ResourceItem({
 
           {/* Icon */}
           <div
-            className={`rounded-full bg-gray-800 p-2 ${typeColors[resource.type]}`}
+            className={`rounded-full bg-gray-800 p-2 ${typeColors[resource.type as keyof typeof typeColors] || 'text-gray-400'}`}
           >
             <Icon className="h-5 w-5" />
           </div>

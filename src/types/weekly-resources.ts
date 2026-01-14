@@ -21,7 +21,7 @@ export interface ResourceItem {
   title: string;
   description: string;
   url?: string; // Optional: External URL (if no inline content)
-  type: 'article' | 'video' | 'tutorial' | 'project';
+  type: 'article' | 'video' | 'tutorial' | 'project' | 'course';
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   estimatedTime: number; // Minutes
   content?: ArticleContent; // Optional: Inline article content in markdown
