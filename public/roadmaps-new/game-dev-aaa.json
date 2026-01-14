@@ -1,0 +1,115 @@
+{
+    "domain": "Mainline (AAA) Game Development",
+    "type": "premium",
+    "overview": "Global (2026) roadmap for engineers aiming for AAA studios. Focuses on low-level systems (C++), engine architecture, specialized pipelines, and performance at scale.",
+    "steps": [
+        {
+            "title": "1. Low-Level Programming (The Gold Standard)",
+            "description": "Deep mastery of C++ is non-negotiable for AAA roles.",
+            "subtopics": [
+                "C++17/20/23: Pointers, memory management, and RAII",
+                "Data-Oriented Design (DOD): Cache-friendly code and Entity Component Systems (ECS)",
+                "Multi-threading: Race conditions, atomics, and job systems",
+                "Assembly & Compiler Theory: Understanding how code translates to hardware",
+                "SIMD (Single Instruction, Multiple Data): Vectorized math for physics and rendering",
+                "Memory Profiling: Identifying leaks and fragmentation with Valgrind/Visual Studio"
+            ],
+            "resources": [
+                "https://en.cppreference.com/",
+                "https://www.learncpp.com/",
+                "https://github.com/dbliuo/handmade-hero"
+            ]
+        },
+        {
+            "title": "2. Engine Architecture & Tooling",
+            "description": "Building the systems that build the game.",
+            "subtopics": [
+                "Engine Subsystems: Physics, Audio, Input, and Rendering",
+                "Game Loops & Fixed Timesteps: Handling deterministic logic",
+                "Asset Pipelines: Creating efficient importers for 3D models and textures",
+                "Custom Tooling: Extending Unreal Engine (Slate/C++) or Unity (Editor scripts)",
+                "Scripting Integration: Embedding Lua or Python for designers",
+                "Spatial Partitioning: Quadtrees, Octrees, and BVH for efficient collision"
+            ],
+            "resources": [
+                "https://www.gameenginebook.com/",
+                "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-architecture"
+            ]
+        },
+        {
+            "title": "3. Advanced Rendering & Graphics (The Specialist Path)",
+            "description": "Working with the GPU to push visual boundaries.",
+            "subtopics": [
+                "Graphics APIs: DirectX 12, Vulkan, or Metal",
+                "Shaders: HLSL/GLSL, PBR (Physically Based Rendering), and Ray Tracing (DXR)",
+                "Post-Processing: Bloom, SSAO, Motion Blur, and TAA",
+                "Compute Shaders: Using the GPU for non-graphics tasks like fluid sims",
+                "Global Illumination: Lumen-style real-time lighting systems",
+                "Level of Detail (LOD): Nanite-style virtualization and mesh shaders"
+            ],
+            "resources": [
+                "https://learnopengl.com/",
+                "https://www.realtimerendering.com/",
+                "https://vulkan-tutorial.com/"
+            ]
+        },
+        {
+            "title": "4. Physics, AI, & Networking (Specialist Paths)",
+            "description": "Deep dives into specific AAA gameplay systems.",
+            "subtopics": [
+                "Physics: Constraints, ragdolls, and vehicle dynamics (PhysX/Havok)",
+                "Animation Systems: Inverse Kinematics (IK), blend trees, and motion matching",
+                "Game AI: Behavior Trees, Utility AI, and NavMesh pathfinding",
+                "Networking: Client-side prediction, server reconciliation, and lag compensation",
+                "Database Persistence: Handling millions of player records at scale"
+            ]
+        },
+        {
+            "title": "5. Production & Workflow in Large Teams",
+            "description": "Collaborating on codebases with millions of lines of code.",
+            "subtopics": [
+                "Version Control: Perforce (standard for AAA) or Git LFS",
+                "CI/CD for Games: Automated build farms and smoke tests",
+                "Unit & Integration Testing: Using engine-specific testing frameworks",
+                "Code Review Etiquette: Managing complex pull requests in large teams",
+                "Documentation: Writing Technical Design Documents (TDD) for other engineers"
+            ]
+        },
+        {
+            "title": "6. AI in AAA Development (2026)",
+            "description": "Optimizing production pipelines with machine learning.",
+            "subtopics": [
+                "AI-Assisted QA: Using bots to stress-test maps for collision bugs",
+                "Upscaling: DLSS (Deep Learning Super Sampling) and FSR integration",
+                "Content Generation: Using AI for generating vast terrain or realistic foliage",
+                "Auto-tagging Assets: Using vision models to organize massive 3D asset libraries",
+                "Generative Dialogue: Integrating LLMs into narrative pipelines safely"
+            ]
+        },
+        {
+            "title": "Capstone Projects: AAA Portfolio Focus",
+            "projects": [
+                {
+                    "name": "Custom 2D/3D Engine from Scratch",
+                    "description": "Don't use Unity/Unreal. Build a renderer, input system, and physics using C++ and Vulkan/DX12.",
+                    "focus": ["Memory Management", "Architecture", "Graphics API"]
+                },
+                {
+                    "name": "Networked Physics Simulation",
+                    "description": "A multiplayer arena where physics-based objects are synced with client-side prediction and server reconciliation.",
+                    "focus": ["Networking", "Latency", "Determinism"]
+                },
+                {
+                    "name": "Advanced Shader Library",
+                    "description": "Create a suite of high-end shaders (Water, Foliage, Skin) with detailed performance profiling reports.",
+                    "focus": ["GPU Performance", "PBR", "Math"]
+                }
+            ],
+            "hiring_tips": [
+                "Show your math skills: Demonstrate knowledge of Linear Algebra and Calculus.",
+                "Profile everything: Include screenshots of CPU/GPU profilers showing your optimizations.",
+                "Contribute to Open Source: Bug fixes in Godot or Unreal Engine source code carry huge weight."
+            ]
+        }
+    ]
+}

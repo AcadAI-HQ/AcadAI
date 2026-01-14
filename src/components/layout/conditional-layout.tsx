@@ -7,10 +7,10 @@ import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/shared/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sidebar, SidebarProvider, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
-import { LayoutDashboard, Route, BrainCircuit, User } from "lucide-react";
+import { LayoutDashboard, Route, BrainCircuit, User, BookOpen } from "lucide-react";
 
 // Pages that should not show the sidebar
-const NO_SIDEBAR_PAGES = ['/login', '/signup'];
+const NO_SIDEBAR_PAGES = ['/login', '/signup', '/pricing', '/terms', '/privacy'];
 
 export function ConditionalLayout({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -110,6 +110,17 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
                     >
                       <Route />
                       <span>My Roadmap</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <Link href="/dashboard/learning-resources" className="w-full">
+                    <SidebarMenuButton
+                      isActive={pathname.startsWith('/dashboard/learning-resources')}
+                      tooltip="Explore weekly learning resources"
+                    >
+                      <BookOpen />
+                      <span>Learning Resources</span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>

@@ -6,6 +6,8 @@
 import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
 import { getAuth, Auth } from 'firebase-admin/auth';
+import path from 'path';
+import fs from 'fs';
 
 let adminApp: App | undefined;
 let adminDb: Firestore | undefined;
@@ -25,16 +27,23 @@ if (!getApps().length) {
       });
       console.log('Firebase Admin initialized with service account from environment');
     } else {
-      // Fallback: try loading from file (for local development)
+      // Attempt to initialize from an explicit path provided via env
       try {
-        const serviceAccountFile = require('../../firebase-service-account.json');
-        adminApp = initializeApp({
-          credential: cert(serviceAccountFile)
-        });
-        console.log('Firebase Admin initialized with service account file');
-      } catch (fileError) {
-        console.warn('No service account found. Some features may not work.');
-        // Initialize without credentials for routes that can handle it
+        const pathEnv = process.env.FIREBASE_SERVICE_ACCOUNT_PATH;
+        if (pathEnv) {
+          const resolvedPath = path.resolve(process.cwd(), pathEnv);
+          const raw = fs.readFileSync(resolvedPath, 'utf-8');
+          const serviceAccountFile = JSON.parse(raw);
+          adminApp = initializeApp({
+            credential: cert(serviceAccountFile)
+          });
+          console.log('Firebase Admin initialized with service account path:', resolvedPath);
+        } else {
+          console.warn('FIREBASE_SERVICE_ACCOUNT_PATH is not set; initializing Firebase Admin without credentials (dev mode). Some features may not work.');
+          adminApp = initializeApp();
+        }
+      } catch (err) {
+        console.warn('Service account path initialization failed, proceeding without credentials.', err);
         adminApp = initializeApp();
       }
     }

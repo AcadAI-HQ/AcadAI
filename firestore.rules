@@ -37,6 +37,15 @@ service cloud.firestore {
         allow update: if isOwner(userId);
         allow delete: if isOwner(userId);
       }
+
+      // User's learning resource progress subcollection
+      match /resourceProgress/{progressId} {
+        // Users can only access their own progress data
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
     }
 
     // Public stats document (read-only for all, write by authenticated users for increment)

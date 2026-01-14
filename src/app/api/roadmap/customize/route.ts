@@ -7,33 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-
-// Initialize Firebase Admin SDK (server-side)
-if (!getApps().length) {
-  try {
-    // Try to initialize with service account if available
-    const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
-      ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-      : null;
-
-    if (serviceAccount) {
-      initializeApp({
-        credential: cert(serviceAccount)
-      });
-    } else {
-      // Fallback: try loading from file
-      initializeApp({
-        credential: cert(require('../../../../../firebase-service-account.json'))
-      });
-    }
-  } catch (error) {
-    console.warn('Firebase Admin initialization failed:', error);
-    // Will handle auth errors later
-  }
-}
+import { adminAuth, adminDb } from '@/lib/firebase-admin';
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || '');
@@ -59,7 +33,13 @@ export async function POST(request: NextRequest) {
     let decodedToken;
 
     try {
-      decodedToken = await getAuth().verifyIdToken(token);
+      if (!adminAuth) {
+        return NextResponse.json(
+          { error: 'Server Error', message: 'Firebase Admin not initialized' },
+          { status: 500 }
+        );
+      }
+      decodedToken = await adminAuth.verifyIdToken(token);
     } catch (authError) {
       return NextResponse.json(
         { error: 'Unauthorized', message: 'Invalid authentication token' },
@@ -76,8 +56,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user profile from Firestore to check subscription
-    const db = getFirestore();
-    const userDoc = await db.collection('users').doc(userId).get();
+    if (!adminDb) {
+      return NextResponse.json(
+        { error: 'Server Error', message: 'Firestore Admin not initialized' },
+        { status: 500 }
+      );
+    }
+    const userDoc = await adminDb.collection('users').doc(userId).get();
 
     if (!userDoc.exists) {
       return NextResponse.json(

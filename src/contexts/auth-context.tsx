@@ -102,10 +102,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw error;
       }
 
-      // Fetch user profile to check completion status
+      // Fetch user profile and redirect: allow admin bypass or premium subscription
       const userProfile = await fetchUserProfile(firebaseUser);
 
-      if (userProfile && !userProfile.profileComplete) {
+      const bypass =
+        userProfile?.roles?.admin === true ||
+        userProfile?.flags?.bypassPremium === true;
+
+      const hasPremium =
+        bypass ||
+        (userProfile?.subscription?.tier === 'premium' &&
+          userProfile?.subscription?.status === 'active');
+
+      if (!hasPremium) {
+        router.push('/pricing');
+      } else if (userProfile && !userProfile.profileComplete) {
         router.push('/onboarding');
       } else {
         router.push('/dashboard');
@@ -167,8 +178,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         setLoading(false);
 
-        // Redirect based on profile completion status
-        if (isNewUser || !existingProfile?.profileComplete) {
+        // Redirect: always send non-premium users to pricing
+        const isPremium =
+          !!(existingProfile?.subscription?.tier === 'premium' &&
+          existingProfile?.subscription?.status === 'active');
+
+        if (!isPremium) {
+          router.push('/pricing');
+        } else if (isNewUser || !existingProfile?.profileComplete) {
           router.push('/onboarding');
         } else {
           router.push('/dashboard');

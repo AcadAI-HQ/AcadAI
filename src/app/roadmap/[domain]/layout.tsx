@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import PremiumGate from '@/components/auth/premium-gate';
 
 type Props = {
   params: Promise<{ domain: string }>;
@@ -66,5 +67,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function RoadmapLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <PremiumGate>{children}</PremiumGate>;
 }

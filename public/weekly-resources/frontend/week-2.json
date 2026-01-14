@@ -1,0 +1,58 @@
+{
+  "domain": "frontend",
+  "weekNumber": 2,
+  "title": "Deep Dive: Performance Optimization in React",
+  "description": "Master React performance optimization techniques including memoization, code splitting, lazy loading, and bundle size optimization. Learn how to identify performance bottlenecks and implement solutions for production-ready applications.",
+  "publishedDate": "2025-01-12",
+  "difficulty": "advanced",
+  "estimatedTime": 210,
+  "mainArticle": {
+    "id": "main-article",
+    "title": "The Complete Guide to React Performance Optimization",
+    "description": "Comprehensive article covering useMemo, useCallback, React.memo, code splitting, and profiling techniques",
+    "url": "https://react.dev/learn/render-and-commit",
+    "type": "article",
+    "difficulty": "advanced",
+    "estimatedTime": 50
+  },
+  "resources": [
+    {
+      "id": "resource-1",
+      "title": "React Profiler DevTools Tutorial",
+      "description": "Learn to use React DevTools Profiler to identify performance bottlenecks in your application",
+      "url": "https://react.dev/learn/react-developer-tools",
+      "type": "tutorial",
+      "difficulty": "intermediate",
+      "estimatedTime": 40
+    },
+    {
+      "id": "resource-2",
+      "title": "Understanding useMemo and useCallback",
+      "description": "Deep dive video explaining when and how to use React's memoization hooks effectively",
+      "url": "https://www.youtube.com/watch?v=uojLJFt9SzY",
+      "type": "video",
+      "difficulty": "intermediate",
+      "estimatedTime": 35
+    },
+    {
+      "id": "resource-3",
+      "title": "Code Splitting with React.lazy and Suspense",
+      "description": "Tutorial on implementing code splitting to reduce initial bundle size",
+      "url": "https://react.dev/reference/react/lazy",
+      "type": "tutorial",
+      "difficulty": "intermediate",
+      "estimatedTime": 45
+    },
+    {
+      "id": "resource-4",
+      "title": "Performance Optimization Project",
+      "description": "Hands-on project to optimize a slow React application using all techniques learned",
+      "url": "https://github.com/react-performance",
+      "type": "project",
+      "difficulty": "advanced",
+      "estimatedTime": 150
+    }
+  ],
+  "topics": ["React", "Performance", "Optimization", "Memoization", "Code Splitting", "Bundle Size"],
+  "keywords": ["useMemo", "useCallback", "React.memo", "lazy loading", "code splitting", "profiler", "bundle optimization"]
+}

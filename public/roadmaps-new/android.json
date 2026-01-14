@@ -1,0 +1,106 @@
+{
+    "domain": "Modern Android Development (MAD)",
+    "type": "premium",
+    "overview": "Global (2026) roadmap for entry → senior level Android developers. Covers Kotlin Multiplatform (KMP), declarative UI (Compose), on-device AI (Gemini Nano), and multi-device optimization.",
+    "steps": [
+        {
+            "title": "1. Modern Kotlin & Multitasking",
+            "description": "Kotlin is the non-negotiable standard. In 2026, proficiency means mastering asynchronous and multi-platform syntax.",
+            "subtopics": [
+                "Kotlin Foundations: Null safety, data classes, and sealed types",
+                "Advanced Coroutines: Structured concurrency, Scopes, and Flows for reactive state",
+                "Kotlin Multiplatform (KMP): Sharing business logic between Android, iOS, and Web",
+                "Kotlinx Serialization: The KMP-first alternative to Moshi/GSON"
+            ],
+            "resources": [
+                "https://kotlinlang.org/docs/multiplatform.html",
+                "https://developer.android.com/kotlin/coroutines"
+            ]
+        },
+        {
+            "title": "2. Declarative UI & Adaptive Layouts",
+            "description": "Jetpack Compose is the primary UI framework. XML is now largely for legacy maintenance.",
+            "subtopics": [
+                "Jetpack Compose: State-driven UI, Recomposition, and Modifiers",
+                "Navigation 3.0: Composable-to-Composable navigation (goodbye NavController)",
+                "Adaptive Design: Building for foldables, tablets, and large screens",
+                "Material Design 3 (M3): Dynamic theming and accessible design components",
+                "Graphics & Animation: Compose-native canvas and micro-interactions"
+            ],
+            "resources": [
+                "https://developer.android.com/jetpack/compose",
+                "https://m3.material.io/"
+            ]
+        },
+        {
+            "title": "3. On-Device AI & Intelligence",
+            "description": "2026 is the year of 'AI-Native' apps. AI is now a foundation, not a feature.",
+            "subtopics": [
+                "Gemini Nano & AICore: Running LLMs directly on the device for privacy",
+                "TensorFlow Lite: Deploying custom ML models for image/speech recognition",
+                "MediaPipe: High-level vision and gesture tasks",
+                "Vector Search: Using on-device vector stores (e.g., MongoDB Atlas) for AI retrieval",
+                "Prompt Engineering: Crafting local prompts for text summarization and smart replies"
+            ],
+            "resources": [
+                "https://developer.android.com/ai",
+                "https://ai.google.dev/edge"
+            ]
+        },
+        {
+            "title": "4. Architecture & Data Flow",
+            "description": "Scaling apps with clean, testable, and maintainable patterns.",
+            "subtopics": [
+                "MVVM & MVI: Choosing between state-driven and intent-driven architectures",
+                "Dependency Injection: Hilt (Standard) vs. Koin (KMP Favorite)",
+                "Persistence: Room (SQLite) vs. DataStore for key-value pairs",
+                "Networking: Retrofit for REST vs. Ktor for KMP-compatible requests",
+                "Offline-First: Syncing data with WorkManager and repository patterns"
+            ],
+            "resources": [
+                "https://developer.android.com/topic/architecture",
+                "https://insert-koin.io/"
+            ]
+        },
+        {
+            "title": "5. Security, Privacy & Performance",
+            "description": "Handling stricter OS permissions and optimizing for battery/data.",
+            "subtopics": [
+                "Privacy-by-Design: Local data processing and strict permission handling",
+                "Security Models: Zero-trust, biometrics, and end-to-end encryption",
+                "Performance Profiling: Using Android Studio Profiler to monitor CPU and battery",
+                "Baseline Profiles: Reducing app startup time and jank"
+            ],
+            "resources": [
+                "https://developer.android.com/topic/performance",
+                "https://developer.android.com/topic/security"
+            ]
+        },
+        {
+            "title": "Capstone Projects: 2026 Portfolio Ideas",
+            "description": "Projects that prove you can handle modern device constraints and AI.",
+            "projects": [
+                {
+                    "name": "KMP Fitness Tracker",
+                    "description": "A fitness app sharing logic between Android and iOS. Uses Health Connect API and KMP business logic.",
+                    "tech_stack": ["Kotlin Multiplatform", "Compose Multiplatform", "SQLDelight", "Koin"]
+                },
+                {
+                    "name": "Privacy-First AI Life Manager",
+                    "description": "An agentic personal assistant using Gemini Nano for local text summarization of notes and emails.",
+                    "tech_stack": ["AICore", "Gemini Nano", "Jetpack Compose", "Hilt"]
+                },
+                {
+                    "name": "Adaptive Foldable E-Commerce",
+                    "description": "A shopping app that changes layout dynamically when folded/unfolded, with multi-window support.",
+                    "tech_stack": ["Jetpack Compose", "Window-Manager", "Retrofit", "M3"]
+                }
+            ],
+            "freshers_showcase_tips": [
+                "Publish to Play Store: Learning the release process is now a core skill.",
+                "Technical Blog: Write about migrating a Fragment-based app to Navigation 3.0.",
+                "Showcase Adaptivity: Provide a screen-recording of your app running on both a phone and a tablet emulator."
+            ]
+        }
+    ]
+}

@@ -1,0 +1,78 @@
+{
+    "domain": "iOS & Apple Ecosystem Engineering",
+    "type": "premium_full_career",
+    "overview": "A 2026-ready, hire-focused roadmap. This path covers the full spectrum from foundational computer science to advanced Apple Intelligence integration, spatial computing, and professional interview readiness.",
+    "steps": [
+        {
+            "title": "1. Computer Science & Swift Mastery",
+            "description": "The logical foundation required for any high-paying engineering role.",
+            "subtopics": [
+                "Data Structures: Arrays, Linked Lists, Stacks, Queues, Hash Maps, and Tries",
+                "Algorithms: Sorting, Binary Search, BFS/DFS, and Kadane’s Algorithm",
+                "Time/Space Complexity: Mastering Big O for performance optimization",
+                "Advanced Swift: Protocols, Generics, Enums with Associated Values, and Swift Macros",
+                "Memory Management: ARC (Automatic Reference Counting), retain cycles, and weak/unowned references",
+                "Structured Concurrency: Async/await, Actors, Task Groups, and GCD"
+            ],
+            "resources": [
+                "https://docs.swift.org/swift-book/",
+                "https://github.com/donnemartin/system-design-primer",
+                "https://www.hackingwithswift.com/"
+            ]
+        },
+        {
+            "title": "2. Modern UI & UX Excellence",
+            "description": "Mastering Apple’s design philosophy to build 'premium' feeling apps.",
+            "subtopics": [
+                "SwiftUI Mastery: State management (@State, @Binding, @Observable macro) and Layouts",
+                "Apple Human Interface Guidelines (HIG): Spacing, typography, and motion standards",
+                "Accessibility (A11y): Dynamic Type, VoiceOver, and high-contrast support",
+                "Advanced Animations: Phase-based animations and custom transitions for polish",
+                "UIKit Interoperability: Managing legacy codebases using UIViewControllerRepresentable"
+            ]
+        },
+        {
+            "title": "3. Data & Scalable Architecture",
+            "description": "Building modular apps that handle millions of users without breaking.",
+            "subtopics": [
+                "SwiftData: Macro-based local persistence (modern successor to Core Data)",
+                "Architecture Patterns: MVVM (Standard), VIPER (Complex), and Clean Architecture",
+                "Networking: URLSession with async/await, Codable, and Alamofire",
+                "Dependency Management: Swift Package Manager (SPM) and CocoaPods",
+                "CloudKit: Seamless data syncing across the Apple ecosystem"
+            ]
+        },
+        {
+            "title": "4. Apple Intelligence & On-Device AI",
+            "description": "Integrating Apple's 2026 AI foundation directly into your apps.",
+            "subtopics": [
+                "Foundation Models Framework: On-device text summarization and extraction",
+                "App Intents: Exposing app features to Siri and Apple Intelligence",
+                "Core ML & Create ML: Running and training custom vision/NLP models on-device",
+                "Writing Tools & Image Playground: Integrating system-wide AI capabilities",
+                "Privacy-First AI: Local processing and Private Cloud Compute principles"
+            ]
+        },
+        {
+            "title": "5. Specialist Domains (Pick 1-2)",
+            "description": "Niche skills that differentiate senior candidates in the job market.",
+            "subtopics": [
+                "Spatial Computing (VisionOS): 3D interfaces and immersive volumes",
+                "WatchOS & HealthKit: Complications and fitness data integration",
+                "Performance Optimization: Using Instruments to profile CPU, memory, and battery",
+                "CI/CD & DevOps: GitHub Actions, Jenkins, and Fastlane automation",
+                "Security: Keychain storage, Biometrics, and HTTPS/TLS best practices"
+            ]
+        },
+        {
+            "title": "6. Career Readiness & Hiring Prep",
+            "description": "The 'everything else' required to actually land the offer.",
+            "subtopics": [
+                "Interview Mastery: Behavioral STAR stories and System Design for iOS",
+                "Portfolio: Host apps on the App Store with clear READMEs and demo videos",
+                "Soft Skills: Communication, critical thinking, and team player attitude",
+                "App Store Connect: Handling certificates, provisioning profiles, and App Store rules"
+            ]
+        }
+    ]
+}

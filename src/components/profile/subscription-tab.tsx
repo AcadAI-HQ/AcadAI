@@ -1,27 +1,42 @@
 "use client";
 
+import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { auth } from '@/lib/firebase';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog';
 
 export function SubscriptionTab() {
   const { user } = useAuth();
+  const { toast } = useToast();
+  const [cancelling, setCancelling] = useState(false);
 
   const subscription = user?.subscription;
   const tier = subscription?.tier || 'free';
   const status = subscription?.status || 'inactive';
-  const isPremium = tier === 'premium' && status === 'active';
+  const bypass = user?.flags?.bypassPremium === true || (user as any)?.roles?.admin === true;
+  const isPremium = (tier === 'premium' && status === 'active') || bypass;
 
-  // Format price
   const formatPrice = (amount: number, currency: string = 'USD') => {
     const symbol = currency === 'USD' ? '$' : '₹';
     return `${symbol}${amount.toFixed(2)}`;
   };
 
-  // Format dates
   const formatDate = (date: any) => {
     if (!date) return 'N/A';
     const d = date.toDate ? date.toDate() : new Date(date);
@@ -32,9 +47,45 @@ export function SubscriptionTab() {
     });
   };
 
+  async function requestCancellation() {
+    try {
+      setCancelling(true);
+      const token = await auth.currentUser?.getIdToken();
+      if (!token) {
+        throw new Error('You must be signed in to cancel your subscription.');
+      }
+
+      const res = await fetch('/api/subscription/cancel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ cancel_at_period_end: true }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || 'Cancellation failed');
+      }
+
+      toast({
+        title: 'Cancellation scheduled',
+        description: 'Your subscription will remain active until the end of the current billing period.',
+      });
+    } catch (e: any) {
+      toast({
+        title: 'Cancellation failed',
+        description: e?.message || 'Please try again or use Manage Billing.',
+        variant: 'destructive',
+      });
+    } finally {
+      setCancelling(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
-      {/* Current Plan Card */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -53,14 +104,13 @@ export function SubscriptionTab() {
               variant={isPremium ? 'default' : 'secondary'}
               className="text-sm px-3 py-1"
             >
-              {tier === 'premium' ? 'Premium' : 'Free'}
+              {bypass ? 'Admin Preview' : (tier === 'premium' ? 'Premium' : 'Free')}
             </Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {isPremium ? (
             <>
-              {/* Subscription Details */}
               <div className="space-y-3">
                 {subscription?.interval && (
                   <div className="flex items-center justify-between text-sm">
@@ -101,16 +151,62 @@ export function SubscriptionTab() {
                 )}
               </div>
 
-              {/* Subscription Status */}
-              <div className="pt-4 border-t">
-                <p className="text-sm text-muted-foreground text-center">
-                  Thank you for being a premium member!
-                </p>
-              </div>
+              {bypass ? (
+                <div className="pt-4 border-t space-y-2">
+                  <div className="rounded-lg bg-blue-500/10 border border-blue-500/20 p-3">
+                    <p className="text-sm text-blue-600 dark:text-blue-400">
+                      Admin Preview enabled for this account. Billing actions are disabled.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="pt-4 border-t space-y-2">
+                  <Button
+                    asChild
+                    className="w-full"
+                    variant="outline"
+                    disabled={!subscription?.customerId}
+                  >
+                    <Link href={subscription?.customerId ? `/customer-portal?customer_id=${subscription.customerId}` : '#'}>
+                      Manage Billing
+                    </Link>
+                  </Button>
+
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        className="w-full"
+                        variant="destructive"
+                        disabled={!!subscription?.cancelAtPeriodEnd || cancelling}
+                      >
+                        {subscription?.cancelAtPeriodEnd ? 'Cancellation Scheduled' : 'Cancel Subscription'}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Cancel at period end?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          You will retain access until the end of your current billing period. This action can be reversed
+                          by resubscribing. You can also manage billing in the portal.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Keep Subscription</AlertDialogCancel>
+                        <AlertDialogAction onClick={requestCancellation} disabled={cancelling}>
+                          {cancelling ? 'Scheduling…' : 'Confirm Cancel'}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
+                  <p className="text-xs text-muted-foreground text-center">
+                    Update payment method, cancel, or download invoices in the secure portal.
+                  </p>
+                </div>
+              )}
             </>
           ) : (
             <>
-              {/* Free Plan Features */}
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">
                   You're currently on the free plan with access to:
@@ -123,7 +219,6 @@ export function SubscriptionTab() {
                 </ul>
               </div>
 
-              {/* Upgrade Button */}
               <div className="pt-4 border-t">
                 <Button asChild className="w-full">
                   <Link href="/pricing">
@@ -140,7 +235,6 @@ export function SubscriptionTab() {
         </CardContent>
       </Card>
 
-      {/* Premium Features Card */}
       {!isPremium && (
         <Card className="border-primary/50 bg-primary/5">
           <CardHeader>

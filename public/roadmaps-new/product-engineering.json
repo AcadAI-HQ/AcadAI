@@ -1,0 +1,125 @@
+{
+    "domain": "Product Engineering",
+    "type": "premium",
+    "overview": "Global (2026) roadmap for engineers who build products, not just features. Focuses on the intersection of fullstack technical mastery, product-led growth (PLG) strategy, AI-native workflows, and observability.",
+    "steps": [
+        {
+            "title": "Product Mindset & Growth Engineering",
+            "description": "Understanding the business logic and user psychology that justifies why a feature exists.",
+            "subtopics": [
+                "North Star Metrics: Identifying the single signal that defines product success",
+                "Conversion Funnels: Mastering Acquisition → Activation → Retention → Referral → Revenue",
+                "Unit Economics: Understanding LTV (Lifetime Value) vs. CAC (Customer Acquisition Cost)",
+                "Time to First Value (TTV): Engineering 'Aha!' moments within the first 60 seconds",
+                "Prioritization Frameworks: RICE scoring (Reach, Impact, Confidence, Effort)",
+                "Experimentation: Designing A/B tests and 'Synthetic Evals' for feature validation"
+            ],
+            "resources": [
+                "https://www.reforge.com/blog",
+                "https://growth.design/psychology",
+                "https://www.intercom.com/blog/videos/what-is-product-engineering/"
+            ]
+        },
+        {
+            "title": "Modern Product Architecture",
+            "description": "Building modular, event-driven systems that can pivot as fast as the market.",
+            "subtopics": [
+                "Domain-Driven Design (DDD): Aligning code structure with business domains",
+                "Event-Driven Architecture (EDA): Using real-time triggers for sync and personalization",
+                "Modular Monoliths vs. Microservices: Choosing the right scale for the product stage",
+                "API Design & Documentation: GraphQL, REST, and 'API-First' thinking",
+                "Feature Flagging: Decoupling deployment from release using PostHog or LaunchDarkly",
+                "Database Patterns: Relational for consistency vs. Document for rapid iteration"
+            ],
+            "resources": [
+                "https://microservices.io/",
+                "https://martinfowler.com/architecture/"
+            ]
+        },
+        {
+            "title": "AI-Native Engineering Workflows",
+            "description": "Integrating AI as a core architectural layer and a development accelerator.",
+            "subtopics": [
+                "Context Engineering: Building persistent AI workspaces that remember persona constraints",
+                "Retrieval-Augmented Generation (RAG): Connecting LLMs to live product data",
+                "AI Agentic Workflows: Creating autonomous systems that plan and use tools",
+                "Evaluation Frameworks: Measuring accuracy to prevent model hallucinations",
+                "Vibe Coding: Rapidly iterating on functional prototypes using tools like Cursor or v0",
+                "AI UI Patterns: Streaming responses, skeleton loaders, and human-in-the-loop triggers"
+            ],
+            "resources": [
+                "https://platform.openai.com/docs",
+                "https://www.anthropic.com/news/introducing-computer-use",
+                "https://cursor.com/"
+            ]
+        },
+        {
+            "title": "Observability & Operational Effectiveness",
+            "description": "Monitoring the health of the product through the lens of the user experience.",
+            "subtopics": [
+                "Cycle Time: Measuring the duration from 'Idea' to 'Production'",
+                "Defect Rate: Monitoring bug frequency early in the sprint cycle",
+                "User Error Monitoring: Catching frontend crashes using Sentry or LogRocket",
+                "Product Analytics: Tracking events and heatmaps with Amplitude or Mixpanel",
+                "Mean Time to Recovery (MTTR): Optimizing the speed of critical system fixes",
+                "Deployment Strategies: Blue/Green, Canary releases, and graceful rollbacks"
+            ],
+            "resources": [
+                "https://opentelemetry.io/docs/",
+                "https://sentry.io/resources/product-engineering/"
+            ]
+        },
+        {
+            "title": "Design for Engineers & UX Empathy",
+            "description": "Building polished, accessible interfaces without needing a dedicated designer for every change.",
+            "subtopics": [
+                "Design Systems: Building/consuming Tailwind CSS or Headless UI components",
+                "8pt Grid System & Visual Hierarchy basics",
+                "Micro-interactions: Using Framer Motion for high-quality 'feel'",
+                "Accessibility (A11y): Screen reader compatibility and keyboard navigation",
+                "Responsive Design: Fluid layouts across mobile, desktop, and foldables"
+            ],
+            "resources": [
+                "https://tailwindcss.com/docs",
+                "https://www.framer.com/motion/",
+                "https://lawsofux.com/"
+            ]
+        },
+        {
+            "title": "Capstone Projects: Product Engineer Showcase",
+            "description": "Projects that demonstrate 'Mini-CTO' thinking—balancing tech, product, and AI.",
+            "projects": [
+                {
+                    "name": "AI-Powered CRM with Autonomous Outreach",
+                    "description": "A CRM that uses RAG to understand customer history and AI Agents to draft personalized emails based on live triggers.",
+                    "tech_stack": ["Next.js", "Supabase", "OpenAI / LangChain", "PostHog (Analytics)", "Stripe"],
+                    "showcase_tips": [
+                        "Include a 'Product Spec' explaining the RICE score of the agent feature",
+                        "Show A/B test results of different email templates",
+                        "Demonstrate observability dashboards for agent success rates"
+                    ]
+                },
+                {
+                    "name": "Collaborative Real-time Incident Command Center",
+                    "description": "A dashboard for dev teams to manage outages. Features real-time sync, incident timelines, and AI-generated post-mortems.",
+                    "tech_stack": ["React", "Go / Node.js", "WebSockets / Replicache", "Sentry API integration"],
+                    "showcase_tips": [
+                        "Highlight the MTTR reduction potential",
+                        "Show conflict resolution in the collaborative editor",
+                        "Include a demo of the AI summarizing the incident log"
+                    ]
+                },
+                {
+                    "name": "Smart E-Learning Platform with Adaptive Curriculum",
+                    "description": "Uses AI to re-order course modules based on quiz performance and user speed (TTV focus).",
+                    "tech_stack": ["FastAPI", "PostgreSQL (pgvector)", "D3.js for progress visualization"],
+                    "showcase_tips": [
+                        "Expose the 'User Journey Map' in the README",
+                        "Show the vector search logic for content recommendations",
+                        "Demonstrate 'Aha!' moment tracking"
+                    ]
+                }
+            ]
+        }
+    ]
+}

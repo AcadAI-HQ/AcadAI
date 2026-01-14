@@ -1,0 +1,131 @@
+{
+  "domain": "UI/UX & Product Design",
+  "type": "premium_expanded",
+  "overview": "A 2026-ready comprehensive roadmap for Product Designers. This path bridges the gap between raw visual design, cognitive psychology, technical feasibility, and business strategy.",
+  "steps": [
+    {
+      "title": "1. Visual Perception & Design Foundations",
+      "description": "Mastering the 'Visual Grammar' required to create professional interfaces.",
+      "subtopics": [
+        "Gestalt Principles: Proximity, Similarity, Enclosure, and Figure/Ground",
+        "Visual Hierarchy: Using scale, color, and weight to guide eye movement",
+        "Typography Systems: Line heights (1.5x rule), kerning, and accessibility-first scales",
+        "Color Theory & Systems: Semantic colors (success/error), 60-30-10 rule, and WCAG 2.1 compliance",
+        "Grid Systems: 8pt soft grid, column layouts (12-column), and modular scales",
+        "Iconography: Stroke consistency, optical balancing, and SVG optimization"
+      ],
+      "resources": [
+        "https://lawsofux.com/",
+        "https://fonts.google.com/knowledge",
+        "https://www.interaction-design.org/literature/topics/visual-hierarchy"
+      ]
+    },
+    {
+      "title": "2. Cognitive Psychology & UX Principles",
+      "description": "Understanding how the human brain processes information to reduce friction.",
+      "subtopics": [
+        "Hick’s Law: Reducing choices to decrease decision time",
+        "Fitts's Law: Optimizing touch targets and button placement",
+        "Mental Models: Aligning UI with user expectations (Jakob's Law)",
+        "Cognitive Load: Chunking information and progressive disclosure",
+        "Emotional Design: Using the Visceral, Behavioral, and Reflective levels (Don Norman)",
+        "The Von Restorff Effect: Making critical actions stand out"
+      ],
+      "resources": [
+        "https://nngroup.com/articles/ten-usability-heuristics/",
+        "https://growth.design/psychology"
+      ]
+    },
+    {
+      "title": "3. User Research & Information Architecture",
+      "description": "Moving beyond assumptions to data-driven design decisions.",
+      "subtopics": [
+        "Qualitative Research: User interviews, ethnography, and focus groups",
+        "Quantitative Research: Surveys, A/B test results, and heatmaps (Hotjar/FullStory)",
+        "Information Architecture: Sitemap nesting, taxonomy, and labeling",
+        "Card Sorting & Tree Testing: Validating navigation structures",
+        "Empathy Mapping & User Personas: Creating data-backed archetypes",
+        "Journey Mapping: Identifying pain points in the end-to-end user flow"
+      ],
+      "resources": [
+        "https://www.nngroup.com/articles/user-journey-mapping-101/",
+        "https://boxesandarrows.com/"
+      ]
+    },
+    {
+      "title": "4. High-Fidelity Prototyping & Logic",
+      "description": "Building interactive models that look and behave like real software.",
+      "subtopics": [
+        "Figma Advanced: Auto-layout 5.0, Variables (Tokens), and Component Properties",
+        "Conditional Prototyping: Creating 'if/then' logic within design tools",
+        "Micro-interactions: Using 'Smart Animate' for state changes and loading states",
+        "Responsive & Adaptive Design: Breakpoints for Foldables, Desktop, and Mobile",
+        "Native OS Patterns: iOS Human Interface Guidelines vs. Android Material Design 3"
+      ],
+      "resources": [
+        "https://help.figma.com/hc/en-us/articles/360040328273-Create-advanced-prototypes",
+        "https://m3.material.io/"
+      ]
+    },
+    {
+      "title": "5. Design Systems & Handoff",
+      "description": "Creating scalable libraries that bridge the gap between design and code.",
+      "subtopics": [
+        "Atomic Design: Atoms (buttons) → Molecules (search bars) → Organisms (headers)",
+        "Design Tokens: Platform-agnostic variables for color, spacing, and motion",
+        "Documentation: Writing 'Usage Guidelines' and 'Design Specs'",
+        "Dev Handoff: Tools like Zeplin, Storybook integration, and CSS inspection",
+        "Version Control: Branching, merging, and auditing design changes in Figma"
+      ],
+      "resources": [
+        "https://atomicdesign.bradfrost.com/",
+        "https://designsystems.com/"
+      ]
+    },
+    {
+      "title": "6. Specialized Design Domains (Choose 1-2)",
+      "description": "Niche skills that differentiate a senior designer from a junior.",
+      "subtopics": [
+        "Saas & Dashboard Design: Managing high data density and complex tables",
+        "Mobile App Design: Gestures, haptics, and thumb-zone optimization",
+        "E-commerce UX: Conversion Rate Optimization (CRO) and checkout flows",
+        "AI UX: Designing for uncertainty, LLM chat interfaces, and feedback loops",
+        "Accessibility (a11y): Screen reader testing and keyboard navigation focus states"
+      ],
+      "resources": [
+        "https://www.a11yproject.com/",
+        "https://humane.com/uicp"
+      ]
+    },
+    {
+      "title": "7. The Business of Design",
+      "description": "Aligning user needs with stakeholder goals and KPIs.",
+      "subtopics": [
+        "UX Metrics: Measuring success via SUS (System Usability Scale) and NPS",
+        "Product Strategy: Product-Market Fit and Value Proposition Canvas",
+        "Stakeholder Management: Presenting design 'critique' and handling pushback",
+        "Lean UX & Agile: Working in sprints and iterative 'build-measure-learn' loops"
+      ]
+    },
+    {
+      "title": "8. Capstone Projects (Showcase Ready)",
+      "projects": [
+        {
+          "name": "The 'Complexity' Dashboard",
+          "description": "Design a B2B SaaS platform for managing logistics or cloud infra. Focus on data viz, filtering, and bulk actions.",
+          "deliverables": ["Interactive Prototype", "Design System", "Usability Test Report"]
+        },
+        {
+          "name": "Social Impact / Accessibility Redesign",
+          "description": "Take a government or healthcare portal and redesign it for WCAG 2.1 AAA compliance.",
+          "deliverables": ["Audit of current site", "High-fidelity redesign", "Accessibility documentation"]
+        },
+        {
+          "name": "Future-Facing AI Assistant",
+          "description": "A cross-platform app where AI assists with a specific vertical (e.g., mental health or legal aid).",
+          "deliverables": ["User Journey Map", "Prompt Interaction UI", "Safety/Ethics documentation"]
+        }
+      ]
+    }
+  ]
+}

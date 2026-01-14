@@ -1,0 +1,42 @@
+{
+  "domain": "ui-ux",
+  "weekNumber": 1,
+  "title": "UI/UX Design Fundamentals: User-Centered Design Principles",
+  "description": "Learn the foundations of UI/UX design including design thinking, user research, wireframing, prototyping, and creating intuitive user experiences.",
+  "publishedDate": "2026-01-13",
+  "difficulty": "beginner",
+  "estimatedTime": 185,
+  "mainArticle": {
+    "id": "main-article",
+    "title": "Introduction to UI/UX Design",
+    "description": "Master the fundamentals of creating beautiful and functional user interfaces",
+    "type": "article",
+    "difficulty": "beginner",
+    "estimatedTime": 50,
+    "content": {
+      "markdown": "# Introduction to UI/UX Design\n\nUI/UX design is about creating products people love to use. Learn to design beautiful, intuitive interfaces that solve real problems.\n\n## UI vs UX\n\n**UI (User Interface)**: How it looks\n- Visual design\n- Colors, typography\n- Layout, spacing\n- Interactive elements\n\n**UX (User Experience)**: How it works\n- User research\n- Information architecture\n- User flows\n- Usability testing\n\n## Design Thinking Process\n\n1. **Empathize** - Understand users\n2. **Define** - Identify problems\n3. **Ideate** - Generate solutions\n4. **Prototype** - Build mockups\n5. **Test** - Get feedback\n\n## Essential Design Principles\n\n### 1. Visual Hierarchy\n\nGuide user attention:\n- Size (larger = more important)\n- Color (contrast draws eyes)\n- Position (top/center gets noticed)\n- Whitespace (breathing room)\n\n### 2. Consistency\n\nMaintain patterns:\n- Same buttons everywhere\n- Consistent colors\n- Uniform spacing\n- Predictable navigation\n\n### 3. Accessibility\n\nDesign for everyone:\n- Color contrast (4.5:1 minimum)\n- Clear typography\n- Keyboard navigation\n- Screen reader support\n\n### 4. Feedback\n\nAcknowledge actions:\n- Loading states\n- Success messages\n- Error states\n- Hover effects\n\n## Color Theory\n\n### Color Psychology\n- **Blue**: Trust, professional\n- **Green**: Nature, success\n- **Red**: Urgency, danger\n- **Yellow**: Optimism, warning\n- **Purple**: Luxury, creative\n\n### Creating Color Schemes\n\n```\nPrimary Color: Brand identity\nSecondary Colors: Supporting elements\nNeutral Colors: Text, backgrounds\nAccent Colors: CTAs, highlights\n```\n\n**Tools**: Adobe Color, Coolors.co\n\n## Typography\n\n### Font Pairing\n\n```\nHeading: Sans-serif (modern, clean)\nBody: Sans-serif or Serif (readable)\nAccent: Display font (sparingly)\n```\n\n### Text Hierarchy\n\n```css\nH1: 32-48px (page title)\nH2: 24-32px (section headers)\nH3: 20-24px (subsections)\nBody: 16-18px (main text)\nCaption: 12-14px (small text)\n```\n\n## Layout & Spacing\n\n### 8-Point Grid System\n\nUse multiples of 8px:\n- Spacing: 8px, 16px, 24px, 32px\n- Consistent rhythm\n- Easier development\n\n### Whitespace\n\nNot wasted space:\n- Improves readability\n- Creates focus\n- Feels premium\n- Reduces cognitive load\n\n## Wireframing\n\nLow-fidelity sketches:\n\n```\n┌─────────────────────────┐\n│     Logo    Menu        │\n├─────────────────────────┤\n│                         │\n│   Hero Section          │\n│   [CTA Button]          │\n│                         │\n├─────────────────────────┤\n│  Feature  Feature       │\n│  Feature  Feature       │\n└─────────────────────────┘\n```\n\n**Tools**: Figma, Sketch, Adobe XD\n\n## User Research Methods\n\n### 1. User Interviews\n- One-on-one conversations\n- Understand pain points\n- Discover needs\n- Validate assumptions\n\n### 2. Surveys\n- Reach many users\n- Quantitative data\n- Easy to analyze\n- Low cost\n\n### 3. Usability Testing\n- Watch users interact\n- Find friction points\n- Test prototypes\n- Iterate quickly\n\n### 4. Analytics\n- Track behavior\n- Heatmaps\n- Click tracking\n- Conversion funnels\n\n## Creating User Personas\n\n```\nName: Sarah Marketing Manager\nAge: 32\nGoals:\n- Increase campaign efficiency\n- Save time on reports\n- Better team collaboration\n\nFrustrations:\n- Too many tools\n- Slow reporting\n- Poor mobile experience\n\nBehaviors:\n- Checks phone frequently\n- Values quick wins\n- Collaborative worker\n```\n\n## User Flows\n\nMap user journeys:\n\n```\nSign Up Flow:\n1. Land on homepage\n2. Click \"Sign Up\"\n3. Enter email\n4. Create password\n5. Verify email\n6. Complete onboarding\n7. Reach dashboard\n```\n\n## Prototyping\n\n### Low-Fidelity\n- Paper sketches\n- Basic wireframes\n- Quick iterations\n- Early testing\n\n### High-Fidelity\n- Detailed designs\n- Interactions\n- Real content\n- Final testing\n\n## Design Systems\n\nConsistent component libraries:\n\n**Components:**\n- Buttons\n- Forms\n- Cards\n- Navigation\n- Icons\n\n**Examples**: Material Design, Apple Human Interface Guidelines\n\n## Mobile Design\n\n### Responsive Design\n\n```\nMobile: 320-480px\nTablet: 768-1024px\nDesktop: 1280px+\n```\n\n### Mobile-First Approach\n1. Design for smallest screen\n2. Add features for larger screens\n3. Progressive enhancement\n\n### Touch Targets\n- Minimum 44x44px\n- Comfortable spacing\n- Easy thumb reach\n\n## Common UI Patterns\n\n### Navigation\n- Top nav (desktop)\n- Hamburger menu (mobile)\n- Bottom tabs (mobile apps)\n- Breadcrumbs (depth)\n\n### Forms\n- Clear labels\n- Inline validation\n- Progress indicators\n- Error messages\n\n### Cards\n- Group related content\n- Scannable format\n- Clickable sections\n- Clear hierarchy\n\n## Accessibility (A11Y)\n\n### WCAG Guidelines\n\n**Perceivable:**\n- Alt text for images\n- Captions for videos\n- Color not only indicator\n\n**Operable:**\n- Keyboard accessible\n- No time limits (or adjustable)\n- Clear focus states\n\n**Understandable:**\n- Clear language\n- Predictable navigation\n- Error prevention\n\n**Robust:**\n- Works with assistive tech\n- Valid HTML\n- Semantic markup\n\n## Design Tools\n\n### Figma (Recommended)\n- Free for individuals\n- Browser-based\n- Real-time collaboration\n- Prototyping included\n\n### Adobe XD\n- Part of Creative Cloud\n- Good prototyping\n- Adobe integration\n\n### Sketch\n- Mac only\n- Industry standard\n- Plugin ecosystem\n\n## Best Practices\n\n1. ✅ Start with user research\n2. ✅ Design mobile-first\n3. ✅ Use consistent spacing\n4. ✅ Test with real users\n5. ✅ Follow accessibility guidelines\n6. ✅ Iterate based on feedback\n7. ✅ Create design system\n\n## Common Mistakes\n\n❌ **Skipping research** - Design without understanding users\n❌ **Too many colors** - Stick to 2-3 main colors\n❌ **Poor contrast** - Text must be readable\n❌ **Inconsistent spacing** - Use a system\n❌ **No clear CTA** - Make actions obvious\n❌ **Ignoring mobile** - Mobile-first approach\n\n## Learning Resources\n\n- **Dribbble**: Design inspiration\n- **Behance**: Portfolio showcase\n- **UI Patterns**: Common solutions\n- **Laws of UX**: Design principles\n\n## Next Steps\n\n1. Learn Figma basics\n2. Redesign existing app/website\n3. Create personal portfolio\n4. Join design communities\n5. Build design system\n6. Practice daily\n\nStart designing today! 🎨"
+    }
+  },
+  "resources": [
+    {
+      "id": "resource-1",
+      "title": "Laws of UX",
+      "description": "Essential psychology principles for designers",
+      "url": "https://lawsofux.com/",
+      "type": "article",
+      "difficulty": "beginner",
+      "estimatedTime": 45
+    },
+    {
+      "id": "resource-2",
+      "title": "Figma Tutorial for Beginners",
+      "description": "Complete guide to using Figma for UI design",
+      "url": "https://www.youtube.com/watch?v=FTFaQWZBqQ8",
+      "type": "video",
+      "difficulty": "beginner",
+      "estimatedTime": 90
+    }
+  ],
+  "topics": ["UI Design", "UX Design", "User Research", "Wireframing", "Prototyping", "Accessibility"],
+  "keywords": ["UI", "UX", "design", "user interface", "user experience", "wireframe", "prototype", "figma", "accessibility"]
+}

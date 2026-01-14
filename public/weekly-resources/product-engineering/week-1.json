@@ -1,0 +1,42 @@
+{
+  "domain": "product-engineering",
+  "weekNumber": 1,
+  "title": "Product Engineering Fundamentals: Building Products Users Love",
+  "description": "Learn product thinking, user-centric development, MVP creation, product analytics, and how to build and iterate on successful software products.",
+  "publishedDate": "2026-01-13",
+  "difficulty": "beginner",
+  "estimatedTime": 180,
+  "mainArticle": {
+    "id": "main-article",
+    "title": "Introduction to Product Engineering",
+    "description": "Master the art of building products that solve real problems",
+    "type": "article",
+    "difficulty": "beginner",
+    "estimatedTime": 48,
+    "content": {
+      "markdown": "# Introduction to Product Engineering\n\nProduct Engineering combines technical skills with product thinking to build solutions users actually want. Learn to create products that matter.\n\n## Product Engineering vs Software Development\n\n**Software Developer:**\n- Implements features\n- Focuses on code quality\n- Solves technical problems\n\n**Product Engineer:**\n- Understands user needs\n- Questions feature value\n- Balances tech and business\n- Measures impact\n\n## Product Thinking\n\n### The Right Questions\n\n1. **Who** is this for?\n2. **What** problem does it solve?\n3. **Why** will users choose this?\n4. **How** do we measure success?\n5. **When** should we ship?\n\n### Product-Market Fit\n\nBuilding something people want:\n- Solve a real problem\n- Better than alternatives\n- Users willing to pay/use\n- Sustainable growth\n\n## MVP (Minimum Viable Product)\n\n### What is MVP?\n\nSmallest version that:\n- Solves core problem\n- Tests hypothesis\n- Gets user feedback\n- Ships quickly\n\n### MVP Example: Food Delivery\n\n**NOT MVP:**\n❌ AI-powered recommendations\n❌ Live tracking with drones\n❌ Social features\n❌ Loyalty program\n\n**IS MVP:**\n✅ Browse restaurants\n✅ Place order\n✅ Simple payment\n✅ Basic delivery\n\n## User Research\n\n### Customer Development\n\n```\n1. Problem Interview\n   - What's your biggest challenge?\n   - How do you solve it now?\n   - Would you pay for a solution?\n\n2. Solution Interview\n   - Show prototype\n   - Get feedback\n   - Observe reactions\n\n3. MVP Testing\n   - Launch to small group\n   - Measure engagement\n   - Iterate based on data\n```\n\n### User Personas\n\n```\nEarly Adopter Emily\n- Age: 28, Tech-savvy\n- Tries new products\n- Tolerates bugs\n- Gives detailed feedback\n- Values innovation\n\nMass Market Mike\n- Age: 45, Cautious\n- Needs proven solutions\n- Expects polish\n- Values stability\n- Refers to peers\n```\n\n## Feature Prioritization\n\n### RICE Framework\n\n**Reach**: How many users affected?\n**Impact**: How much value per user?\n**Confidence**: How sure are we?\n**Effort**: Time to build?\n\n```\nScore = (Reach × Impact × Confidence) / Effort\n\nFeature A: (1000 × 3 × 80%) / 5 weeks = 480\nFeature B: (500 × 5 × 90%) / 2 weeks = 1125\n→ Prioritize Feature B\n```\n\n### MoSCoW Method\n\n- **Must Have**: Critical features\n- **Should Have**: Important but not vital\n- **Could Have**: Nice to have\n- **Won't Have**: Not now\n\n## Product Analytics\n\n### Key Metrics\n\n**Activation:**\n- User completes core action\n- \"Aha!\" moment\n- First value delivered\n\n**Engagement:**\n- Daily/Monthly Active Users\n- Session duration\n- Feature usage\n\n**Retention:**\n- Users coming back\n- Churn rate\n- Cohort analysis\n\n**Revenue:**\n- Customer Lifetime Value (LTV)\n- Customer Acquisition Cost (CAC)\n- Monthly Recurring Revenue (MRR)\n\n### Example Dashboard\n\n```\nWeek 1 Metrics:\n- New Users: 1,250\n- Activation Rate: 45%\n- Day 7 Retention: 38%\n- Weekly Active Users: 3,400\n- Revenue: $12,500\n```\n\n## A/B Testing\n\nTest variations:\n\n```javascript\n// Simple A/B test\nfunction assignVariant(userId) {\n  return userId % 2 === 0 ? 'control' : 'variant';\n}\n\nif (assignVariant(user.id) === 'variant') {\n  showNewCheckoutFlow();\n} else {\n  showOldCheckoutFlow();\n}\n\n// Measure results\nconst conversionRateA = 2.5%;\nconst conversionRateB = 3.2%;\n// B wins! Roll out to everyone\n```\n\n## Product Development Cycle\n\n1. **Discover**\n   - User research\n   - Identify problems\n   - Validate need\n\n2. **Define**\n   - Set goals\n   - Prioritize features\n   - Create specs\n\n3. **Design**\n   - Wireframes\n   - Prototypes\n   - User testing\n\n4. **Develop**\n   - Build MVP\n   - Iterate quickly\n   - Test continuously\n\n5. **Deploy**\n   - Soft launch\n   - Monitor metrics\n   - Gather feedback\n\n6. **Iterate**\n   - Analyze data\n   - Improve features\n   - Remove what doesn't work\n\n## Technical Product Decisions\n\n### Build vs Buy\n\n**Build when:**\n- Core competency\n- Unique needs\n- Long-term control\n\n**Buy when:**\n- Not differentiating\n- Faster time to market\n- Proven solution exists\n\n### Tech Stack Selection\n\nConsider:\n- Team expertise\n- Hiring availability\n- Scalability needs\n- Community support\n- Total cost of ownership\n\n## Feature Flags\n\nControl feature rollout:\n\n```javascript\nconst featureFlags = {\n  newDashboard: { enabled: true, percentage: 10 },\n  darkMode: { enabled: true, percentage: 100 },\n  aiChat: { enabled: false }\n};\n\nfunction isFeatureEnabled(feature, userId) {\n  const flag = featureFlags[feature];\n  if (!flag.enabled) return false;\n  \n  // Gradual rollout\n  return (userId % 100) < flag.percentage;\n}\n\n// Usage\nif (isFeatureEnabled('newDashboard', user.id)) {\n  renderNewDashboard();\n}\n```\n\n## Product Documentation\n\n### Product Requirements Document (PRD)\n\n```markdown\n# Feature: User Notifications\n\n## Problem\nUsers miss important updates because they\ndon't check the app regularly.\n\n## Solution\nImplement push notifications for critical events.\n\n## Success Metrics\n- 30% increase in DAU\n- 20% better retention\n- <5% opt-out rate\n\n## User Stories\n- As a user, I want to receive notifications\n  when someone messages me\n- As a user, I want to customize notification\n  preferences\n\n## Technical Approach\n- Use Firebase Cloud Messaging\n- Store preferences in user profile\n- Respect system settings\n\n## Out of Scope\n- Email notifications (Phase 2)\n- SMS notifications (Phase 3)\n```\n\n## Agile Methodology\n\n### Scrum Framework\n\n**Sprints**: 1-2 week cycles\n**Daily Standups**: 15-min sync\n**Sprint Planning**: Select work\n**Sprint Review**: Demo results\n**Retrospective**: Improve process\n\n### Kanban\n\n```\nBacklog → To Do → In Progress → Review → Done\n```\n\nFocus on flow, not sprints.\n\n## Best Practices\n\n1. ✅ Talk to users constantly\n2. ✅ Ship early and often\n3. ✅ Measure everything\n4. ✅ Focus on outcomes, not outputs\n5. ✅ Be willing to pivot\n6. ✅ Balance tech debt vs features\n7. ✅ Document decisions\n\n## Common Mistakes\n\n❌ **Building without validation** - Talk to users first\n❌ **Feature creep** - Stick to MVP\n❌ **Ignoring metrics** - Data drives decisions\n❌ **Not iterating** - Ship, learn, improve\n❌ **Perfect before launch** - Done is better than perfect\n\n## Tools\n\n**Analytics**: Mixpanel, Amplitude\n**User Research**: Hotjar, UserTesting\n**Project Management**: Linear, Jira\n**Design**: Figma, Sketch\n**Feedback**: Canny, ProductBoard\n\n## Career Path\n\n1. Software Engineer\n2. Product-Minded Engineer\n3. Technical Product Manager\n4. VP of Product\n\n## Next Steps\n\n1. Build a simple product\n2. Get users (even if friends)\n3. Measure their behavior\n4. Ship improvements weekly\n5. Learn from data\n6. Repeat\n\nStart building products today! 🚀"
+    }
+  },
+  "resources": [
+    {
+      "id": "resource-1",
+      "title": "The Lean Startup by Eric Ries",
+      "description": "Essential book on building products iteratively",
+      "url": "https://theleanstartup.com/",
+      "type": "article",
+      "difficulty": "beginner",
+      "estimatedTime": 60
+    },
+    {
+      "id": "resource-2",
+      "title": "Product School YouTube Channel",
+      "description": "Free product management courses and talks",
+      "url": "https://www.youtube.com/@ProductSchool",
+      "type": "video",
+      "difficulty": "beginner",
+      "estimatedTime": 72
+    }
+  ],
+  "topics": ["Product Management", "Product Engineering", "MVP", "Analytics", "User Research", "Agile"],
+  "keywords": ["product engineering", "product management", "MVP", "user research", "analytics", "agile", "feature prioritization"]
+}

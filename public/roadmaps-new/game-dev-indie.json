@@ -1,0 +1,109 @@
+{
+    "domain": "Indie Game Development",
+    "type": "premium",
+    "overview": "Global (2026) roadmap for solo and small-team game developers. Focuses on the full lifecycle: from engine mastery and game design theory to publishing on Steam/consoles and leveraging AI for asset generation.",
+    "steps": [
+        {
+            "title": "1. Game Design Foundations & Psychology",
+            "description": "Understanding why games are fun and how to keep players engaged.",
+            "subtopics": [
+                "The 8 Types of Fun (LeBlanc's Taxonomy): Fellowship, Expression, Challenge, etc.",
+                "The 'Flow State': Balancing difficulty vs. player skill",
+                "Core Loops: Action → Feedback → Reward",
+                "Mechanics, Dynamics, and Aesthetics (MDA Framework)",
+                "Game Feel & Juiciness: Screenshake, particles, and hit-stop",
+                "Level Design: Signposting, pacing, and player guidance"
+            ],
+            "resources": [
+                "https://www.theoryoffun.com/",
+                "https://gdcvault.com/",
+                "https://www.youtube.com/@ArchitectofGames"
+            ]
+        },
+        {
+            "title": "2. Engine Mastery (Pick One)",
+            "description": "The technical backbone of your game. Master the API and the scripting language.",
+            "subtopics": [
+                "Unity: C# scripting, Universal Render Pipeline (URP), Prefabs, Scriptable Objects",
+                "Godot: GDScript/C#, Scene-tree system, open-source workflow, 2D/3D nodes",
+                "Unreal Engine: C++, Blueprints (Visual Scripting), Nanite/Lumen, Physics",
+                "Version Control for Games: Git LFS (Large File Storage) or Perforce",
+                "Optimization: Draw calls, batching, and memory management for low-end hardware"
+            ],
+            "resources": [
+                "https://learn.unity.com/",
+                "https://docs.godotengine.org/",
+                "https://dev.epicgames.com/community/unreal-engine/learning"
+            ]
+        },
+        {
+            "title": "3. Technical Art & Asset Pipelines",
+            "description": "Creating the visual and auditory experience.",
+            "subtopics": [
+                "2D Art: Pixel art (Aseprite), Vector (Illustrator), or Hand-drawn",
+                "3D Art: Modeling (Blender), Texturing (Substance), Rigging/Animation",
+                "Shaders & VFX: Visual Effect Graph, HLSL/GLSL shaders",
+                "Audio Engineering: Sound effects (SFX), Ambient loops, Spatial 3D audio",
+                "UI/UX for Games: Diegetic vs. non-diegetic HUDs, controller remapping"
+            ],
+            "resources": [
+                "https://www.blender.org/download/demo-files/",
+                "https://lospec.com/pixel-art-tutorials",
+                "https://www.bfxr.net/"
+            ]
+        },
+        {
+            "title": "4. AI for Indie Developers (The 2026 Edge)",
+            "description": "Using AI to bridge the 'Asset Gap' and speed up development.",
+            "subtopics": [
+                "Generative Art: Stable Diffusion for concept art and seamless textures",
+                "Procedural Generation: AI-driven noise for infinite terrain and dungeon layouts",
+                "AI NPCs: Large Language Models (LLMs) for dynamic dialogue and behavior trees",
+                "Code Assistance: Cursor or Copilot for writing complex physics math or boilerplate",
+                "AI Voiceovers: ElevenLabs or similar for high-quality temp (or final) dialogue"
+            ],
+            "resources": [
+                "https://stablediffusionweb.com/",
+                "https://elevenlabs.io/",
+                "https://huggingface.co/models?pipeline_tag=text-to-image"
+            ]
+        },
+        {
+            "title": "5. Marketing & The Business of Indie Games",
+            "description": "Ensuring your game actually gets played (and paid for).",
+            "subtopics": [
+                "Steam Page Optimization: Capsules, trailers (the 'First 5 Seconds' rule), and tags",
+                "Wishlist Strategy: Building a community via Discord, Twitter, and TikTok",
+                "Festivals: Entering Steam Next Fest and Indie Megabooth",
+                "Monetization: Premium vs. F2P, DLC strategy, and localization (LQA)",
+                "Publishing: Solo-publishing vs. seeking a publisher (Devolver, Team17, etc.)"
+            ],
+            "resources": [
+                "https://howtomarketagame.com/",
+                "https://partner.steamgames.com/doc/home",
+                "https://itch.io/developers"
+            ]
+        },
+        {
+            "title": "Capstone Projects: Indie Dev Portfolio",
+            "description": "Projects that prove you can finish a game, not just a prototype.",
+            "projects": [
+                {
+                    "name": "The 'Game Jam' Winner",
+                    "description": "A polished 5-minute experience built within a 48-hour constraint. Focus on a single, unique mechanic.",
+                    "focus": ["Scope Control", "Juiciness", "Rapid Prototyping"]
+                },
+                {
+                    "name": "Procedural Dungeon Crawler",
+                    "description": "A top-down or first-person game with randomized levels, item loot tables, and simple AI enemies.",
+                    "focus": ["Algorithms", "State Machines", "Save/Load Systems"]
+                },
+                {
+                    "name": "Multi-Platform Narrative Experience",
+                    "description": "A story-heavy game with branching dialogue, dynamic audio, and support for both Mouse/Keyboard and Controller.",
+                    "focus": ["Localization", "Input Management", "UI/UX"]
+                }
+            ]
+        }
+    ]
+}

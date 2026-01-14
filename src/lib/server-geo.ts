@@ -4,7 +4,19 @@
  */
 
 export async function detectCurrencyFromIP(ip: string): Promise<'USD' | 'INR'> {
+  // Dev/testing override: force a currency regardless of geo (useful when running on localhost)
+  const forced = (process.env.DODO_FORCE_CURRENCY || '').toUpperCase();
+  if (forced === 'INR' || forced === 'USD') {
+    return forced as 'USD' | 'INR';
+  }
+
   try {
+    // Local/dev IPs often resolve to ::1/127.0.0.1/0.0.0.0 and break geo lookups.
+    // Prefer INR locally for IST testing if no explicit override provided.
+    if (ip === '::1' || ip === '127.0.0.1' || ip === '0.0.0.0') {
+      return 'INR';
+    }
+
     // Use a free IP geolocation service (you can also use paid services for better accuracy)
     // Options: ipapi.co, ip-api.com, ipinfo.io
     const response = await fetch(`https://ipapi.co/${ip}/json/`);

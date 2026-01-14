@@ -1,0 +1,75 @@
+{
+  "lastUpdated": "2026-01-13T12:00:00Z",
+  "domains": {
+    "frontend": {
+      "maxWeek": 12,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "backend": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "fullstack": {
+      "maxWeek": 12,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "ml": {
+      "maxWeek": 8,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "devops": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "android": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "ios": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "blockchain": {
+      "maxWeek": 8,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "ui-ux": {
+      "maxWeek": 8,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "product-engineering": {
+      "maxWeek": 8,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "game-dev-aaa": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "game-dev-indie": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "cybersecurity": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    },
+    "data-science": {
+      "maxWeek": 10,
+      "availableWeeks": [1],
+      "nextWeekDate": "2026-01-20"
+    }
+  }
+}

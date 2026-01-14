@@ -1,0 +1,42 @@
+{
+  "domain": "game-dev-aaa",
+  "weekNumber": 1,
+  "title": "AAA Game Development: Engine Fundamentals & Graphics Programming",
+  "description": "Learn professional game development using Unreal Engine, C++ programming, graphics optimization, and industry-standard practices for creating high-end games.",
+  "publishedDate": "2026-01-13",
+  "difficulty": "beginner",
+  "estimatedTime": 195,
+  "mainArticle": {
+    "id": "main-article",
+    "title": "Getting Started with AAA Game Development",
+    "description": "Introduction to professional game development workflows and Unreal Engine",
+    "type": "article",
+    "difficulty": "beginner",
+    "estimatedTime": 55,
+    "content": {
+      "markdown": "# Getting Started with AAA Game Development\n\nAAA game development involves large teams, advanced technology, and high production values. Learn the fundamentals of creating professional-quality games.\n\n## What is AAA Game Development?\n\n**AAA Games:**\n- High budgets ($50M-$200M+)\n- Large teams (100-500+ people)\n- 2-5 year development cycles\n- Advanced graphics and technology\n- Examples: Call of Duty, Assassin's Creed, The Last of Us\n\n## Unreal Engine 5 Basics\n\n### Why Unreal?\n- Industry standard\n- Photorealistic graphics\n- Blueprint visual scripting\n- C++ programming\n- Free for individuals\n\n### Key Concepts\n\n**Actors**: Objects in game world\n**Components**: Functionality pieces\n**Blueprints**: Visual scripting\n**Materials**: Surface appearance\n**Animations**: Character movement\n\n### C++ Game Development\n\n```cpp\n// Simple Actor in Unreal Engine\n#include \"MyActor.h\"\n\nAMyActor::AMyActor()\n{\n    PrimaryActorTick.bCanEverTick = true;\n    \n    // Create mesh component\n    MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT(\"Mesh\"));\n    RootComponent = MeshComponent;\n}\n\nvoid AMyActor::BeginPlay()\n{\n    Super::BeginPlay();\n    UE_LOG(LogTemp, Warning, TEXT(\"Actor spawned!\"));\n}\n\nvoid AMyActor::Tick(float DeltaTime)\n{\n    Super::Tick(DeltaTime);\n    \n    // Rotate actor\n    FRotator NewRotation = GetActorRotation();\n    NewRotation.Yaw += DeltaTime * 90.0f;\n    SetActorRotation(NewRotation);\n}\n```\n\n## Graphics Programming\n\n### Rendering Pipeline\n\n1. **Vertex Processing** - 3D positions\n2. **Rasterization** - Convert to pixels\n3. **Fragment Shading** - Color calculation\n4. **Post-Processing** - Final effects\n\n### Materials and Shaders\n\n```cpp\n// Simple shader logic (pseudo-code)\nColor = BaseColor * Lighting;\nColor += Specular * ReflectionStrength;\nColor += Emission;\nreturn Color;\n```\n\n### Optimization Techniques\n\n- **LOD** (Level of Detail) - Simpler models at distance\n- **Occlusion Culling** - Don't render hidden objects\n- **Texture Atlases** - Combine textures\n- **Instance Rendering** - Reuse geometry\n\n## Game Architecture\n\n### Entity Component System\n\n```cpp\nclass GameEntity {\n    Transform transform;\n    MeshRenderer renderer;\n    RigidBody physics;\n    AIController ai;\n};\n```\n\n### Game Loop\n\n```cpp\nwhile (gameRunning) {\n    ProcessInput();\n    UpdateGameLogic(deltaTime);\n    UpdatePhysics(deltaTime);\n    RenderFrame();\n    SwapBuffers();\n}\n```\n\n## Character Animation\n\n### Animation States\n\n```\nIdle → Walk → Run → Jump → Fall → Land → Idle\n```\n\n### Blend Trees\n\nSmooth transitions between animations based on parameters (speed, direction).\n\n## Physics Simulation\n\n```cpp\n// Apply force to rigid body\nvoid ApplyExplosionForce(FVector location, float force) {\n    TArray<AActor*> actors;\n    GetAllActors(actors);\n    \n    for (AActor* actor : actors) {\n        float distance = (actor->GetLocation() - location).Size();\n        if (distance < ExplosionRadius) {\n            FVector direction = (actor->GetLocation() - location).GetSafeNormal();\n            float forceMagnitude = force * (1.0f - distance / ExplosionRadius);\n            actor->AddImpulse(direction * forceMagnitude);\n        }\n    }\n}\n```\n\n## AI Development\n\n### Behavior Trees\n\n```\nRoot\n├─ Selector\n│  ├─ Sequence: Chase Player\n│  │  ├─ Can See Player?\n│  │  └─ Move To Player\n│  └─ Patrol\n│     ├─ Pick Random Point\n│     └─ Move To Point\n```\n\n### Pathfinding (A*)\n\nFind shortest path through navigation mesh.\n\n## Audio Engineering\n\n- **3D Audio**: Positional sound\n- **Reverb**: Environment acoustics\n- **Mixing**: Balance music/SFX/voice\n- **Compression**: Optimize file sizes\n\n## Multiplayer Networking\n\n### Client-Server Architecture\n\n```cpp\n// Server authoritative movement\nvoid MoveCharacter(FVector input) {\n    if (IsServer()) {\n        // Server processes movement\n        Position += input * Speed * DeltaTime;\n        ReplicateToClients(Position);\n    } else {\n        // Client sends input to server\n        ServerRPC_MoveCharacter(input);\n    }\n}\n```\n\n### Latency Compensation\n\n- Client prediction\n- Server reconciliation\n- Lag compensation\n\n## Performance Optimization\n\n### Profiling\n\n```cpp\n// Measure function time\nauto start = std::chrono::high_resolution_clock::now();\nExpensiveFunction();\nauto end = std::chrono::high_resolution_clock::now();\nauto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);\nUE_LOG(LogTemp, Warning, TEXT(\"Function took %d ms\"), duration.count());\n```\n\n### Target Performance\n\n- **PC**: 60 FPS minimum\n- **Console**: 30-60 FPS\n- **Frame Budget**: 16.67ms @ 60 FPS\n\n## Industry Roles\n\n**Technical:**\n- Gameplay Programmer\n- Graphics Programmer\n- Engine Programmer\n- Tools Programmer\n- Network Programmer\n\n**Design:**\n- Game Designer\n- Level Designer\n- Systems Designer\n\n**Art:**\n- 3D Modeler\n- Texture Artist\n- Animator\n- VFX Artist\n\n## Best Practices\n\n1. ✅ Version control (Perforce/Git LFS)\n2. ✅ Code reviews\n3. ✅ Performance budgets\n4. ✅ Automated testing\n5. ✅ Documentation\n6. ✅ Agile development\n\n## Common Mistakes\n\n❌ **Premature optimization** - Profile first\n❌ **Scope creep** - Define MVP\n❌ **Poor performance** - Test on target hardware\n❌ **Bad architecture** - Plan before coding\n\n## Learning Path\n\n1. Learn C++\n2. Master Unreal Engine\n3. Study graphics programming\n4. Build complete game\n5. Join game studio\n\nStart your AAA journey! 🎮"
+    }
+  },
+  "resources": [
+    {
+      "id": "resource-1",
+      "title": "Unreal Engine Documentation",
+      "description": "Official Unreal Engine learning resources",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-4-documentation",
+      "type": "tutorial",
+      "difficulty": "beginner",
+      "estimatedTime": 80
+    },
+    {
+      "id": "resource-2",
+      "title": "Game Programming Patterns",
+      "description": "Essential design patterns for game development",
+      "url": "https://gameprogrammingpatterns.com/",
+      "type": "article",
+      "difficulty": "intermediate",
+      "estimatedTime": 60
+    }
+  ],
+  "topics": ["Game Development", "Unreal Engine", "C++", "Graphics Programming", "Game Design"],
+  "keywords": ["AAA", "game development", "unreal engine", "C++", "graphics", "3D", "game programming"]
+}

@@ -1,20 +1,31 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { Brain } from "lucide-react";
 
 export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Button asChild variant="ghost" size="sm" className="mb-6">
-          <Link href="/">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
+      {/* Navigation Bar */}
+      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 font-semibold">
+            <Brain className="h-6 w-6 text-primary" />
+            <span className="font-headline text-xl">Acad AI</span>
           </Link>
-        </Button>
+          <div className="flex items-center gap-4">
+            <Button asChild variant="ghost">
+              <Link href="/login">Sign In</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/signup">Get Started</Link>
+            </Button>
+          </div>
+        </div>
+      </nav>
 
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-4xl font-headline font-bold mb-4">Terms of Service</h1>
-        <p className="text-muted-foreground mb-8">Last updated: January 2025</p>
+        <p className="text-muted-foreground mb-8">Last updated: January 2026</p>
 
         <div className="space-y-8 text-foreground">
           <section>

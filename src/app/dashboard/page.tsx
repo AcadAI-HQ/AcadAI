@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { UserProfile } from "@/types";
 
 const domains = [
-  const domains = [
   { id: 'frontend', name: 'Frontend', icon: Code, active: true },
   { id: 'backend', name: 'Backend', icon: Cpu, active: true },
   { id: 'fullstack', name: 'Fullstack', icon: Layers, active: true },
@@ -21,15 +20,15 @@ const domains = [
   { id: 'devops', name: 'DevOps', icon: GitBranch, active: true },
   { id: 'cybersecurity', name: 'CyberSecurity', icon: Shield, active: true },
   { id: 'data-science', name: 'Data Scientist', icon: DatabaseZap, active: true },
-  { id: 'blockchain', name: 'Blockchain', icon: Network, active: false },
-  { id: 'ui-ux', name: 'UI/UX Design', icon: Palette, active: false },
-  { id: 'android', name: 'Android Development', icon: Smartphone, active: false },
-  { id: 'ios', name: 'iOS Development', icon: Apple, active: false },
-  { id: 'product-engineering', name: 'Product Engineering', icon: Package, active: false },
-  { id: 'game-dev-indie', name: 'Indie Game Development', icon: Gamepad2, active: false },
-  { id: 'game-dev-aaa', name: 'Game Development', icon: Gamepad, active: false },
+  { id: 'blockchain', name: 'Blockchain', icon: Network, active: true },
+  { id: 'ui-ux', name: 'UI/UX Design', icon: Palette, active: true },
+  { id: 'android', name: 'Android Development', icon: Smartphone, active: true },
+  { id: 'ios', name: 'iOS Development', icon: Apple, active: true },
+  { id: 'product-engineering', name: 'Product Engineering', icon: Package, active: true },
+  { id: 'game-dev-indie', name: 'Indie Game Development', icon: Gamepad2, active: true },
+  { id: 'game-dev-aaa', name: 'Game Development', icon: Gamepad, active: true },
 ];
-];
+
 
 export default function DashboardPage() {
   const { user, useGeneration, updateUserProfile } = useAuth();

@@ -127,6 +127,10 @@ export interface UserProfile {
   interestedDomain?: string; // Deprecated - kept for backward compatibility
   interestedDomains?: string[]; // New field for multiple domains
   domainExperience?: string;
+
+  // Access controls (admin bypass)
+  roles?: { admin?: boolean };
+  flags?: { bypassPremium?: boolean };
 }
 
 // Chat system types

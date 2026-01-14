@@ -22,7 +22,14 @@
       "Bash(gcloud auth application-default login:*)",
       "Bash(firebase firestore:delete:*)",
       "Bash(./scripts/list-premium-users-simple.sh:*)",
-      "Bash(firebase login:list:*)"
+      "Bash(firebase login:list:*)",
+      "Bash(ls:*)",
+      "Bash(if exist \"src\\\\lib\\\\razorpay-service.ts\" del \"src\\\\lib\\\\razorpay-service.ts\")",
+      "Bash(if exist \"src\\\\lib\\\\razorpay-config.ts\" del \"src\\\\lib\\\\razorpay-config.ts\")",
+      "Bash(timeout 20 tail:*)",
+      "Bash(cat:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []
