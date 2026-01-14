@@ -8,11 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Build**: `npm run build`
 - **Lint**: `npm run lint`
 - **Type checking**: `npm run typecheck`
-- **AI Development**: `npm run genkit:dev` or `npm run genkit:watch` for auto-reload
 
 ## Architecture Overview
 
-This is **Acad AI**, a completely free Next.js 15 application for comprehensive learning roadmaps with Firebase backend. Previously premium content is now available to all users at no cost.
+This is **Acad AI**, a completely free Next.js 16 application for comprehensive learning roadmaps with Firebase backend. Previously premium content is now available to all users at no cost.
 
 ### Core Structure
 - **Frontend**: Next.js with TypeScript, Tailwind CSS, and shadcn/ui components
