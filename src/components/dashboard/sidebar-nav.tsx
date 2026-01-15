@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrainCircuit, Home, Route, User, Settings, LogOut, Crown } from "lucide-react";
+import { BrainCircuit, Home, Route, User, Settings, LogOut, Crown, MessageSquareHeart } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -37,6 +37,12 @@ const navigationItems = [
     url: "/dashboard/profile",
     icon: User,
     description: "View and edit your profile"
+  },
+  {
+    title: "Feedback",
+    url: "/dashboard/feedback",
+    icon: MessageSquareHeart,
+    description: "Send feedback or request features"
   },
   {
     title: "Upgrade to Premium",

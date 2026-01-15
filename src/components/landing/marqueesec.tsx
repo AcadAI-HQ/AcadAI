@@ -22,11 +22,11 @@ export default function MarqueeSec() {
   return (
     <div className="relative flex w-full flex-col items-end justify-end overflow-hidden mt-16 sm:mt-24 md:mt-32 mb-16 sm:mb-20 md:mb-24">
         <ScrollVelocityContainer className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-[-0.02em] md:leading-[5rem]">
-          <ScrollVelocityRow baseVelocity={20} direction={1} className="ml-4 px-8 sm:px-12 md:px-16">
-            Acad AI ○ Acad AI ○ Acad AI ○
+          <ScrollVelocityRow baseVelocity={5} direction={1} className="ml-4 px-8 sm:px-12 md:px-16">
+            Frontend ○ Backend ○ Fullstack ○ Machine Learning ○ DevOps ○ Data Science ○ Cybersecurity ○ UI/UX ○ Product Engineering ○ Indie Game Dev ○ AAA Game Dev ○ Android ○ iOS ○ Blockchain ○
           </ScrollVelocityRow>
-          <ScrollVelocityRow baseVelocity={20} direction={-1} className="px-8 sm:px-12 md:px-16">
-            Acad AI ○ Acad AI ○ Acad AI ○
+          <ScrollVelocityRow baseVelocity={5} direction={-1} className="px-8 sm:px-12 md:px-16">
+            Frontend ○ Backend ○ Fullstack ○ Machine Learning ○ DevOps ○ Data Science ○ Cybersecurity ○ UI/UX ○ Product Engineering ○ Indie Game Dev ○ AAA Game Dev ○ Android ○ iOS ○ Blockchain ○
           </ScrollVelocityRow>
         </ScrollVelocityContainer>
       <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-[25%] sm:w-[35%] bg-gradient-to-r"></div>

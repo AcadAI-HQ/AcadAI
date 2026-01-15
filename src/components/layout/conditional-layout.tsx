@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/shared/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sidebar, SidebarProvider, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
-import { LayoutDashboard, Route, BrainCircuit, User, BookOpen } from "lucide-react";
+import { LayoutDashboard, Route, BrainCircuit, User, BookOpen, MessageSquareHeart } from "lucide-react";
 
 // Pages that should not show the sidebar
 const NO_SIDEBAR_PAGES = ['/login', '/signup', '/pricing', '/terms', '/privacy'];
@@ -132,6 +132,17 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
                     >
                       <User />
                       <span>Profile</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <Link href="/dashboard/feedback" className="w-full">
+                    <SidebarMenuButton
+                      isActive={pathname === '/dashboard/feedback'}
+                      tooltip="Send feedback or request features"
+                    >
+                      <MessageSquareHeart />
+                      <span>Feedback</span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>

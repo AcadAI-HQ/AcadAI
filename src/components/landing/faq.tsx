@@ -16,19 +16,19 @@ const faqs = [
   },
   {
     question: "How does Acad AI personalize learning roadmaps?",
-    answer: "Acad AI personalizes roadmaps through three key mechanisms: (1) Skills-based customization that adapts to your existing knowledge, (2) Proficiency tracking that matches content difficulty to your level, and (3) Learning speed optimization that adjusts pacing to your progress.",
+    answer: "Acad AI personalizes roadmaps through three key mechanisms: (1) Skills-based customization that adapts to your existing knowledge, (2) Proficiency tracking that matches content difficulty to your level, and (3) Learning speed optimization that adjusts pacing to your progress. This feature is upcoming soon along with AI chat assistant.",
   },
   {
     question: "What domains does Acad AI cover?",
-    answer: "Acad AI provides comprehensive learning roadmaps for five major tech domains: Frontend Development (React, Vue, JavaScript), Backend Development (APIs, databases, Node.js, Python), Fullstack Development (MERN stack, complete web apps), Machine Learning (Python, TensorFlow, PyTorch, MLOps), and DevOps (CI/CD, Docker, Kubernetes, cloud platforms).",
+    answer: "Acad AI provides comprehensive learning roadmaps for 14 major tech domains: Frontend Development (React, Vue, JavaScript), Backend Development (APIs, databases, Node.js, Python), Fullstack Development (MERN stack, complete web apps), Machine Learning (Python, TensorFlow, PyTorch, MLOps), and DevOps (CI/CD, Docker, Kubernetes, cloud platforms) and many others.",
   },
   {
     question: "Is Acad AI free to use?",
-    answer: "Acad AI offers a free tier that provides access to comprehensive learning roadmaps. Premium features for hyper-personalization, including advanced skill-based customization and adaptive learning speed, are available through a premium subscription launching soon.",
+    answer: "No, we have had a free tier from last September but that free tier is no longer available.",
   },
   {
     question: "How is Acad AI different from other learning platforms?",
-    answer: "Unlike generic learning platforms, Acad AI provides hyper-personalized roadmaps that dynamically adapt to individual learners. The platform considers your existing skills, proficiency level, and learning pace to create a truly customized learning experience, rather than offering one-size-fits-all content.",
+    answer: "Unlike generic learning platforms, Acad AI provides roadmaps that dynamically adapt to individual learners. The platform considers your existing skills, proficiency level, and learning pace to create a truly customized learning experience, rather than offering one-size-fits-all content.",
   },
   {
     question: "Who should use Acad AI?",
