@@ -9,7 +9,7 @@ export interface SEOConfig {
 }
 
 export function generateSEO(config: SEOConfig): Metadata {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://acadai.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://acadai.org';
   const defaultImage = '/og-image.png';
 
   return {

@@ -59,6 +59,27 @@ const CURRENT_FEATURES = [
 ];
 
 
+// Helper to format domain names nicely
+const formatDomain = (domain: string): string => {
+  const domainMap: Record<string, string> = {
+    'frontend': 'Frontend Development',
+    'backend': 'Backend Development',
+    'fullstack': 'Full Stack Development',
+    'ml': 'Machine Learning',
+    'devops': 'DevOps',
+    'data-science': 'Data Science',
+    'cybersecurity': 'Cybersecurity',
+    'ui-ux': 'UI/UX Design',
+    'product-engineering': 'Product Engineering',
+    'game-dev-indie': 'Indie Game Development',
+    'game-dev-aaa': 'AAA Game Development',
+    'android': 'Android Development',
+    'iOS': 'iOS Development',
+    'blockchain': 'Blockchain Development',
+  };
+  return domainMap[domain] || domain;
+};
+
 const FAQS = [
   {
     question: 'What domains are covered?',
@@ -167,18 +188,44 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto max-w-xl space-y-5"
+            className="mx-auto max-w-2xl space-y-5"
           >
             <div className="flex justify-center">
               <div className="rounded-lg border px-4 py-1 font-mono text-sm">Pricing</div>
             </div>
-            <h1 className="text-center text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl font-headline">
-              Master In-Demand Tech Skills
-            </h1>
-            <p className="text-muted-foreground text-center text-base md:text-lg">
-              Industry-standard roadmaps and curated resources to accelerate your career.
-              Join thousands of developers building real skills.
-            </p>
+
+            {/* Personalized Hero for logged-in users */}
+            {user && (user.interestedDomains?.length || user.lastGeneratedDomain) ? (
+              <>
+                <h1 className="text-center text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl font-headline">
+                  Hey {user.displayName?.split(' ')[0] || 'there'}, ready to master{' '}
+                  <span className="bg-gradient-to-r from-[#29ABE2] to-[#8E2DE2] bg-clip-text text-transparent">
+                    {formatDomain(user.interestedDomains?.[0] || user.lastGeneratedDomain || '')}
+                  </span>?
+                </h1>
+                <p className="text-muted-foreground text-center text-base md:text-lg">
+                  {user.skills && user.skills.length > 0 ? (
+                    <>
+                      Build on your {user.skills.slice(0, 3).join(', ')} skills with our structured roadmap and weekly curated resources.
+                    </>
+                  ) : (
+                    <>
+                      Get unlimited access to your personalized roadmap and weekly curated resources to accelerate your journey.
+                    </>
+                  )}
+                </p>
+              </>
+            ) : (
+              <>
+                <h1 className="text-center text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl font-headline">
+                  Master In-Demand Tech Skills
+                </h1>
+                <p className="text-muted-foreground text-center text-base md:text-lg">
+                  Industry-standard roadmaps and curated resources to accelerate your career.
+                  Join thousands of developers building real skills.
+                </p>
+              </>
+            )}
           </motion.div>
 
           <div className="relative">
@@ -243,7 +290,7 @@ export default function PricingPage() {
                       <h3 className="leading-none font-semibold">Yearly</h3>
                       <Badge className="bg-[#29ABE2] text-white border-0">
                         <Sparkles className="h-3 w-3 mr-1 inline" />
-                        Save 15%
+                        Save {annual.savingsPercent}%
                       </Badge>
                     </div>
                     <p className="text-muted-foreground text-sm">Best value - commit to your growth!</p>
@@ -378,13 +425,27 @@ export default function PricingPage() {
           <Card className="border-2 border-primary">
             <CardContent className="pt-12 pb-12">
               <Sparkles className="h-12 w-12 text-primary mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">
-                Ready to Accelerate Your Career?
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Join developers worldwide who are building in-demand skills with industry-standard roadmaps
-                and curated weekly resources.
-              </p>
+              {user && (user.interestedDomains?.length || user.lastGeneratedDomain) ? (
+                <>
+                  <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">
+                    Start Your {formatDomain(user.interestedDomains?.[0] || user.lastGeneratedDomain || '')} Journey Today
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8">
+                    {user.displayName?.split(' ')[0]}, your personalized roadmap is waiting.
+                    Get instant access to structured learning paths and weekly resources.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">
+                    Ready to Accelerate Your Career?
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8">
+                    Join developers worldwide who are building in-demand skills with industry-standard roadmaps
+                    and curated weekly resources.
+                  </p>
+                </>
+              )}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"

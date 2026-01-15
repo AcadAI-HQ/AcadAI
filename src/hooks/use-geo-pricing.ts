@@ -14,6 +14,7 @@ export interface PricingData {
     symbol: string;
     monthlyEquivalent: string;
     savings: string;
+    savingsPercent: string;
   };
   isIndia: boolean;
   loading: boolean;
@@ -60,7 +61,7 @@ export function useGeoPricing(): PricingData {
 
   // Calculate pricing based on location
   if (isIndia) {
-    // India pricing: ₹199/month, ₹1999/year (~₹167/month)
+    // India pricing: ₹199/month, ₹1699/year (~₹142/month, save 29%)
     return {
       monthly: {
         price: '199',
@@ -68,29 +69,31 @@ export function useGeoPricing(): PricingData {
         symbol: '₹',
       },
       annual: {
-        price: '1999',
+        price: '1699',
         currency: 'INR',
         symbol: '₹',
-        monthlyEquivalent: '167',
-        savings: '389', // ₹199 * 12 - ₹1999 = ₹389
+        monthlyEquivalent: '142',
+        savings: '689', // ₹199 * 12 - ₹1699 = ₹689
+        savingsPercent: '29',
       },
       isIndia: true,
       loading,
     };
   } else {
-    // Global pricing: $3.99/month, $39/year (~$3.25/month)
+    // Global pricing: $5.99/month, $59/year (~$4.92/month, save 18%)
     return {
       monthly: {
-        price: '3.99',
+        price: '5.99',
         currency: 'USD',
         symbol: '$',
       },
       annual: {
-        price: '39',
+        price: '59',
         currency: 'USD',
         symbol: '$',
-        monthlyEquivalent: '3.25',
-        savings: '8.88', // $3.99 * 12 - $39 = $8.88
+        monthlyEquivalent: '4.92',
+        savings: '12.88', // $5.99 * 12 - $59 = $12.88
+        savingsPercent: '18',
       },
       isIndia: false,
       loading,

@@ -9,13 +9,14 @@ Disallow: /dashboard/
 Disallow: /login
 Disallow: /signup
 Disallow: /onboarding
-Disallow: /test-firebase
+Disallow: /api/
 
-# Allow public roadmap pages
+# Allow public pages
 Allow: /roadmap/
+Allow: /pricing
 
 # Sitemap location
-Sitemap: https://acadai.com/sitemap.xml
+Sitemap: https://acadai.org/sitemap.xml
 
 # Crawl-delay (optional, adjust as needed)
 Crawl-delay: 1

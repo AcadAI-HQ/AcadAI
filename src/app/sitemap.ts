@@ -3,13 +3,22 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://acadai.org';
 
-  // Define available roadmap domains
+  // All 14 available roadmap domains
   const roadmapDomains = [
     'frontend',
     'backend',
     'fullstack',
-    'machine-learning',
+    'ml',
     'devops',
+    'data-science',
+    'cybersecurity',
+    'ui-ux',
+    'product-engineering',
+    'game-dev-indie',
+    'game-dev-aaa',
+    'android',
+    'iOS',
+    'blockchain',
   ];
 
   // Main pages
@@ -21,16 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/login`,
+      url: `${baseUrl}/pricing`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/signup`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
   ];
 
@@ -39,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/roadmap/${domain}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: 0.9,
+    priority: 0.8,
   }));
 
   return [...mainPages, ...roadmapPages];
