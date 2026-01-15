@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BorderTrail } from '@/components/ui/border-trail';
 import {
@@ -12,15 +12,11 @@ import {
   PlusIcon,
   ShieldCheckIcon,
   Brain,
-  MessageSquare,
   BookOpen,
-  FileText,
-  Clock,
-  Heart,
-  AlertCircle,
-  Rocket,
   TrendingUp,
-  X
+  Layers,
+  Target,
+  Zap,
 } from 'lucide-react';
 import Link from 'next/link';
 import { auth } from '@/lib/firebase';
@@ -32,87 +28,65 @@ import { cn } from '@/lib/utils';
 const CURRENT_FEATURES = [
   {
     icon: BookOpen,
-    title: 'Comprehensive Learning Roadmaps',
-    description: 'Detailed, professional-level roadmaps for Frontend, Backend, Full Stack, ML, and DevOps',
+    title: 'Industry-Standard Roadmaps',
+    description: 'Structured learning paths across 14 tech domains - designed like professional training programs',
   },
   {
     icon: Sparkles,
-    title: 'Weekly Learning Resources',
-    description: 'Curated articles, tutorials, videos, and projects delivered every week for your domain',
+    title: 'Weekly Curated Resources',
+    description: 'Fresh articles, tutorials, videos, and projects delivered every week - saving you hours of research',
   },
   {
     icon: TrendingUp,
     title: 'Progress Tracking',
-    description: 'Track your learning journey and monitor completion across roadmap stages',
+    description: 'Monitor your completion across roadmap stages and see your growth over time',
   },
   {
-    icon: BookOpen,
-    title: 'Unlimited Roadmap Access',
-    description: 'Generate and access roadmaps for multiple domains without restrictions',
+    icon: Layers,
+    title: 'Unlimited Domain Access',
+    description: 'Switch between any tech domain anytime - explore Frontend today, ML tomorrow',
+  },
+  {
+    icon: Target,
+    title: 'Career-Focused Content',
+    description: 'Learn what employers actually want - including testing, deployment, and production best practices',
+  },
+  {
+    icon: Zap,
+    title: 'Instant Access',
+    description: 'Start learning immediately with no setup required - all content available from day one',
   },
 ];
 
-const UPCOMING_FEATURES = [
-  {
-    icon: Brain,
-    title: 'AI Hyperpersonalization',
-    description: 'Roadmaps tailored to your background, goals, learning style, and available time',
-    status: 'In Development',
-  },
-  {
-    icon: MessageSquare,
-    title: 'Interactive AI Assistant',
-    description: '24/7 AI mentor to answer questions and guide you through your learning journey',
-    status: 'Coming Soon',
-  },
-  {
-    icon: FileText,
-    title: 'AI ATS-Friendly Resume Builder',
-    description: 'Create professional, ATS-optimized resumes powered by AI',
-    status: 'Coming Soon',
-  },
-];
 
 const FAQS = [
   {
-    question: 'Why is there no free tier anymore?',
-    answer: 'My co-founder recently exited the project. Together, we were able to foot the API costs for the market research features that powered the free tier. With his departure, I can no longer sustain these costs alone. This is temporary - I\'m working hard to bring the free tier back as soon as possible.',
+    question: 'What domains are covered?',
+    answer: 'We cover 14 tech domains including Frontend, Backend, Full Stack, Machine Learning, DevOps, and more. Each roadmap provides comprehensive coverage from fundamentals to advanced topics, with industry-relevant tools and frameworks.',
   },
   {
-    question: 'What happened to hyperpersonalization?',
-    answer: 'Hyperpersonalization was the brainchild of my co-founder. With his exit, development has been delayed as I work to implement it on my own. To ensure you still get great value, I\'ve included weekly learning resources earlier than planned - a feature that was supposed to come with hyperpersonalization.',
+    question: 'How often is the content updated?',
+    answer: 'Roadmaps are regularly updated to reflect current industry standards and emerging technologies. Weekly learning resources are curated fresh each week to keep you aligned with market demands.',
   },
   {
-    question: 'What do I get right now?',
-    answer: 'You get comprehensive learning roadmaps for multiple tech domains, weekly curated learning resources (articles, tutorials, projects), progress tracking, and unlimited access to generate roadmaps. I wanted to make sure the paid tier offers real value beyond just roadmaps, but the roadmaps itself are worth what you\'ll be paying',
+    question: 'Can I access multiple roadmaps?',
+    answer: 'Yes! Your subscription gives you unlimited access to all 14 roadmaps. Switch between any domain whenever you want.',
   },
   {
-    question: 'What features are coming?',
-    answer: 'I\'m actively working on AI Hyperpersonalization (tailored roadmaps based on your background and goals), an Interactive AI Assistant (24/7 mentor), and an AI ATS-Friendly Resume Builder.',
-  },
-  {
-    question: 'Why should I pay now if features are delayed?',
-    answer: 'The weekly learning resources alone provide significant value - curated content specific to your domain saves hours of searching. Plus, as I add hyperpersonalization and other AI features. I\'m keeping prices minimal so it\'s affordable for students worldwide.',
-  },
-  {
-    question: 'Is there a free trial?',
-    answer: 'No free trial is offered because the platform has been completely free since September last year. Many users have already experienced the platform, and I wanted to be transparent about the changes rather than offer a limited trial.',
+    question: 'What makes these roadmaps different?',
+    answer: 'Our roadmaps are structured like professional training programs - covering not just what to learn, but the optimal order, practical projects, and real-world context. They include testing, deployment, and production considerations that most free resources skip.',
   },
   {
     question: 'Can I cancel anytime?',
-    answer: 'Yes! You can cancel your subscription anytime. However, since there\'s currently no free tier, you\'ll lose access to the platform when your subscription ends. Once the free tier returns, you\'ll be able to downgrade instead.',
-  },
-  {
-    question: 'What happens if I downgrade?',
-    answer: 'Since there is currently no free tier available, downgrading means you\'ll lose access to the platform. I\'m working to bring back the free tier so users can continue using basic features even after cancellation.',
+    answer: 'Yes, absolutely. Cancel anytime with no questions asked. Your access continues until the end of your billing period.',
   },
   {
     question: 'What payment methods do you accept?',
-    answer: 'We accept all major credit and debit cards (Visa, Mastercard, American Express, Discover).',
+    answer: 'We accept all major credit and debit cards including Visa, Mastercard, American Express, and Discover.',
   },
   {
-    question: 'Why make it paid when a founder left?',
-    answer: 'The API costs for market research and AI features are significant. Rather than shut down entirely, I chose to introduce affordable pricing to keep the platform running and continue development. I\'m committed to making this work and bringing back the free tier as soon as financially viable.',
+    question: 'Can I suggest new roadmap topics?',
+    answer: 'Definitely! We actively listen to user feedback. If there\'s a domain or specialization you\'d like covered, let us know and we\'ll prioritize based on demand.',
   },
 ];
 
@@ -185,43 +159,6 @@ export default function PricingPage() {
         </div>
       </nav>
 
-      {/* Important Update Banner */}
-      <section className="border-b bg-gradient-to-r from-primary/10 via-purple-500/10 to-primary/10">
-        <div className="container mx-auto px-4 py-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="flex items-start gap-4">
-              <div className="mt-1">
-                <AlertCircle className="h-6 w-6 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-red-500" />
-                  A Message About Recent Changes
-                </h3>
-                <div className="text-sm text-muted-foreground space-y-2">
-                  <p>
-                    My co-founder recently left the project. Together, we were splitting the API costs for market research features,
-                    which allowed us to offer a free tier. Unfortunately, I cannot sustain these costs alone.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">This is temporary.</strong> I'm working hard to bring back the free tier.
-                    In the meantime, I've kept pricing minimal so students worldwide can afford it. I've also included
-                    <strong className="text-foreground"> weekly learning resources</strong> earlier than planned to ensure you get real value.
-                  </p>
-                  <p className="text-foreground font-medium">
-                    Thank you for your understanding and continued support. - Founder
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Pricing Section */}
       <section className="relative min-h-screen overflow-hidden py-24">
@@ -236,11 +173,11 @@ export default function PricingPage() {
               <div className="rounded-lg border px-4 py-1 font-mono text-sm">Pricing</div>
             </div>
             <h1 className="text-center text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl font-headline">
-              Affordable Pricing for Students
+              Master In-Demand Tech Skills
             </h1>
             <p className="text-muted-foreground text-center text-base md:text-lg">
-              Kept minimal so you can invest in your learning without breaking the bank.
-              New features will be added at no extra cost.
+              Industry-standard roadmaps and curated resources to accelerate your career.
+              Join thousands of developers building real skills.
             </p>
           </motion.div>
 
@@ -336,7 +273,7 @@ export default function PricingPage() {
 
               <div className="text-muted-foreground flex items-center justify-center gap-x-2 text-sm">
                 <ShieldCheckIcon className="size-4" />
-                <span>Secure payment • Cancel anytime • Future features included free</span>
+                <span>Secure payment • Cancel anytime • All features included</span>
               </div>
             </motion.div>
           </div>
@@ -357,14 +294,14 @@ export default function PricingPage() {
             Available Now
           </Badge>
           <h2 className="text-4xl font-headline font-bold mb-4">
-            What You Get Today
+            Everything You Need to Succeed
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Real value from day one, with more features coming soon
+            Comprehensive tools and resources to accelerate your tech career
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {CURRENT_FEATURES.map((feature, idx) => (
             <motion.div
               key={idx}
@@ -391,80 +328,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Upcoming Features */}
-      <section className="container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <Badge className="mb-4">
-            <Rocket className="h-3 w-3 mr-1" />
-            Coming Soon
-          </Badge>
-          <h2 className="text-4xl font-headline font-bold mb-4">
-            Upcoming Features
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            These features will be added to the platform and the subscription fees will change only after that, but I'll still try keep things affordable to every student out there.
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {UPCOMING_FEATURES.map((feature, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="h-full border-dashed border-2">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                    <feature.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <CardTitle className="text-lg">{feature.title}</CardTitle>
-                  </div>
-                  <Badge variant="outline" className="w-fit mb-2">
-                    <Clock className="h-3 w-3 mr-1" />
-                    {feature.status}
-                  </Badge>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <Card className="max-w-2xl mx-auto border-primary/50">
-            <CardContent className="pt-6">
-              <div className="flex items-start gap-4">
-                <Heart className="h-6 w-6 text-primary shrink-0 mt-1" />
-                <div className="text-left">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    <strong className="text-foreground">I'm working solo now,</strong> but I'm committed to making
-                    Acad AI the best learning platform for students. These features will roll out as soon as they're ready, I'll update with an announcement. 
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    - Founder of Acad AI
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </section>
 
       {/* FAQ Section */}
       <section className="container mx-auto px-4 py-20 bg-muted/30">
@@ -479,7 +342,7 @@ export default function PricingPage() {
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Honest answers about the platform, changes, and what to expect
+            Everything you need to know about the platform
           </p>
         </motion.div>
 
@@ -516,11 +379,11 @@ export default function PricingPage() {
             <CardContent className="pt-12 pb-12">
               <Sparkles className="h-12 w-12 text-primary mx-auto mb-6" />
               <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">
-                Start Your Learning Journey Today
+                Ready to Accelerate Your Career?
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Join students worldwide who are mastering tech skills with comprehensive roadmaps and weekly resources.
-                More features coming soon at no extra cost.
+                Join developers worldwide who are building in-demand skills with industry-standard roadmaps
+                and curated weekly resources.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -538,11 +401,21 @@ export default function PricingPage() {
                 )}
               </div>
               <p className="text-sm text-muted-foreground mt-6">
-                Affordable pricing • Cancel anytime • Future features included
+                Cancel anytime • Unlimited roadmaps • Weekly resources included
               </p>
             </CardContent>
           </Card>
         </motion.div>
+      </section>
+
+      {/* Founder's Note - Small, humble section */}
+      <section className="container mx-auto px-4 pb-12">
+        <div className="max-w-xl mx-auto text-center">
+          <p className="text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">From the founder:</span> Acad AI started as a passion project to help students navigate tech careers.
+            Your support keeps the platform running and the content fresh.
+          </p>
+        </div>
       </section>
 
       {/* Footer */}

@@ -9,7 +9,6 @@ import AnimFooter from '@/components/landing/footer';
 import About from '@/components/landing/about';
 import MarqueeSec from '@/components/landing/marqueesec';
 import { generateFAQSchema, generateHowToSchema } from '@/lib/geo-content';
-import { AnnouncementModal } from '@/components/shared/announcement-modal';
 
 export default function LandingPage() {
   const faqSchema = generateFAQSchema();
@@ -42,7 +41,6 @@ export default function LandingPage() {
         <FAQ />
       </main>
       <AnimFooter />
-      <AnnouncementModal />
     </div>
   );
 }
