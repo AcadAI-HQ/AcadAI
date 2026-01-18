@@ -40,8 +40,8 @@ export default function About() {
               <HeroVideoDialog
                 className="w-full aspect-video"
                 animationStyle="from-center"
-                videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb1vdSDkI6tKIjK"
-                thumbnailSrc="https://img.youtube.com/vi/qh3NGpYRG3I/maxresdefault.jpg"
+                videoSrc="https://youtu.be/mjYvkvTxrbQ"
+                thumbnailSrc="/og-image.png"
                 thumbnailAlt="AcadAI Demo Video"
               />
             </div>
