@@ -76,11 +76,21 @@ export async function POST(req: NextRequest) {
 
     console.log('[Checkout] User info', { uid, email, name, interval });
 
-    const ip = getClientIP(req.headers);
-    const currency = await detectCurrencyFromIP(ip);
-    dbg.currency = currency;
+    // Use client-provided currency if valid, otherwise fall back to server-side detection
+    // Client-side detection is more reliable as it uses the browser's direct connection
+    const clientCurrency = body?.currency;
+    let currency: 'USD' | 'INR';
 
-    console.log('[Checkout] Detected currency', { ip, currency });
+    if (clientCurrency === 'USD' || clientCurrency === 'INR') {
+      currency = clientCurrency;
+      console.log('[Checkout] Using client-provided currency', { currency });
+    } else {
+      // Fallback to server-side IP detection
+      const ip = getClientIP(req.headers);
+      currency = await detectCurrencyFromIP(ip);
+      console.log('[Checkout] Detected currency from IP', { ip, currency });
+    }
+    dbg.currency = currency;
 
     const productEnvMap: Record<string, string> = {
       USD_monthly: 'DODO_PRODUCT_PREMIUM_MONTHLY_USD',

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
 import { auth, db } from '@/lib/firebase';
+import { trackSignup, trackLogin } from '@/lib/analytics';
 import type { UserProfile } from '@/types';
 
 
@@ -105,6 +106,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Fetch user profile and redirect: allow admin bypass or premium subscription
       const userProfile = await fetchUserProfile(firebaseUser);
 
+      // Track successful login
+      trackLogin('email');
+
       const bypass =
         userProfile?.roles?.admin === true ||
         userProfile?.flags?.bypassPremium === true;
@@ -126,7 +130,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw error;
     }
   };
-  
+
   const signInWithGoogle = async () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
@@ -171,9 +175,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           } catch (error) {
             console.log('⚠️ User count increment failed for Google signup:', error);
           }
+          // Track new signup via Google
+          trackSignup('google');
         } else {
           // Set existing user state
           setUser(existingProfile);
+          // Track login via Google
+          trackLogin('google');
         }
 
         setLoading(false);
@@ -245,6 +253,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (error) {
         console.log('⚠️ User count increment failed, but signup succeeded:', error);
       }
+
+      // Track signup via email
+      trackSignup('email');
 
       setLoading(false);
 

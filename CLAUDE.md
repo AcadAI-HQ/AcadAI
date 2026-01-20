@@ -96,6 +96,7 @@ This is **Acad AI**, a completely free Next.js 16 application for comprehensive 
 - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` - Firebase Storage Bucket
 - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` - Firebase Messaging Sender ID
 - `NEXT_PUBLIC_FIREBASE_APP_ID` - Firebase App ID
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics Measurement ID (e.g., G-XXXXXXXXXX)
 - `GOOGLE_GEMINI_API_KEY` - (Future) Google Gemini API key for AI customization
 
 ### Component Patterns

@@ -24,6 +24,7 @@ import { useGeoPricing } from '@/hooks/use-geo-pricing';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { trackCheckoutStarted } from '@/lib/analytics';
 
 const CURRENT_FEATURES = [
   {
@@ -121,6 +122,10 @@ export default function PricingPage() {
 
   const handleCheckout = async (interval: Interval) => {
     try {
+      // Track checkout initiation
+      const currency = monthly.symbol === '₹' ? 'INR' : 'USD';
+      trackCheckoutStarted(interval, currency);
+
       const token = await auth.currentUser?.getIdToken();
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -137,7 +142,7 @@ export default function PricingPage() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers,
-        body: JSON.stringify({ interval }),
+        body: JSON.stringify({ interval, currency }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Failed to start checkout');
@@ -258,7 +263,17 @@ export default function PricingPage() {
                     </div>
                     <p className="text-muted-foreground text-sm">Pay month-to-month, cancel anytime</p>
                   </div>
-                  <div className="mt-10 space-y-4">
+                  <ul className="mt-4 space-y-2 text-sm">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#29ABE2]" />
+                      <span>14 Industry-standard roadmaps</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#29ABE2]" />
+                      <span>Weekly curated learning resources</span>
+                    </li>
+                  </ul>
+                  <div className="mt-6 space-y-4">
                     <div className="text-muted-foreground flex items-end gap-0.5 text-xl">
                       <span>{monthly.symbol}</span>
                       <span className="text-foreground -mb-0.5 text-4xl font-extrabold tracking-tighter md:text-5xl">
@@ -295,7 +310,17 @@ export default function PricingPage() {
                     </div>
                     <p className="text-muted-foreground text-sm">Best value - commit to your growth!</p>
                   </div>
-                  <div className="mt-10 space-y-4">
+                  <ul className="mt-4 space-y-2 text-sm">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#29ABE2]" />
+                      <span>14 Industry-standard roadmaps</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#29ABE2]" />
+                      <span>Weekly curated learning resources</span>
+                    </li>
+                  </ul>
+                  <div className="mt-6 space-y-4">
                     <div className="text-muted-foreground flex items-end text-xl">
                       <span>{annual.symbol}</span>
                       <span className="text-foreground -mb-0.5 text-4xl font-extrabold tracking-tighter md:text-5xl">

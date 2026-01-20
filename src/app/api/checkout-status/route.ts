@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import DodoPayments from 'dodopayments';
+import { adminAuth } from '@/lib/firebase-admin';
 
 function getEnv(name: string, optional = false): string {
   const v = process.env[name];
@@ -51,6 +52,31 @@ function deriveOutcome(session: any): { outcome: Outcome; reason?: string; rawSt
 
 export async function GET(req: NextRequest) {
   try {
+    // Verify authentication
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { outcome: 'unknown', error: 'Unauthorized' },
+        { status: 401, headers: { 'Cache-Control': 'no-store, max-age=0' } }
+      );
+    }
+
+    const token = authHeader.substring(7);
+    try {
+      if (!adminAuth) {
+        return NextResponse.json(
+          { outcome: 'unknown', error: 'Server auth not configured' },
+          { status: 500, headers: { 'Cache-Control': 'no-store, max-age=0' } }
+        );
+      }
+      await adminAuth.verifyIdToken(token);
+    } catch {
+      return NextResponse.json(
+        { outcome: 'unknown', error: 'Invalid authentication token' },
+        { status: 401, headers: { 'Cache-Control': 'no-store, max-age=0' } }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const sessionId = searchParams.get('session_id') || searchParams.get('sessionId') || searchParams.get('id');
 
