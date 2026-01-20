@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import { auth } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
 
 type Outcome = "success" | "failed" | "unknown";
@@ -47,14 +46,9 @@ export default function CheckoutReturnPage() {
       let outcome: Outcome = "unknown";
       if (sessionId) {
         try {
-          // Get the current user's ID token for authentication
-          const currentUser = auth.currentUser;
-          const token = currentUser ? await currentUser.getIdToken() : null;
-
           const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`, {
             method: "GET",
             cache: "no-store",
-            headers: token ? { "Authorization": `Bearer ${token}` } : {},
           });
           const data = await res.json().catch(() => ({} as any));
           if (res.ok && (data.outcome === "success" || data.outcome === "failed" || data.outcome === "unknown")) {
