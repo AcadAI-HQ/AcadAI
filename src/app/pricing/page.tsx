@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
@@ -25,6 +26,36 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { trackCheckoutStarted } from '@/lib/analytics';
+import { Timestamp } from 'firebase/firestore';
+
+// Helper to check if subscription is active and not expired
+function isSubscriptionActive(subscription: any): boolean {
+  if (!subscription) return false;
+  if (subscription.tier !== 'premium') return false;
+  if (subscription.status !== 'active') return false;
+
+  // Check if subscription has expired
+  if (subscription.currentPeriodEnd) {
+    let endDate: Date;
+    if (subscription.currentPeriodEnd instanceof Timestamp) {
+      endDate = subscription.currentPeriodEnd.toDate();
+    } else if (subscription.currentPeriodEnd instanceof Date) {
+      endDate = subscription.currentPeriodEnd;
+    } else if (typeof subscription.currentPeriodEnd === 'string') {
+      endDate = new Date(subscription.currentPeriodEnd);
+    } else if (typeof subscription.currentPeriodEnd === 'object' && 'seconds' in subscription.currentPeriodEnd) {
+      endDate = new Date((subscription.currentPeriodEnd as any).seconds * 1000);
+    } else {
+      return true;
+    }
+
+    if (endDate < new Date()) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 const CURRENT_FEATURES = [
   {
@@ -115,10 +146,22 @@ const FAQS = [
 type Interval = 'monthly' | 'yearly';
 
 export default function PricingPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const { monthly, annual } = useGeoPricing();
+
+  // Redirect premium users to dashboard - they don't need to see pricing
+  useEffect(() => {
+    if (loading) return;
+
+    const bypass = user?.flags?.bypassPremium === true || (user as any)?.roles?.admin === true;
+    const isPremium = bypass || isSubscriptionActive(user?.subscription);
+
+    if (isPremium) {
+      router.replace('/dashboard');
+    }
+  }, [user, loading, router]);
 
   const handleCheckout = async (interval: Interval) => {
     try {

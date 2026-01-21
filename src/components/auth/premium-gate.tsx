@@ -3,6 +3,41 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
+import { Timestamp } from "firebase/firestore";
+
+// Helper to check if subscription is active and not expired
+function isSubscriptionValid(subscription: any): boolean {
+  if (!subscription) return false;
+  if (subscription.tier !== 'premium') return false;
+  if (subscription.status !== 'active') return false;
+
+  // Check if subscription has expired
+  if (subscription.currentPeriodEnd) {
+    let endDate: Date;
+    // Handle Firestore Timestamp or Date object or ISO string
+    if (subscription.currentPeriodEnd instanceof Timestamp) {
+      endDate = subscription.currentPeriodEnd.toDate();
+    } else if (subscription.currentPeriodEnd instanceof Date) {
+      endDate = subscription.currentPeriodEnd;
+    } else if (typeof subscription.currentPeriodEnd === 'string') {
+      endDate = new Date(subscription.currentPeriodEnd);
+    } else if (typeof subscription.currentPeriodEnd === 'object' && 'seconds' in subscription.currentPeriodEnd) {
+      // Handle Firestore Timestamp-like object
+      endDate = new Date((subscription.currentPeriodEnd as any).seconds * 1000);
+    } else {
+      // Unknown format, assume not expired
+      return true;
+    }
+
+    const now = new Date();
+    if (endDate < now) {
+      console.log('[PremiumGate] Subscription expired:', { endDate: endDate.toISOString(), now: now.toISOString() });
+      return false;
+    }
+  }
+
+  return true;
+}
 
 export default function PremiumGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -17,9 +52,8 @@ export default function PremiumGate({ children }: { children: React.ReactNode })
       return;
     }
 
-    const sub = user.subscription;
     const bypass = user?.flags?.bypassPremium === true || (user as any)?.roles?.admin === true;
-    const isPremium = (sub?.tier === "premium" && sub?.status === "active") || bypass;
+    const isPremium = bypass || isSubscriptionValid(user.subscription);
 
     // Non-premium -> pricing
     if (!isPremium) {

@@ -4,10 +4,45 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
-import { doc, getDoc, setDoc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, increment, serverTimestamp, Timestamp } from "firebase/firestore";
 import { auth, db } from '@/lib/firebase';
 import { trackSignup, trackLogin } from '@/lib/analytics';
 import type { UserProfile } from '@/types';
+
+// Helper function to check if subscription is active and not expired
+function isSubscriptionActive(subscription: UserProfile['subscription'] | undefined): boolean {
+  if (!subscription) return false;
+  if (subscription.tier !== 'premium') return false;
+  if (subscription.status !== 'active') return false;
+
+  // Check if subscription has expired
+  if (subscription.currentPeriodEnd) {
+    let endDate: Date;
+    // Handle Firestore Timestamp or Date object or ISO string
+    if (subscription.currentPeriodEnd instanceof Timestamp) {
+      endDate = subscription.currentPeriodEnd.toDate();
+    } else if (subscription.currentPeriodEnd instanceof Date) {
+      endDate = subscription.currentPeriodEnd;
+    } else if (typeof subscription.currentPeriodEnd === 'string') {
+      endDate = new Date(subscription.currentPeriodEnd);
+    } else if (typeof subscription.currentPeriodEnd === 'object' && 'seconds' in subscription.currentPeriodEnd) {
+      // Handle Firestore Timestamp-like object
+      endDate = new Date((subscription.currentPeriodEnd as any).seconds * 1000);
+    } else {
+      // Unknown format, assume not expired
+      console.warn('[auth] Unknown currentPeriodEnd format:', subscription.currentPeriodEnd);
+      return true;
+    }
+
+    const now = new Date();
+    if (endDate < now) {
+      console.log('[auth] Subscription expired:', { endDate: endDate.toISOString(), now: now.toISOString() });
+      return false;
+    }
+  }
+
+  return true;
+}
 
 
 export interface AuthContextType {
@@ -114,10 +149,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         userProfile?.roles?.admin === true ||
         userProfile?.flags?.bypassPremium === true;
 
-      const hasPremium =
-        bypass ||
-        (userProfile?.subscription?.tier === 'premium' &&
-          userProfile?.subscription?.status === 'active');
+      const hasPremium = bypass || isSubscriptionActive(userProfile?.subscription);
+
+      console.log('[auth] Login check:', {
+        uid: userProfile?.uid,
+        tier: userProfile?.subscription?.tier,
+        status: userProfile?.subscription?.status,
+        currentPeriodEnd: userProfile?.subscription?.currentPeriodEnd,
+        bypass,
+        hasPremium,
+      });
 
       if (!hasPremium) {
         router.push('/pricing');
@@ -188,9 +229,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoading(false);
 
         // Redirect: always send non-premium users to pricing
-        const isPremium =
-          !!(existingProfile?.subscription?.tier === 'premium' &&
-          existingProfile?.subscription?.status === 'active');
+        const isPremium = isSubscriptionActive(existingProfile?.subscription);
+
+        console.log('[auth] Google sign-in check:', {
+          uid: existingProfile?.uid,
+          tier: existingProfile?.subscription?.tier,
+          status: existingProfile?.subscription?.status,
+          currentPeriodEnd: existingProfile?.subscription?.currentPeriodEnd,
+          isPremium,
+          isNewUser,
+        });
 
         if (!isPremium) {
           router.push('/pricing');

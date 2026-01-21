@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import DodoPayments from 'dodopayments';
-import { adminDb } from '@/lib/firebase-admin';
+import { adminDb, getAdminInitStatus } from '@/lib/firebase-admin';
 
 function getEnv(name: string, optional = false): string {
   const v = process.env[name];
@@ -15,22 +15,48 @@ function safeGet(obj: any, path: string[], defaultValue?: any) {
   return path.reduce((acc, key) => (acc && typeof acc === 'object' ? acc[key] : undefined), obj) ?? defaultValue;
 }
 
+// Calculate subscription end date based on interval
+function calculatePeriodEnd(interval: 'month' | 'year' | null): Date {
+  const now = new Date();
+  if (interval === 'year') {
+    return new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+  }
+  // Default to monthly
+  return new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+}
+
 // Persist subscription to Firestore when checkout is successful
-async function persistSubscriptionOnSuccess(session: any) {
+// Returns { success: boolean, error?: string } to indicate persistence status
+async function persistSubscriptionOnSuccess(session: any): Promise<{ success: boolean; error?: string; uid?: string }> {
+  console.log('[checkout-status] persistSubscriptionOnSuccess called');
+  console.log('[checkout-status] Firebase Admin initialized:', !!adminDb);
+  console.log('[checkout-status] Session structure:', JSON.stringify(session, null, 2));
+
   if (!adminDb) {
-    console.warn('[checkout-status] Firebase Admin not initialized, skipping subscription persistence');
-    return;
+    const status = getAdminInitStatus();
+    console.error('[checkout-status] Firebase Admin not initialized, skipping subscription persistence');
+    console.error('[checkout-status] Init error:', status.error);
+    return { success: false, error: `Firebase Admin not initialized: ${status.error}` };
   }
 
-  // Extract metadata from the checkout session
-  const metadata = session?.metadata ?? session?.data?.metadata ?? {};
+  // Extract metadata from the checkout session - try multiple paths
+  const metadata =
+    session?.metadata ??
+    session?.data?.metadata ??
+    safeGet(session, ['data', 'object', 'metadata']) ??
+    {};
+
+  console.log('[checkout-status] Extracted metadata:', JSON.stringify(metadata));
+
   const uid = metadata?.uid as string | undefined;
 
   if (!uid) {
-    console.warn('[checkout-status] No UID in session metadata, cannot persist subscription', {
+    console.error('[checkout-status] No UID in session metadata, cannot persist subscription', {
       sessionId: session?.id ?? session?.session_id,
+      metadataKeys: Object.keys(metadata),
+      sessionKeys: Object.keys(session || {}),
     });
-    return;
+    return { success: false, error: 'No UID in session metadata' };
   }
 
   // Extract subscription and customer info
@@ -47,6 +73,17 @@ async function persistSubscriptionOnSuccess(session: any) {
   const intervalRaw = metadata?.interval as string | undefined;
   const currency = (metadata?.currency as string)?.toLowerCase() ?? 'usd';
 
+  // Normalize interval
+  const interval: 'month' | 'year' | null =
+    intervalRaw === 'yearly' ? 'year' :
+    intervalRaw === 'monthly' ? 'month' :
+    intervalRaw === 'year' ? 'year' :
+    intervalRaw === 'month' ? 'month' :
+    null;
+
+  // Calculate subscription end date
+  const currentPeriodEnd = calculatePeriodEnd(interval);
+
   // Extract amount from session if available
   const amount =
     session?.total_amount ??
@@ -57,30 +94,34 @@ async function persistSubscriptionOnSuccess(session: any) {
     uid,
     customerId,
     subscriptionId,
-    interval: intervalRaw,
+    interval,
+    intervalRaw,
     currency,
+    currentPeriodEnd: currentPeriodEnd.toISOString(),
   });
 
   try {
     const userRef = adminDb.collection('users').doc(uid);
 
-    await userRef.set(
-      {
-        subscription: {
-          tier: 'premium',
-          status: 'active',
-          customerId: customerId ?? null,
-          subscriptionId: subscriptionId ?? null,
-          interval: intervalRaw === 'yearly' ? 'year' : intervalRaw === 'monthly' ? 'month' : (intervalRaw as 'month' | 'year' | null) ?? null,
-          amount: typeof amount === 'number' ? amount : null,
-          currency: currency,
-          cancelAtPeriodEnd: false,
-          autoRenew: true,
-          updatedAt: new Date(),
-        },
+    const subscriptionData = {
+      subscription: {
+        tier: 'premium',
+        status: 'active',
+        customerId: customerId ?? null,
+        subscriptionId: subscriptionId ?? null,
+        interval: interval ?? 'month',
+        amount: typeof amount === 'number' ? amount : null,
+        currency: currency,
+        currentPeriodEnd: currentPeriodEnd,
+        cancelAtPeriodEnd: false,
+        autoRenew: true,
+        updatedAt: new Date(),
       },
-      { merge: true }
-    );
+    };
+
+    console.log('[checkout-status] Writing to Firestore:', JSON.stringify(subscriptionData, null, 2));
+
+    await userRef.set(subscriptionData, { merge: true });
 
     // Also persist reverse lookup for customerId -> uid
     if (customerId) {
@@ -94,9 +135,10 @@ async function persistSubscriptionOnSuccess(session: any) {
     }
 
     console.log('[checkout-status] Successfully persisted subscription for user', uid);
+    return { success: true, uid };
   } catch (error) {
     console.error('[checkout-status] Failed to persist subscription:', error);
-    // Don't throw - we still want to return success to the client
+    return { success: false, error: String(error), uid };
   }
 }
 
@@ -172,14 +214,19 @@ export async function GET(req: NextRequest) {
 
     // If checkout was successful, persist the subscription to Firestore immediately
     // This ensures the user has access even before the webhook fires
+    let persistenceResult: { success: boolean; error?: string; uid?: string } | null = null;
     if (outcome === 'success') {
-      await persistSubscriptionOnSuccess(session);
+      persistenceResult = await persistSubscriptionOnSuccess(session);
     }
 
     return NextResponse.json(
       {
         outcome,
         rawStatus: rawStatus ?? null,
+        // Include persistence status so frontend knows if subscription was saved
+        subscriptionPersisted: persistenceResult?.success ?? false,
+        persistenceError: persistenceResult?.error ?? null,
+        uid: persistenceResult?.uid ?? null,
       },
       {
         headers: {
