@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import DodoPayments from 'dodopayments';
+import { adminDb } from '@/lib/firebase-admin';
 
 function getEnv(name: string, optional = false): string {
   const v = process.env[name];
@@ -7,6 +8,96 @@ function getEnv(name: string, optional = false): string {
     throw new Error(`${name} is not set`);
   }
   return v as string;
+}
+
+// Helper to safely extract nested values
+function safeGet(obj: any, path: string[], defaultValue?: any) {
+  return path.reduce((acc, key) => (acc && typeof acc === 'object' ? acc[key] : undefined), obj) ?? defaultValue;
+}
+
+// Persist subscription to Firestore when checkout is successful
+async function persistSubscriptionOnSuccess(session: any) {
+  if (!adminDb) {
+    console.warn('[checkout-status] Firebase Admin not initialized, skipping subscription persistence');
+    return;
+  }
+
+  // Extract metadata from the checkout session
+  const metadata = session?.metadata ?? session?.data?.metadata ?? {};
+  const uid = metadata?.uid as string | undefined;
+
+  if (!uid) {
+    console.warn('[checkout-status] No UID in session metadata, cannot persist subscription', {
+      sessionId: session?.id ?? session?.session_id,
+    });
+    return;
+  }
+
+  // Extract subscription and customer info
+  const customerId =
+    session?.customer_id ??
+    session?.customer?.id ??
+    safeGet(session, ['data', 'customer_id']);
+
+  const subscriptionId =
+    session?.subscription_id ??
+    session?.subscription?.id ??
+    safeGet(session, ['data', 'subscription_id']);
+
+  const intervalRaw = metadata?.interval as string | undefined;
+  const currency = (metadata?.currency as string)?.toLowerCase() ?? 'usd';
+
+  // Extract amount from session if available
+  const amount =
+    session?.total_amount ??
+    session?.amount ??
+    safeGet(session, ['data', 'total_amount']);
+
+  console.log('[checkout-status] Persisting subscription for user', {
+    uid,
+    customerId,
+    subscriptionId,
+    interval: intervalRaw,
+    currency,
+  });
+
+  try {
+    const userRef = adminDb.collection('users').doc(uid);
+
+    await userRef.set(
+      {
+        subscription: {
+          tier: 'premium',
+          status: 'active',
+          customerId: customerId ?? null,
+          subscriptionId: subscriptionId ?? null,
+          interval: intervalRaw === 'yearly' ? 'year' : intervalRaw === 'monthly' ? 'month' : (intervalRaw as 'month' | 'year' | null) ?? null,
+          amount: typeof amount === 'number' ? amount : null,
+          currency: currency,
+          cancelAtPeriodEnd: false,
+          autoRenew: true,
+          updatedAt: new Date(),
+        },
+      },
+      { merge: true }
+    );
+
+    // Also persist reverse lookup for customerId -> uid
+    if (customerId) {
+      await adminDb.collection('dodo_customers').doc(String(customerId)).set(
+        {
+          uid,
+          updatedAt: new Date(),
+        },
+        { merge: true }
+      );
+    }
+
+    console.log('[checkout-status] Successfully persisted subscription for user', uid);
+  } catch (error) {
+    console.error('[checkout-status] Failed to persist subscription:', error);
+    // Don't throw - we still want to return success to the client
+  }
 }
 
 type Outcome = 'success' | 'failed' | 'unknown';
@@ -78,6 +169,12 @@ export async function GET(req: NextRequest) {
     const session = await client.checkoutSessions.retrieve(sessionId as string);
 
     const { outcome, rawStatus } = deriveOutcome(session as any);
+
+    // If checkout was successful, persist the subscription to Firestore immediately
+    // This ensures the user has access even before the webhook fires
+    if (outcome === 'success') {
+      await persistSubscriptionOnSuccess(session);
+    }
 
     return NextResponse.json(
       {

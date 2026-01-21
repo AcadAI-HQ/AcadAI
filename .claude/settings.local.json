@@ -35,7 +35,8 @@
       "WebFetch(domain:github.com)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nFix React error #130 with dynamic import for SyntaxHighlighter\n\n- Use Next.js dynamic\\(\\) to import react-syntax-highlighter\n- Disable SSR for SyntaxHighlighter to prevent undefined component errors\n- Change import path from /dist/esm/ to /dist/cjs/ for production builds\n- Fixes \"Element type is invalid\" error in production\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix undefined Icon error by adding ''course'' resource type\n\n- Add GraduationCap icon for ''course'' type resources\n- Add orange color for ''course'' type\n- Add fallback to FileText icon if type is unrecognized\n- Update TypeScript type to include ''course'' as valid ResourceItem type\n- Add type safety with keyof typeof for icon/color mappings\n- Fixes \"Element type is invalid\" error for ML, Android, Indie Game Dev, and Data Science domains\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix undefined Icon error by adding ''course'' resource type\n\n- Add GraduationCap icon for ''course'' type resources\n- Add orange color for ''course'' type\n- Add fallback to FileText icon if type is unrecognized\n- Update TypeScript type to include ''course'' as valid ResourceItem type\n- Add type safety with keyof typeof for icon/color mappings\n- Fixes \"Element type is invalid\" error for ML, Android, Indie Game Dev, and Data Science domains\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(npm audit:*)"
     ],
     "deny": [],
     "ask": []

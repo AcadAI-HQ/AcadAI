@@ -10,7 +10,7 @@ type Outcome = "success" | "failed" | "unknown";
 export default function CheckoutReturnPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUserProfile } = useAuth();
   const [checking, setChecking] = useState(true);
 
   const sessionId = useMemo(() => {
@@ -59,9 +59,17 @@ export default function CheckoutReturnPage() {
         }
       }
 
-      // If API says success but our subscription hasn't reflected yet,
-      // still route to dashboard; PremiumGate will enforce access anyway.
+      // If API says success, refresh the user profile to get updated subscription
+      // The checkout-status API also persists the subscription to Firestore
       if (outcome === "success") {
+        // Refresh user profile to get the updated subscription data
+        try {
+          await refreshUserProfile();
+        } catch (err) {
+          console.error("[checkout-return] Failed to refresh user profile:", err);
+          // Continue anyway - the subscription should be in Firestore now
+        }
+
         if (!cancelled) {
           router.replace("/dashboard");
         }
@@ -81,7 +89,7 @@ export default function CheckoutReturnPage() {
     return () => {
       cancelled = true;
     };
-  }, [loading, isPremiumActive, router, sessionId]);
+  }, [loading, isPremiumActive, router, sessionId, refreshUserProfile]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

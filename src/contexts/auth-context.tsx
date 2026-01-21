@@ -20,6 +20,7 @@ export interface AuthContextType {
   signInWithGoogle: () => Promise<{ isNewUser: boolean } | void>;
   updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
   resendVerificationEmail: (email: string, password: string) => Promise<void>;
+  refreshUserProfile: () => Promise<UserProfile | null>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -330,8 +331,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Refresh user profile from Firestore (useful after subscription updates)
+  const refreshUserProfile = async (): Promise<UserProfile | null> => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      return null;
+    }
+
+    const userProfile = await fetchUserProfile(currentUser);
+    if (userProfile) {
+      setUser(userProfile);
+    }
+    return userProfile;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, useGeneration, signInWithGoogle, updateUserProfile, resendVerificationEmail }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, useGeneration, signInWithGoogle, updateUserProfile, resendVerificationEmail, refreshUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
