@@ -133,6 +133,21 @@ export interface UserProfile {
   flags?: { bypassPremium?: boolean };
 }
 
+// Learning path progress tracking
+export interface StepProgress {
+  stepId: string; // Format: "sectionIndex-subtopicIndex" e.g., "0-2" for first section, third subtopic
+  completedAt: Date;
+}
+
+export interface RoadmapProgress {
+  domain: string;
+  completedSteps: string[]; // Array of stepIds that are completed
+  currentStepId: string | null; // The step user is currently on
+  lastUpdated: Date;
+  totalSteps: number;
+  completedCount: number;
+}
+
 // Chat system types
 export interface ChatMessage {
   id: string;

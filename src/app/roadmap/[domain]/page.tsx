@@ -4,40 +4,38 @@
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
-import { RoadmapView } from "@/components/roadmap/roadmap-view";
-import type { Roadmap, RoadmapFile } from "@/types";
-import { Bot, AlertTriangle, ArrowLeft } from "lucide-react";
+import { LearningPathView } from "@/components/roadmap/learning-path-view";
+import type { RoadmapFile } from "@/types";
+import { Bot, AlertTriangle, ArrowLeft, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getRoadmapForUser } from "@/lib/roadmap-service";
 
-// Convert JSON structure to our app's Roadmap structure
-const transformRoadmapData = (data: RoadmapFile, domain: string): Roadmap => {
-  // Capitalize first letter of domain
-  const capitalizedDomain = domain.charAt(0).toUpperCase() + domain.slice(1);
-  return {
-    title: `${capitalizedDomain} Development Roadmap`,
-    description: data.overview,
-    stages: data.steps.map(step => ({
-      title: step.title,
-      description: step.description,
-      isCore: true,
-      modules: [{
-        title: step.title,
-        description: step.description,
-        isCore: true,
-        subtopics: step.subtopics,
-        examples: step.examples,
-        resources: step.resources // Keep resources but don't show them in UI
-      }],
-    })),
+// Format domain name for display
+const formatDomainName = (domain: string): string => {
+  const domainMap: Record<string, string> = {
+    'frontend': 'Frontend Development',
+    'backend': 'Backend Development',
+    'fullstack': 'Full Stack Development',
+    'ml': 'Machine Learning',
+    'devops': 'DevOps',
+    'data-science': 'Data Science',
+    'cybersecurity': 'Cybersecurity',
+    'ui-ux': 'UI/UX Design',
+    'product-engineering': 'Product Engineering',
+    'game-dev-indie': 'Indie Game Development',
+    'game-dev-aaa': 'AAA Game Development',
+    'android': 'Android Development',
+    'ios': 'iOS Development',
+    'blockchain': 'Blockchain Development',
   };
+  return domainMap[domain] || domain.charAt(0).toUpperCase() + domain.slice(1);
 };
 
 
 export default function RoadmapPage({ params }: { params: Promise<{ domain: string }> }) {
   const { domain } = use(params);
   const { user } = useAuth();
-  const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
+  const [roadmapData, setRoadmapData] = useState<RoadmapFile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,12 +53,8 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
 
     try {
       // Fetch roadmap from Firestore or base template
-      const { roadmap: roadmapData } = await getRoadmapForUser(user.uid, domain);
-
-      // Transform to app format
-      const transformedRoadmap = transformRoadmapData(roadmapData, domain);
-      setRoadmap(transformedRoadmap);
-
+      const { roadmap } = await getRoadmapForUser(user.uid, domain);
+      setRoadmapData(roadmap);
     } catch (err: any) {
       setError(err.message || "Failed to load the roadmap.");
       console.error('Roadmap fetch error:', err);
@@ -71,10 +65,10 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center">
+      <div className="flex flex-col items-center justify-center h-full text-center py-20">
         <Bot className="h-16 w-16 text-primary animate-pulse" />
         <h1 className="text-2xl font-headline mt-4">Loading Your Roadmap...</h1>
-        <p className="text-muted-foreground">Just a moment...</p>
+        <p className="text-muted-foreground">Preparing your learning journey...</p>
       </div>
     );
   }
@@ -92,13 +86,14 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
     );
   }
 
-  if (!roadmap) {
-    return <div className="text-center">No roadmap data available.</div>;
+  if (!roadmapData) {
+    return <div className="text-center py-20">No roadmap data available.</div>;
   }
 
   return (
     <>
-      <div className="flex items-center justify-between mb-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
         <Button asChild variant="ghost" size="sm">
           <Link href="/dashboard">
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -107,12 +102,22 @@ export default function RoadmapPage({ params }: { params: Promise<{ domain: stri
         </Button>
       </div>
 
-      <div className="mb-6">
-        <h1 className="text-4xl font-headline font-bold mb-2">{roadmap.title}</h1>
-        <p className="text-lg text-muted-foreground">{roadmap.description}</p>
+      {/* Title Section */}
+      <div className="mb-8 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+          <Map className="h-4 w-4" />
+          Learning Path
+        </div>
+        <h1 className="text-3xl md:text-4xl font-headline font-bold mb-3">
+          {formatDomainName(domain)}
+        </h1>
+        <p className="text-muted-foreground max-w-2xl mx-auto">
+          {roadmapData.overview}
+        </p>
       </div>
 
-      <RoadmapView roadmap={roadmap} />
+      {/* Learning Path */}
+      <LearningPathView roadmap={roadmapData} domain={domain} />
     </>
   );
 }

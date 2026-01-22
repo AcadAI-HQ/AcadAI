@@ -28,16 +28,24 @@ if (!getApps().length) {
     // This is the recommended method for production (Vercel, etc.)
     if (process.env.FIREBASE_SERVICE_ACCOUNT) {
       try {
+        // Clean up the environment variable (remove whitespace, line breaks)
+        const envValue = process.env.FIREBASE_SERVICE_ACCOUNT.trim().replace(/\s/g, '');
+
         // Support both base64 and raw JSON
-        const envValue = process.env.FIREBASE_SERVICE_ACCOUNT;
         if (envValue.startsWith('{')) {
+          // Raw JSON
           serviceAccount = JSON.parse(envValue);
+          initMethod = 'FIREBASE_SERVICE_ACCOUNT env var (raw JSON)';
         } else {
-          serviceAccount = JSON.parse(Buffer.from(envValue, 'base64').toString('utf-8'));
+          // Base64 encoded - decode first, then parse
+          const decoded = Buffer.from(envValue, 'base64').toString('utf-8');
+          console.log('[firebase-admin] Decoded base64, first 50 chars:', decoded.substring(0, 50));
+          serviceAccount = JSON.parse(decoded);
+          initMethod = 'FIREBASE_SERVICE_ACCOUNT env var (base64)';
         }
-        initMethod = 'FIREBASE_SERVICE_ACCOUNT env var';
-      } catch (parseErr) {
-        console.error('[firebase-admin] Failed to parse FIREBASE_SERVICE_ACCOUNT:', parseErr);
+      } catch (parseErr: any) {
+        console.error('[firebase-admin] Failed to parse FIREBASE_SERVICE_ACCOUNT:', parseErr?.message);
+        console.error('[firebase-admin] Env value starts with:', process.env.FIREBASE_SERVICE_ACCOUNT?.substring(0, 20));
       }
     }
 
@@ -77,9 +85,11 @@ if (!getApps().length) {
       initializationError = 'No valid service account found. Set FIREBASE_SERVICE_ACCOUNT (base64) or FIREBASE_SERVICE_ACCOUNT_PATH (file path)';
       console.error('[firebase-admin] ❌', initializationError);
     }
-  } catch (error) {
-    initializationError = String(error);
-    console.error('[firebase-admin] ❌ Initialization failed:', error);
+  } catch (error: any) {
+    initializationError = error?.message || String(error);
+    console.error('[firebase-admin] ❌ Initialization failed:', error?.message || error);
+    // Don't throw - allow the app to start without admin functionality
+    // API routes will handle the missing adminDb gracefully
   }
 } else {
   adminApp = getApps()[0];

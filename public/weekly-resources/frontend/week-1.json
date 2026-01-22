@@ -3,7 +3,7 @@
   "weekNumber": 1,
   "title": "Deep Dive: Modern React Patterns",
   "description": "Explore advanced React patterns including custom hooks, compound components, and render props. This week covers best practices for building scalable React applications with modern patterns that improve code reusability and maintainability.",
-  "publishedDate": "2025-01-05",
+  "publishedDate": "2026-01-13",
   "difficulty": "intermediate",
   "estimatedTime": 180,
   "mainArticle": {
@@ -40,7 +40,7 @@
       "id": "resource-3",
       "title": "Patterns.dev - React Patterns",
       "description": "Comprehensive guide to all React patterns with interactive examples",
-      "url": "https://www.patterns.dev/posts/react-patterns",
+      "url": "https://www.patterns.dev/react",
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 60
