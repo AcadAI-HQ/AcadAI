@@ -27,10 +27,10 @@ function calculatePeriodEnd(interval: 'month' | 'year' | null): Date {
 
 // Persist subscription to Firestore when checkout is successful
 // Returns { success: boolean, error?: string } to indicate persistence status
-async function persistSubscriptionOnSuccess(session: any): Promise<{ success: boolean; error?: string; uid?: string }> {
+async function persistSubscriptionOnSuccess(session: any, sessionId: string): Promise<{ success: boolean; error?: string; uid?: string }> {
   console.log('[checkout-status] persistSubscriptionOnSuccess called');
   console.log('[checkout-status] Firebase Admin initialized:', !!adminDb);
-  console.log('[checkout-status] Session structure:', JSON.stringify(session, null, 2));
+  console.log('[checkout-status] Session ID:', sessionId);
 
   if (!adminDb) {
     const status = getAdminInitStatus();
@@ -39,27 +39,49 @@ async function persistSubscriptionOnSuccess(session: any): Promise<{ success: bo
     return { success: false, error: `Firebase Admin not initialized: ${status.error}` };
   }
 
-  // Extract metadata from the checkout session - try multiple paths
-  const metadata =
-    session?.metadata ??
-    session?.data?.metadata ??
-    safeGet(session, ['data', 'object', 'metadata']) ??
-    {};
+  // CRITICAL FIX: DodoPayments doesn't return metadata on session retrieval
+  // Look up the UID from our stored session mapping instead
+  let uid: string | undefined;
+  let storedInterval: string | undefined;
+  let storedCurrency: string | undefined;
 
-  console.log('[checkout-status] Extracted metadata:', JSON.stringify(metadata));
-
-  const uid = metadata?.uid as string | undefined;
-
-  if (!uid) {
-    console.error('[checkout-status] No UID in session metadata, cannot persist subscription', {
-      sessionId: session?.id ?? session?.session_id,
-      metadataKeys: Object.keys(metadata),
-      sessionKeys: Object.keys(session || {}),
-    });
-    return { success: false, error: 'No UID in session metadata' };
+  try {
+    const sessionDoc = await adminDb.collection('checkout_sessions').doc(sessionId).get();
+    if (sessionDoc.exists) {
+      const sessionData = sessionDoc.data();
+      uid = sessionData?.uid;
+      storedInterval = sessionData?.interval;
+      storedCurrency = sessionData?.currency;
+      console.log('[checkout-status] Found session mapping:', { uid, storedInterval, storedCurrency });
+    } else {
+      console.warn('[checkout-status] No session mapping found for:', sessionId);
+    }
+  } catch (err) {
+    console.error('[checkout-status] Error looking up session mapping:', err);
   }
 
-  // Extract subscription and customer info
+  // Fallback: try to extract from session metadata (in case DodoPayments API changes)
+  if (!uid) {
+    const metadata =
+      session?.metadata ??
+      session?.data?.metadata ??
+      safeGet(session, ['data', 'object', 'metadata']) ??
+      {};
+    uid = metadata?.uid as string | undefined;
+    storedInterval = storedInterval ?? metadata?.interval;
+    storedCurrency = storedCurrency ?? metadata?.currency;
+    console.log('[checkout-status] Fallback metadata extraction:', { uid, metadata: JSON.stringify(metadata) });
+  }
+
+  if (!uid) {
+    console.error('[checkout-status] No UID found in session mapping or metadata', {
+      sessionId,
+      sessionKeys: Object.keys(session || {}),
+    });
+    return { success: false, error: 'No UID in session mapping or metadata' };
+  }
+
+  // Extract subscription and customer info from session response
   const customerId =
     session?.customer_id ??
     session?.customer?.id ??
@@ -70,8 +92,8 @@ async function persistSubscriptionOnSuccess(session: any): Promise<{ success: bo
     session?.subscription?.id ??
     safeGet(session, ['data', 'subscription_id']);
 
-  const intervalRaw = metadata?.interval as string | undefined;
-  const currency = (metadata?.currency as string)?.toLowerCase() ?? 'usd';
+  const intervalRaw = storedInterval;
+  const currency = storedCurrency?.toLowerCase() ?? 'usd';
 
   // Normalize interval
   const interval: 'month' | 'year' | null =
@@ -145,17 +167,31 @@ async function persistSubscriptionOnSuccess(session: any): Promise<{ success: bo
 type Outcome = 'success' | 'failed' | 'unknown';
 
 function deriveOutcome(session: any): { outcome: Outcome; reason?: string; rawStatus?: string } {
+  // Try multiple status fields that DodoPayments might use
   const status =
     session?.status ??
     session?.payment_status ??
     session?.checkout_status ??
     session?.state ??
-    session?.result;
+    session?.result ??
+    session?.payment?.status ??
+    session?.data?.status;
 
   const norm = typeof status === 'string' ? status.toLowerCase() : undefined;
 
-  const successStatuses = new Set(['succeeded', 'paid', 'completed', 'success']);
-  const failedStatuses = new Set(['failed', 'canceled', 'cancelled', 'declined', 'expired']);
+  // Expanded success statuses based on common payment gateway responses
+  const successStatuses = new Set([
+    'succeeded', 'paid', 'completed', 'success', 'complete', 'approved',
+    'captured', 'settled', 'processed', 'confirmed', 'active'
+  ]);
+  const failedStatuses = new Set([
+    'failed', 'canceled', 'cancelled', 'declined', 'expired', 'rejected',
+    'error', 'void', 'voided', 'refunded'
+  ]);
+  // Pending statuses - treat as unknown, might still complete
+  const pendingStatuses = new Set([
+    'pending', 'processing', 'in_progress', 'requires_action', 'awaiting'
+  ]);
 
   // Subscription contexts may carry nested status indicators
   const subStatus: string | undefined =
@@ -165,21 +201,37 @@ function deriveOutcome(session: any): { outcome: Outcome; reason?: string; rawSt
 
   const subNorm = typeof subStatus === 'string' ? subStatus.toLowerCase() : undefined;
 
+  // Check for success
   if (norm && successStatuses.has(norm)) {
     return { outcome: 'success', rawStatus: status };
   }
-  if (subNorm === 'active') {
+  if (subNorm && (subNorm === 'active' || successStatuses.has(subNorm))) {
     return { outcome: 'success', rawStatus: subStatus };
   }
+
+  // Check for explicit failure
   if (norm && failedStatuses.has(norm)) {
     return { outcome: 'failed', rawStatus: status };
   }
 
   // If explicit boolean or flags are present
   if (session?.paid === true) return { outcome: 'success', rawStatus: 'paid:true' };
+  if (session?.is_paid === true) return { outcome: 'success', rawStatus: 'is_paid:true' };
+  if (session?.payment_successful === true) return { outcome: 'success', rawStatus: 'payment_successful:true' };
+
   if (session?.paid === false) return { outcome: 'failed', rawStatus: 'paid:false' };
 
-  return { outcome: 'unknown', rawStatus: norm ?? subNorm };
+  // Check if there's a subscription or customer ID created - this usually indicates success
+  if (session?.subscription_id || session?.subscription?.id) {
+    return { outcome: 'success', rawStatus: 'has_subscription_id' };
+  }
+
+  // Check pending - not failed but not confirmed either
+  if (norm && pendingStatuses.has(norm)) {
+    return { outcome: 'unknown', rawStatus: `pending:${status}` };
+  }
+
+  return { outcome: 'unknown', rawStatus: norm ?? subNorm ?? 'no_status_found' };
 }
 
 export async function GET(req: NextRequest) {
@@ -210,13 +262,38 @@ export async function GET(req: NextRequest) {
 
     const session = await client.checkoutSessions.retrieve(sessionId as string);
 
+    // Log the full session for debugging
+    console.log('[checkout-status] DodoPayments session retrieved:', {
+      sessionId,
+      sessionKeys: Object.keys(session || {}),
+      status: (session as any)?.status,
+      payment_status: (session as any)?.payment_status,
+      checkout_status: (session as any)?.checkout_status,
+      state: (session as any)?.state,
+      metadata: (session as any)?.metadata,
+      subscription: (session as any)?.subscription,
+    });
+
     const { outcome, rawStatus } = deriveOutcome(session as any);
+    console.log('[checkout-status] Derived outcome:', { outcome, rawStatus });
 
     // If checkout was successful, persist the subscription to Firestore immediately
     // This ensures the user has access even before the webhook fires
     let persistenceResult: { success: boolean; error?: string; uid?: string } | null = null;
     if (outcome === 'success') {
-      persistenceResult = await persistSubscriptionOnSuccess(session);
+      persistenceResult = await persistSubscriptionOnSuccess(session, sessionId as string);
+
+      // Update the checkout session status
+      if (adminDb) {
+        try {
+          await adminDb.collection('checkout_sessions').doc(sessionId as string).update({
+            status: 'completed',
+            completedAt: new Date(),
+          });
+        } catch (err) {
+          console.warn('[checkout-status] Could not update session status:', err);
+        }
+      }
     }
 
     return NextResponse.json(

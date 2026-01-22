@@ -255,7 +255,7 @@ export function Backstory() {
                                 />
                             </div>
                             <p className="text-base sm:text-lg font-bold text-white">Arstos</p>
-                            <p className="text-xs sm:text-sm text-gray-400">Co-Founder</p>
+                            <p className="text-xs sm:text-sm text-gray-400"></p>
                         </div>
                     </div>
                 </div>

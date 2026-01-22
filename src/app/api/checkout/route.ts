@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import DodoPayments from 'dodopayments';
 import { getClientIP, detectCurrencyFromIP } from '@/lib/server-geo';
-import { adminAuth } from '@/lib/firebase-admin';
+import { adminAuth, adminDb } from '@/lib/firebase-admin';
 
 type Interval = 'monthly' | 'yearly';
 
@@ -133,13 +133,17 @@ export async function POST(req: NextRequest) {
       name
     });
 
+    // Build return URL with interval parameter for client-side fallback
+    const baseReturnUrl = getEnv('DODO_PAYMENTS_RETURN_URL');
+    const returnUrlWithParams = `${baseReturnUrl}${baseReturnUrl.includes('?') ? '&' : '?'}interval=${interval}`;
+
     const requestBody: any = {
       product_cart: [
         { product_id: productId, quantity: 1 },
       ],
       allowed_payment_method_types,
       billing_currency: currency,
-      return_url: getEnv('DODO_PAYMENTS_RETURN_URL'),
+      return_url: returnUrlWithParams,
       metadata: {
         uid,
         interval,
@@ -159,13 +163,35 @@ export async function POST(req: NextRequest) {
     console.log('[Checkout] Final request body customer present:', !!requestBody.customer);
 
     const session = await client.checkoutSessions.create(requestBody as any);
+    const sessionId = (session as any).session_id;
 
     console.log('[Checkout] Session created successfully', {
-      session_id: (session as any).session_id,
+      session_id: sessionId,
       checkout_url: (session as any).checkout_url
     });
 
-    return NextResponse.json({ checkout_url: (session as any).checkout_url, session_id: (session as any).session_id });
+    // CRITICAL: Store session -> user mapping in Firestore
+    // DodoPayments doesn't return metadata on session retrieval, so we need this lookup
+    if (adminDb && sessionId) {
+      try {
+        await adminDb.collection('checkout_sessions').doc(sessionId).set({
+          uid,
+          email: email ?? null,
+          interval,
+          currency,
+          createdAt: new Date(),
+          status: 'pending',
+        });
+        console.log('[Checkout] Session mapping stored:', { sessionId, uid });
+      } catch (err) {
+        console.error('[Checkout] Failed to store session mapping:', err);
+        // Don't fail the checkout - we can still try webhook
+      }
+    } else {
+      console.warn('[Checkout] Could not store session mapping - adminDb not available');
+    }
+
+    return NextResponse.json({ checkout_url: (session as any).checkout_url, session_id: sessionId });
   } catch (err: any) {
     console.error('Checkout error:', err);
     console.error('Error details:', {

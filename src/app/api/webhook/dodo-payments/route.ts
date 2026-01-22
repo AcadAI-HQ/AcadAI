@@ -65,7 +65,7 @@ async function upsertUserSubscription(uid: string, data: {
   }
 }
 
-function extractCommon(payload: any) {
+async function extractCommon(payload: any) {
   const type = payload?.type as string;
 
   // Attempt to retrieve metadata.uid we set during checkout
@@ -75,7 +75,28 @@ function extractCommon(payload: any) {
     safeGet(payload, ["data", "object", "metadata"]) ??
     {};
 
-  const uid = metadata?.uid as string | undefined;
+  let uid = metadata?.uid as string | undefined;
+
+  // If no UID in metadata, try to look up from checkout_sessions collection
+  // This is needed because DodoPayments doesn't always include metadata in webhooks
+  if (!uid && adminDb) {
+    const sessionId =
+      safeGet(payload, ["data", "checkout_session_id"]) ??
+      safeGet(payload, ["data", "session_id"]) ??
+      safeGet(payload, ["checkout_session_id"]);
+
+    if (sessionId) {
+      try {
+        const sessionDoc = await adminDb.collection('checkout_sessions').doc(sessionId).get();
+        if (sessionDoc.exists) {
+          uid = sessionDoc.data()?.uid;
+          console.log('[Dodo Webhook] Found UID from session mapping:', { sessionId, uid });
+        }
+      } catch (err) {
+        console.warn('[Dodo Webhook] Error looking up session mapping:', err);
+      }
+    }
+  }
 
   // Extract subscription-ish object
   const data = payload?.data ?? {};
@@ -152,7 +173,7 @@ export const POST = Webhooks({
     console.log("[Dodo Webhook] type:", payload?.type);
   },
   onSubscriptionActive: async (payload) => {
-    const info = extractCommon(payload);
+    const info = await extractCommon(payload);
     const uid =
       info.uid ||
       (info.customerId
@@ -178,7 +199,7 @@ export const POST = Webhooks({
     });
   },
   onSubscriptionCancelled: async (payload) => {
-    const info = extractCommon(payload);
+    const info = await extractCommon(payload);
     const uid =
       info.uid ||
       (info.customerId
@@ -204,7 +225,7 @@ export const POST = Webhooks({
     });
   },
   onSubscriptionExpired: async (payload) => {
-    const info = extractCommon(payload);
+    const info = await extractCommon(payload);
     const uid =
       info.uid ||
       (info.customerId
@@ -230,7 +251,7 @@ export const POST = Webhooks({
     });
   },
   onSubscriptionFailed: async (payload) => {
-    const info = extractCommon(payload);
+    const info = await extractCommon(payload);
     const uid =
       info.uid ||
       (info.customerId
@@ -256,7 +277,7 @@ export const POST = Webhooks({
     });
   },
   onSubscriptionRenewed: async (payload) => {
-    const info = extractCommon(payload);
+    const info = await extractCommon(payload);
     const uid =
       info.uid ||
       (info.customerId

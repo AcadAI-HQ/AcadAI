@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { Timestamp } from "firebase/firestore";
@@ -41,27 +41,62 @@ function isSubscriptionValid(subscription: any): boolean {
 
 export default function PremiumGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshUserProfile } = useAuth();
+  const [checking, setChecking] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    if (loading) return;
+    async function checkSubscription() {
+      if (loading) return;
 
-    // Not logged in -> send to signup
-    if (!user?.uid) {
-      router.replace("/signup");
-      return;
+      // Not logged in -> send to signup
+      if (!user?.uid) {
+        console.log('[PremiumGate] No user, redirecting to signup');
+        router.replace("/signup");
+        return;
+      }
+
+      const bypass = user?.flags?.bypassPremium === true || (user as any)?.roles?.admin === true;
+      const isPremium = bypass || isSubscriptionValid(user.subscription);
+
+      console.log('[PremiumGate] Subscription check:', {
+        uid: user.uid,
+        tier: user.subscription?.tier,
+        status: user.subscription?.status,
+        currentPeriodEnd: user.subscription?.currentPeriodEnd,
+        bypass,
+        isPremium,
+        retryCount,
+      });
+
+      // If not premium and we haven't retried yet, refresh profile once
+      // This handles the case where user just came from checkout
+      if (!isPremium && retryCount < 2) {
+        console.log('[PremiumGate] Not premium, refreshing profile (attempt', retryCount + 1, ')');
+        setRetryCount(prev => prev + 1);
+        try {
+          await refreshUserProfile();
+          // Wait a moment and let the effect re-run with new user data
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          return;
+        } catch (err) {
+          console.error('[PremiumGate] Failed to refresh profile:', err);
+        }
+      }
+
+      // After retries, redirect non-premium to pricing
+      if (!isPremium) {
+        console.log('[PremiumGate] Not premium after retries, redirecting to pricing');
+        router.replace("/pricing");
+      } else {
+        setChecking(false);
+      }
     }
 
-    const bypass = user?.flags?.bypassPremium === true || (user as any)?.roles?.admin === true;
-    const isPremium = bypass || isSubscriptionValid(user.subscription);
+    checkSubscription();
+  }, [user, loading, router, refreshUserProfile, retryCount]);
 
-    // Non-premium -> pricing
-    if (!isPremium) {
-      router.replace("/pricing");
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
+  if (loading || checking) {
     return (
       <div className="w-full h-[50vh] flex items-center justify-center text-sm text-muted-foreground">
         Checking subscription...

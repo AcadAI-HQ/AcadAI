@@ -38,7 +38,8 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nFix undefined Icon error by adding ''course'' resource type\n\n- Add GraduationCap icon for ''course'' type resources\n- Add orange color for ''course'' type\n- Add fallback to FileText icon if type is unrecognized\n- Update TypeScript type to include ''course'' as valid ResourceItem type\n- Add type safety with keyof typeof for icon/color mappings\n- Fixes \"Element type is invalid\" error for ML, Android, Indie Game Dev, and Data Science domains\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(npm audit:*)",
       "Bash(node -e:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

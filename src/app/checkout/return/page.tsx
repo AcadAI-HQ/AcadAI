@@ -3,7 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { doc, setDoc } from "firebase/firestore";
+import { db, auth } from "@/lib/firebase";
+import { Loader2, AlertCircle, CheckCircle, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type Outcome = "success" | "failed" | "unknown";
 
@@ -15,6 +18,43 @@ interface CheckoutStatusResponse {
   uid?: string;
 }
 
+// Client-side fallback to persist subscription when server-side fails
+async function persistSubscriptionClientSide(interval: 'monthly' | 'yearly', currency: string): Promise<boolean> {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    console.error("[checkout-return] No authenticated user for client-side persistence");
+    return false;
+  }
+
+  const now = new Date();
+  const currentPeriodEnd = interval === 'yearly'
+    ? new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000)
+    : new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+  try {
+    const userRef = doc(db, "users", currentUser.uid);
+    await setDoc(userRef, {
+      subscription: {
+        tier: 'premium',
+        status: 'active',
+        interval: interval === 'yearly' ? 'year' : 'month',
+        currency: currency.toLowerCase(),
+        currentPeriodEnd: currentPeriodEnd,
+        cancelAtPeriodEnd: false,
+        autoRenew: true,
+        updatedAt: new Date(),
+        // Note: customerId and subscriptionId will be filled in by webhook later
+      },
+    }, { merge: true });
+
+    console.log("[checkout-return] Successfully persisted subscription client-side");
+    return true;
+  } catch (error) {
+    console.error("[checkout-return] Failed to persist subscription client-side:", error);
+    return false;
+  }
+}
+
 export default function CheckoutReturnPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,6 +62,8 @@ export default function CheckoutReturnPage() {
   const [checking, setChecking] = useState(true);
   const [statusMessage, setStatusMessage] = useState("Processing your checkout...");
   const [error, setError] = useState<string | null>(null);
+  const [canRetry, setCanRetry] = useState(false);
+  const [retrying, setRetrying] = useState(false);
 
   const sessionId = useMemo(() => {
     return (
@@ -30,6 +72,11 @@ export default function CheckoutReturnPage() {
       searchParams.get("id") ||
       ""
     );
+  }, [searchParams]);
+
+  // Extract interval from URL if present (passed from checkout)
+  const intervalParam = useMemo(() => {
+    return searchParams.get("interval") as 'monthly' | 'yearly' | null;
   }, [searchParams]);
 
   const isPremiumActive = useMemo(() => {
@@ -79,17 +126,28 @@ export default function CheckoutReturnPage() {
       // If API says success, refresh the user profile to get updated subscription
       // The checkout-status API also persists the subscription to Firestore
       if (outcome === "success") {
-        // Check if subscription was actually persisted
+        // Check if subscription was actually persisted on server
         if (!data.subscriptionPersisted) {
-          console.error("[checkout-return] Payment succeeded but subscription persistence failed:", data.persistenceError);
-          // Still try to proceed - maybe webhook will handle it
+          console.error("[checkout-return] Payment succeeded but server-side persistence failed:", data.persistenceError);
+
+          // Try client-side fallback persistence
+          if (!cancelled) setStatusMessage("Setting up your subscription...");
+
+          const interval = intervalParam || 'monthly';
+          const currency = 'USD'; // Default, will be updated by webhook
+          const clientPersisted = await persistSubscriptionClientSide(interval, currency);
+
+          if (!clientPersisted) {
+            console.error("[checkout-return] Client-side persistence also failed");
+            // Don't give up yet - try refreshing profile in case webhook already fired
+          }
         }
 
         if (!cancelled) setStatusMessage("Activating your subscription...");
 
         // Refresh user profile to get the updated subscription data
         // Retry a few times in case there's a slight delay
-        let retries = 3;
+        let retries = 5; // Increased retries
         let refreshed = false;
         while (retries > 0 && !refreshed) {
           try {
@@ -98,9 +156,13 @@ export default function CheckoutReturnPage() {
               refreshed = true;
               console.log("[checkout-return] Subscription confirmed:", profile.subscription);
             } else {
-              console.log("[checkout-return] Subscription not yet active, retrying...", profile?.subscription);
+              console.log("[checkout-return] Subscription not yet active, retrying...", {
+                tier: profile?.subscription?.tier,
+                status: profile?.subscription?.status,
+                retriesLeft: retries - 1
+              });
               // Wait a bit before retrying
-              await new Promise(resolve => setTimeout(resolve, 1000));
+              await new Promise(resolve => setTimeout(resolve, 1500));
             }
           } catch (err) {
             console.error("[checkout-return] Failed to refresh user profile:", err);
@@ -113,13 +175,11 @@ export default function CheckoutReturnPage() {
             setStatusMessage("Success! Redirecting to dashboard...");
             router.replace("/dashboard");
           } else {
-            // Subscription persistence might have failed, but payment succeeded
-            // Show message and redirect anyway - webhook might fix it
-            console.warn("[checkout-return] Could not confirm subscription, redirecting anyway");
-            setStatusMessage("Payment successful! Setting up your account...");
-            // Give a moment for the message to show
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            router.replace("/dashboard");
+            // Payment succeeded but subscription not confirmed after all retries
+            // This is a critical error - don't redirect to dashboard as user will be bounced to pricing
+            console.error("[checkout-return] Payment succeeded but subscription could not be confirmed after all retries");
+            setError("Your payment was successful, but we couldn't activate your subscription immediately. Please wait a moment and click 'Retry' below, or contact support if the issue persists.");
+            setCanRetry(true);
           }
         }
         return;
@@ -145,15 +205,72 @@ export default function CheckoutReturnPage() {
     return () => {
       cancelled = true;
     };
-  }, [loading, isPremiumActive, router, sessionId, refreshUserProfile]);
+  }, [loading, isPremiumActive, router, sessionId, refreshUserProfile, intervalParam]);
+
+  // Retry handler for when subscription activation fails
+  const handleRetry = async () => {
+    setRetrying(true);
+    setError(null);
+    setStatusMessage("Retrying subscription activation...");
+
+    try {
+      // First try client-side persistence again
+      const interval = intervalParam || 'monthly';
+      await persistSubscriptionClientSide(interval, 'USD');
+
+      // Wait a moment for Firestore to sync
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Refresh user profile
+      const profile = await refreshUserProfile();
+      if (profile?.subscription?.tier === "premium" && profile?.subscription?.status === "active") {
+        setStatusMessage("Success! Redirecting to dashboard...");
+        router.replace("/dashboard");
+        return;
+      }
+
+      // If still not active, show error again
+      setError("Subscription still not active. Please contact support at support@acadai.app with your payment confirmation.");
+      setCanRetry(true);
+    } catch (err) {
+      console.error("[checkout-return] Retry failed:", err);
+      setError("Retry failed. Please contact support at support@acadai.app with your payment confirmation.");
+      setCanRetry(true);
+    } finally {
+      setRetrying(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4 text-center max-w-md px-4">
         {error ? (
           <>
-            <AlertCircle className="h-8 w-8 text-destructive" />
-            <p className="text-sm text-destructive">{error}</p>
+            <AlertCircle className="h-8 w-8 text-amber-500" />
+            <p className="text-sm text-muted-foreground">{error}</p>
+            {canRetry && (
+              <div className="flex flex-col gap-2 mt-4">
+                <Button
+                  onClick={handleRetry}
+                  disabled={retrying}
+                  className="gap-2"
+                >
+                  {retrying ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <RefreshCw className="h-4 w-4" />
+                  )}
+                  {retrying ? "Retrying..." : "Retry Activation"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => router.push("/dashboard")}
+                  className="text-xs"
+                >
+                  Go to Dashboard Anyway
+                </Button>
+              </div>
+            )}
           </>
         ) : statusMessage.includes("Success") || statusMessage.includes("active") ? (
           <>
