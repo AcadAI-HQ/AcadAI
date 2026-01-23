@@ -22,8 +22,11 @@ function isSubscriptionValid(subscription: any): boolean {
     } else if (typeof subscription.currentPeriodEnd === 'string') {
       endDate = new Date(subscription.currentPeriodEnd);
     } else if (typeof subscription.currentPeriodEnd === 'object' && 'seconds' in subscription.currentPeriodEnd) {
-      // Handle Firestore Timestamp-like object
+      // Handle Firestore Timestamp-like object (serialized format)
       endDate = new Date((subscription.currentPeriodEnd as any).seconds * 1000);
+    } else if (typeof subscription.currentPeriodEnd === 'object' && '_seconds' in subscription.currentPeriodEnd) {
+      // Handle Firestore Timestamp with underscore prefix (client SDK format)
+      endDate = new Date((subscription.currentPeriodEnd as any)._seconds * 1000);
     } else {
       // Unknown format, assume not expired
       return true;

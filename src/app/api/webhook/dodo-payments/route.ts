@@ -1,5 +1,10 @@
 import { Webhooks } from "@dodopayments/nextjs";
-import { adminDb } from "@/lib/firebase-admin";
+import { adminDb, getAdminInitStatus } from "@/lib/firebase-admin";
+
+// Log initialization status on cold start
+const adminStatus = getAdminInitStatus();
+console.log("[Dodo Webhook] Firebase Admin status:", adminStatus);
+console.log("[Dodo Webhook] Webhook secret configured:", !!process.env.DODO_PAYMENTS_WEBHOOK_SECRET);
 
 // Utilities to safely extract fields from webhook payloads
 function safeGet(obj: any, path: string[], defaultValue?: any) {
@@ -166,11 +171,24 @@ async function extractCommon(payload: any) {
   };
 }
 
+// GET endpoint for testing if the route is accessible
+export async function GET() {
+  const status = getAdminInitStatus();
+  return Response.json({
+    ok: true,
+    firebaseAdmin: status.initialized ? "initialized" : "NOT initialized",
+    firebaseError: status.error,
+    webhookSecretConfigured: !!process.env.DODO_PAYMENTS_WEBHOOK_SECRET,
+    webhookSecretPrefix: process.env.DODO_PAYMENTS_WEBHOOK_SECRET?.substring(0, 10) + "...",
+  });
+}
+
 export const POST = Webhooks({
   webhookKey: process.env.DODO_PAYMENTS_WEBHOOK_SECRET!,
   onPayload: async (payload) => {
-    // Minimal logging for observability
-    console.log("[Dodo Webhook] type:", payload?.type);
+    // Log every incoming webhook for debugging
+    console.log("[Dodo Webhook] Received webhook type:", payload?.type);
+    console.log("[Dodo Webhook] Firebase Admin initialized:", !!adminDb);
   },
   onSubscriptionActive: async (payload) => {
     const info = await extractCommon(payload);
