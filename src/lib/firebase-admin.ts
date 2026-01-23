@@ -39,7 +39,6 @@ if (!getApps().length) {
         } else {
           // Base64 encoded - decode first, then parse
           const decoded = Buffer.from(envValue, 'base64').toString('utf-8');
-          console.log('[firebase-admin] Decoded base64, first 50 chars:', decoded.substring(0, 50));
           serviceAccount = JSON.parse(decoded);
           initMethod = 'FIREBASE_SERVICE_ACCOUNT env var (base64)';
         }
