@@ -16,7 +16,7 @@ Allow: /roadmap/
 Allow: /pricing
 
 # Sitemap location
-Sitemap: https://acadai.org/sitemap.xml
+Sitemap: https://www.acadai.org/sitemap.xml
 
 # Crawl-delay (optional, adjust as needed)
 Crawl-delay: 1

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://acadai.org';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acadai.org';
 
   // All 14 available roadmap domains
   const roadmapDomains = [

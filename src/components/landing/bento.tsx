@@ -38,6 +38,7 @@ const domains = [
   "Machine Learning",
   "Data Scientist",
   "Blockchain Developer",
+  "UI/UX",
 ];
 
 export default function Bento() {
@@ -128,7 +129,7 @@ export default function Bento() {
               <InteractiveGridPattern/>
             }
             description="Customize the roadmaps to suit your skills, proficiency and learning speed"
-            href="#"
+            href="/signup"
             cta="Coming Soon"
           />
 

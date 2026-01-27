@@ -39,7 +39,8 @@
       "Bash(npm audit:*)",
       "Bash(node -e:*)",
       "Bash(npx tsc:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []
