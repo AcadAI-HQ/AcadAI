@@ -40,7 +40,8 @@
       "Bash(node -e:*)",
       "Bash(npx tsc:*)",
       "Bash(find:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

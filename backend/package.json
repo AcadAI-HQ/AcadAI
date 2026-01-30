@@ -1,0 +1,42 @@
+{
+  "name": "acadai-backend",
+  "version": "1.0.0",
+  "description": "AcadAI Backend API with Express and Genkit",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"No linter configured yet\""
+  },
+  "keywords": [
+    "acadai",
+    "express",
+    "genkit",
+    "ai"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@genkit-ai/googleai": "^1.28.0",
+    "cors": "^2.8.6",
+    "dodopayments": "^2.17.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.6.0",
+    "genkit": "^1.28.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.1.0",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

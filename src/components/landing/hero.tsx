@@ -194,7 +194,7 @@ export default function HeroWithShader() {
           </h1>
 
           <p className="mb-8 sm:mb-10 text-base sm:text-lg lg:text-xl xl:text-2xl leading-7 sm:leading-8 text-white/80 max-w-2xl lg:max-w-3xl mx-auto px-2">
-            No more guessing what the companies want, know exactly what they are hiring for today.
+            Stop guessing what the companies want—know exactly what they are hiring for today.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">

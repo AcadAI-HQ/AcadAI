@@ -1,270 +1,92 @@
-# Acad AI Backend API
+# AcadAI Backend
 
-Secure FastAPI backend for Acad AI platform handling authentication, AI-powered roadmap customization, and payment processing.
+Node.js/Express backend API with Genkit for AI features.
 
-## Features
+## Tech Stack
 
-- **Firebase Admin SDK Authentication**: Secure token verification
-- **Google Gemini AI Integration**: Personalized roadmap customization
-- **Razorpay Payment Processing**: Subscription management with signature verification
-- **RESTful API**: Clean, documented endpoints
-- **CORS Support**: Configured for frontend communication
-- **Error Handling**: Comprehensive logging and error responses
+- **Runtime**: Node.js (>=18)
+- **Framework**: Express.js
+- **Language**: TypeScript
+- **AI**: Genkit with Google AI (Gemini)
+- **Database**: Firebase Admin SDK (Firestore)
 
-## Project Structure
+## Getting Started
 
-```
-backend/
-├── app/
-│   ├── __init__.py
-│   ├── main.py                 # FastAPI application entry point
-│   ├── config.py               # Configuration and settings
-│   ├── models.py               # Pydantic models for validation
-│   ├── routers/
-│   │   ├── __init__.py
-│   │   ├── auth.py             # Authentication endpoints
-│   │   ├── roadmap.py          # Roadmap customization endpoints
-│   │   └── payment.py          # Payment processing endpoints
-│   └── services/
-│       ├── __init__.py
-│       ├── firebase_service.py  # Firebase Admin SDK operations
-│       ├── gemini_service.py    # Google Gemini AI integration
-│       └── payment_service.py   # Razorpay payment operations
-├── requirements.txt            # Python dependencies
-├── .env.example               # Environment variables template
-├── .gitignore
-└── README.md
-```
+### Prerequisites
 
-## Setup
+- Node.js 18 or higher
+- npm or yarn
+- Google AI API key (for Genkit)
+- Firebase service account credentials
 
-### 1. Install Dependencies
+### Installation
 
 ```bash
 cd backend
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-
-# Linux/Mac
-source venv/bin/activate
-
-pip install -r requirements.txt
+npm install
 ```
 
-### 2. Configure Environment Variables
+### Environment Setup
 
-Copy `.env.example` to `.env` and fill in the values:
+Copy the example environment file and configure your values:
 
 ```bash
 cp .env.example .env
 ```
 
 Required environment variables:
-- `FIREBASE_SERVICE_ACCOUNT_PATH`: Path to Firebase service account JSON
-- `GOOGLE_GEMINI_API_KEY`: Google Gemini API key
-- `RAZORPAY_KEY_ID`: Razorpay key ID
-- `RAZORPAY_KEY_SECRET`: Razorpay key secret
-- `JWT_SECRET_KEY`: Secret key for JWT (min 32 characters)
+- `PORT` - Server port (default: 3001)
+- `CORS_ORIGIN` - Frontend URL for CORS (default: http://localhost:9002)
+- `GOOGLE_GENAI_API_KEY` - Your Google AI API key
+- `FIREBASE_SERVICE_ACCOUNT_PATH` - Path to Firebase service account JSON
 
-### 3. Firebase Service Account
+### Development
 
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Select your project
-3. Go to Project Settings > Service Accounts
-4. Click "Generate New Private Key"
-5. Save the JSON file as `firebase-service-account.json` in the backend directory
-
-### 4. Run the Server
-
-**Development:**
 ```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+npm run dev
 ```
 
-**Production:**
+The server will start with hot-reload on `http://localhost:3001`.
+
+### Production Build
+
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+npm run build
+npm start
+```
+
+## Project Structure
+
+```
+backend/
+├── src/
+│   ├── config/          # Configuration (Firebase, Genkit)
+│   ├── middleware/      # Express middleware
+│   ├── routes/          # API route handlers
+│   ├── services/        # Business logic and AI services
+│   └── index.ts         # Application entry point
+├── dist/                # Compiled JavaScript output
+├── package.json
+├── tsconfig.json
+└── nodemon.json
 ```
 
 ## API Endpoints
 
-### Authentication
+- `GET /` - API info
+- `GET /api/health` - Health check
 
-#### POST `/api/auth/verify-token`
-Verify Firebase ID token and get user profile
-```json
-{
-  "idToken": "firebase_id_token"
-}
-```
+## AI Capabilities (Genkit)
 
-#### GET `/api/auth/me`
-Get current authenticated user profile (requires Authorization header)
+The backend is configured with Genkit for AI features:
+- Gemini 1.5 Pro for complex reasoning tasks
+- Gemini 1.5 Flash for fast responses
 
-### Roadmap
+See `src/config/genkit.ts` for configuration and `src/services/ai.service.ts` for the service layer.
 
-#### POST `/api/roadmap/customize`
-Customize roadmap with AI based on user profile
-```json
-{
-  "domain": "frontend",
-  "userId": "user_uid"
-}
-```
+## Scripts
 
-#### GET `/api/roadmap/domains`
-Get list of available roadmap domains
-
-### Payment
-
-#### POST `/api/payment/create-subscription`
-Create new subscription
-```json
-{
-  "userId": "user_uid",
-  "planId": "monthly",
-  "currency": "INR"
-}
-```
-
-#### POST `/api/payment/verify-payment`
-Verify Razorpay payment signature
-```json
-{
-  "razorpay_subscription_id": "sub_xxx",
-  "razorpay_payment_id": "pay_xxx",
-  "razorpay_signature": "signature",
-  "userId": "user_uid"
-}
-```
-
-#### POST `/api/payment/cancel-subscription`
-Cancel active subscription
-```json
-{
-  "userId": "user_uid",
-  "subscriptionId": "sub_xxx"
-}
-```
-
-#### POST `/api/payment/webhook`
-Handle Razorpay webhooks (configure in Razorpay dashboard)
-
-## Security Features
-
-1. **Firebase Token Verification**: All protected endpoints verify Firebase ID tokens
-2. **Payment Signature Verification**: All payment transactions verified using HMAC-SHA256
-3. **CORS Protection**: Configured allowed origins
-4. **Environment Variables**: Sensitive data stored securely
-5. **Input Validation**: Pydantic models validate all inputs
-6. **Error Handling**: Secure error messages (no sensitive data leakage)
-
-## Testing
-
-### Health Checks
-
-```bash
-# Main health check
-curl http://localhost:8000/health
-
-# Service-specific health checks
-curl http://localhost:8000/api/auth/health
-curl http://localhost:8000/api/roadmap/health
-curl http://localhost:8000/api/payment/health
-```
-
-### API Documentation
-
-FastAPI provides automatic interactive API documentation:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-## Deployment
-
-### Using Docker (Recommended)
-
-```dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-EXPOSE 8000
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-```
-
-Build and run:
-```bash
-docker build -t acadai-backend .
-docker run -p 8000:8000 --env-file .env acadai-backend
-```
-
-### Using systemd (Linux)
-
-Create `/etc/systemd/system/acadai-backend.service`:
-
-```ini
-[Unit]
-Description=Acad AI Backend API
-After=network.target
-
-[Service]
-Type=simple
-User=www-data
-WorkingDirectory=/var/www/acadai-backend
-Environment="PATH=/var/www/acadai-backend/venv/bin"
-ExecStart=/var/www/acadai-backend/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable and start:
-```bash
-sudo systemctl enable acadai-backend
-sudo systemctl start acadai-backend
-```
-
-## Monitoring & Logging
-
-Logs are output to stdout/stderr in JSON format. Configure log level in `.env`:
-
-```env
-LOG_LEVEL=INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
-```
-
-## Troubleshooting
-
-### Firebase Connection Issues
-- Verify service account JSON path is correct
-- Ensure Firebase project ID matches frontend configuration
-
-### Gemini API Errors
-- Check API key is valid
-- Verify API is enabled in Google Cloud Console
-- Check quota limits
-
-### Razorpay Issues
-- Verify key ID and secret are correct
-- Ensure webhook signature verification is configured
-- Check subscription plan configuration
-
-## Contributing
-
-1. Follow PEP 8 style guide
-2. Add type hints to all functions
-3. Write docstrings for all public functions
-4. Add logging for important operations
-5. Handle errors gracefully
-
-## License
-
-MIT License - See main project repository
+- `npm run dev` - Start development server with hot-reload
+- `npm run build` - Compile TypeScript to JavaScript
+- `npm start` - Run production server
+- `npm run typecheck` - Run TypeScript type checking

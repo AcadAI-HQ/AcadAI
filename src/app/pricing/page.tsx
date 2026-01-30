@@ -170,21 +170,24 @@ export default function PricingPage() {
       trackCheckoutStarted(interval, currency);
 
       const token = await auth.currentUser?.getIdToken();
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      } else {
-        headers['x-dev-uid'] = process.env.NEXT_PUBLIC_DEV_UID || 'dev_test_user';
-        headers['x-dev-email'] = process.env.NEXT_PUBLIC_DEV_EMAIL || 'dev+test@acadai.dev';
-        headers['x-dev-name'] = process.env.NEXT_PUBLIC_DEV_NAME || 'Dev Test';
+      if (!token) {
+        toast({
+          title: 'Please sign in',
+          description: 'You need to be signed in to subscribe.',
+          variant: 'destructive',
+        });
+        router.push('/login');
+        return;
       }
 
-      const res = await fetch('/api/checkout', {
+      // Use backend API for checkout
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      const res = await fetch(`${backendUrl}/api/payment/checkout`, {
         method: 'POST',
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({ interval, currency }),
       });
       const data = await res.json();

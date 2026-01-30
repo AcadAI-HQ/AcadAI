@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import { auth } from '@/lib/firebase';
+import { cancelSubscription } from '@/lib/payment-client';
 import { useToast } from '@/hooks/use-toast';
 import {
   AlertDialog,
@@ -21,8 +21,12 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 
+/**
+ * SECURITY: Uses backend API for subscription cancellation
+ * Removed direct Firebase token handling - payment-client handles auth
+ */
 export function SubscriptionTab() {
-  const { user } = useAuth();
+  const { user, refreshUserProfile } = useAuth();
   const { toast } = useToast();
   const [cancelling, setCancelling] = useState(false);
 
@@ -50,24 +54,16 @@ export function SubscriptionTab() {
   async function requestCancellation() {
     try {
       setCancelling(true);
-      const token = await auth.currentUser?.getIdToken();
-      if (!token) {
-        throw new Error('You must be signed in to cancel your subscription.');
+
+      // Use the payment client which calls the backend API
+      const result = await cancelSubscription();
+
+      if (!result.ok) {
+        throw new Error(result.error || 'Cancellation failed');
       }
 
-      const res = await fetch('/api/subscription/cancel', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ cancel_at_period_end: true }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data?.error || 'Cancellation failed');
-      }
+      // Refresh user profile to get updated subscription status
+      await refreshUserProfile();
 
       toast({
         title: 'Cancellation scheduled',
@@ -193,7 +189,7 @@ export function SubscriptionTab() {
                       <AlertDialogFooter>
                         <AlertDialogCancel>Keep Subscription</AlertDialogCancel>
                         <AlertDialogAction onClick={requestCancellation} disabled={cancelling}>
-                          {cancelling ? 'Scheduling…' : 'Confirm Cancel'}
+                          {cancelling ? 'Scheduling...' : 'Confirm Cancel'}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
