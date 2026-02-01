@@ -114,6 +114,52 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return null;
   };
   
+  // Define logout first so it can be used in the session timeout effect
+  const logout = useCallback(async () => {
+    try {
+      // Sign out from Firebase
+      await signOut(auth);
+
+      // Clear local user state
+      setUser(null);
+
+      // Clear all browser storage to ensure clean session termination
+      if (typeof window !== 'undefined') {
+        // Clear localStorage (any cached user data)
+        localStorage.clear();
+
+        // Clear sessionStorage
+        sessionStorage.clear();
+
+        // Clear any IndexedDB data from Firebase (optional, for thorough cleanup)
+        // Firebase uses 'firebaseLocalStorageDb' for auth persistence
+        try {
+          const databases = await window.indexedDB.databases?.();
+          if (databases) {
+            databases.forEach((dbInfo) => {
+              if (dbInfo.name?.includes('firebase')) {
+                window.indexedDB.deleteDatabase(dbInfo.name);
+              }
+            });
+          }
+        } catch (e) {
+          // IndexedDB cleanup is optional, ignore errors
+        }
+
+        // Replace history to prevent back navigation to authenticated pages
+        window.history.replaceState(null, '', '/');
+      }
+
+      // Redirect to landing page
+      router.replace('/');
+    } catch (error) {
+      console.error('[Auth] Logout error:', error);
+      // Even if logout fails, clear local state and redirect
+      setUser(null);
+      router.replace('/');
+    }
+  }, [router]);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
@@ -372,51 +418,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
-  const logout = useCallback(async () => {
-    try {
-      // Sign out from Firebase
-      await signOut(auth);
-
-      // Clear local user state
-      setUser(null);
-
-      // Clear all browser storage to ensure clean session termination
-      if (typeof window !== 'undefined') {
-        // Clear localStorage (any cached user data)
-        localStorage.clear();
-
-        // Clear sessionStorage
-        sessionStorage.clear();
-
-        // Clear any IndexedDB data from Firebase (optional, for thorough cleanup)
-        // Firebase uses 'firebaseLocalStorageDb' for auth persistence
-        try {
-          const databases = await window.indexedDB.databases?.();
-          if (databases) {
-            databases.forEach((dbInfo) => {
-              if (dbInfo.name?.includes('firebase')) {
-                window.indexedDB.deleteDatabase(dbInfo.name);
-              }
-            });
-          }
-        } catch (e) {
-          // IndexedDB cleanup is optional, ignore errors
-        }
-
-        // Replace history to prevent back navigation to authenticated pages
-        window.history.replaceState(null, '', '/');
-      }
-
-      // Redirect to landing page
-      router.replace('/');
-    } catch (error) {
-      console.error('[Auth] Logout error:', error);
-      // Even if logout fails, clear local state and redirect
-      setUser(null);
-      router.replace('/');
-    }
-  }, [router]);
 
   const useGeneration = async (domain: string) => {
     if (user) {
