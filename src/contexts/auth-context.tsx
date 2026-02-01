@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, increment, serverTimestamp, Timestamp } from "firebase/firestore";
@@ -119,14 +119,66 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (firebaseUser) {
         const userProfile = await fetchUserProfile(firebaseUser);
         setUser(userProfile);
+
+        // Track session start time
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('sessionStart', Date.now().toString());
+        }
       } else {
         setUser(null);
+
+        // Clear session tracking
+        if (typeof window !== 'undefined') {
+          sessionStorage.removeItem('sessionStart');
+        }
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
+
+  // Session timeout: auto-logout after 24 hours of inactivity
+  useEffect(() => {
+    if (!user || typeof window === 'undefined') return;
+
+    const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours
+    const ACTIVITY_CHECK_INTERVAL = 60 * 1000; // Check every minute
+
+    let lastActivity = Date.now();
+
+    // Track user activity
+    const updateActivity = () => {
+      lastActivity = Date.now();
+      sessionStorage.setItem('lastActivity', lastActivity.toString());
+    };
+
+    // Check for session timeout
+    const checkTimeout = () => {
+      const storedActivity = sessionStorage.getItem('lastActivity');
+      const lastActivityTime = storedActivity ? parseInt(storedActivity, 10) : lastActivity;
+
+      if (Date.now() - lastActivityTime > SESSION_TIMEOUT) {
+        console.log('[Session] Auto-logout due to inactivity');
+        logout();
+      }
+    };
+
+    // Set up activity listeners
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    events.forEach((event) => window.addEventListener(event, updateActivity, { passive: true }));
+
+    // Initialize last activity
+    updateActivity();
+
+    // Set up timeout checker
+    const intervalId = setInterval(checkTimeout, ACTIVITY_CHECK_INTERVAL);
+
+    return () => {
+      events.forEach((event) => window.removeEventListener(event, updateActivity));
+      clearInterval(intervalId);
+    };
+  }, [user, logout]);
 
   const login = async (email: string, pass: string) => {
     setLoading(true);
@@ -321,16 +373,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
 
-  const logout = async () => {
-    await signOut(auth);
-    setUser(null);
-    // Redirect to landing page and replace history to prevent back navigation
-    router.replace('/');
-    // Clear browser history to prevent back navigation to dashboard
-    if (typeof window !== 'undefined') {
-      window.history.replaceState(null, '', '/');
+  const logout = useCallback(async () => {
+    try {
+      // Sign out from Firebase
+      await signOut(auth);
+
+      // Clear local user state
+      setUser(null);
+
+      // Clear all browser storage to ensure clean session termination
+      if (typeof window !== 'undefined') {
+        // Clear localStorage (any cached user data)
+        localStorage.clear();
+
+        // Clear sessionStorage
+        sessionStorage.clear();
+
+        // Clear any IndexedDB data from Firebase (optional, for thorough cleanup)
+        // Firebase uses 'firebaseLocalStorageDb' for auth persistence
+        try {
+          const databases = await window.indexedDB.databases?.();
+          if (databases) {
+            databases.forEach((dbInfo) => {
+              if (dbInfo.name?.includes('firebase')) {
+                window.indexedDB.deleteDatabase(dbInfo.name);
+              }
+            });
+          }
+        } catch (e) {
+          // IndexedDB cleanup is optional, ignore errors
+        }
+
+        // Replace history to prevent back navigation to authenticated pages
+        window.history.replaceState(null, '', '/');
+      }
+
+      // Redirect to landing page
+      router.replace('/');
+    } catch (error) {
+      console.error('[Auth] Logout error:', error);
+      // Even if logout fails, clear local state and redirect
+      setUser(null);
+      router.replace('/');
     }
-  };
+  }, [router]);
 
   const useGeneration = async (domain: string) => {
     if (user) {

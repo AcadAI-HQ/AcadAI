@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserProfile } from "@/types";
@@ -21,13 +20,37 @@ interface OnboardingFormProps {
   loading?: boolean;
 }
 
-const domains = [
-  { id: 'frontend', name: 'Frontend Development', description: 'React, Vue, modern web technologies' },
-  { id: 'backend', name: 'Backend Development', description: 'APIs, databases, system architecture' },
-  { id: 'fullstack', name: 'Fullstack Development', description: 'Complete web application development' },
-  { id: 'ml', name: 'Machine Learning', description: 'From foundations to MLOps and specialized applications' },
-  { id: 'devops', name: 'DevOps', description: 'Infrastructure automation, CI/CD, cloud platforms' },
+// Generate year options (from 10 years ago to 10 years in the future)
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 21 }, (_, i) => (currentYear - 10 + i).toString());
+
+const months = [
+  { value: '01', label: 'January' },
+  { value: '02', label: 'February' },
+  { value: '03', label: 'March' },
+  { value: '04', label: 'April' },
+  { value: '05', label: 'May' },
+  { value: '06', label: 'June' },
+  { value: '07', label: 'July' },
+  { value: '08', label: 'August' },
+  { value: '09', label: 'September' },
+  { value: '10', label: 'October' },
+  { value: '11', label: 'November' },
+  { value: '12', label: 'December' },
 ];
+
+// Helper to parse YYYY-MM format
+const parseDateString = (dateStr: string | undefined) => {
+  if (!dateStr) return { year: '', month: '' };
+  const [year, month] = dateStr.split('-');
+  return { year: year || '', month: month || '' };
+};
+
+// Helper to combine year and month into YYYY-MM format
+const combineDateParts = (year: string, month: string) => {
+  if (!year || !month) return '';
+  return `${year}-${month}`;
+};
 
 export default function OnboardingForm({ onComplete, onSkip, initialData, loading }: OnboardingFormProps) {
   const [step, setStep] = useState(1);
@@ -41,9 +64,14 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
     yearsOfExperience: undefined,
     description: '',
     interestedDomains: [],
+    interestedDomain: '',
     domainExperience: '',
     ...initialData,
   });
+
+  // Separate state for date parts (for better UX with select dropdowns)
+  const [startDateParts, setStartDateParts] = useState(() => parseDateString(initialData?.startDate));
+  const [endDateParts, setEndDateParts] = useState(() => parseDateString(initialData?.endDate));
 
   const totalSteps = 4;
   const progress = (step / totalSteps) * 100;
@@ -62,11 +90,14 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // For backward compatibility, set interestedDomain to the first selected domain
+    // Combine date parts into proper format and prepare submission data
     const submissionData = {
       ...formData,
       profileComplete: true,
-      interestedDomain: formData.interestedDomains?.[0] || '',
+      startDate: combineDateParts(startDateParts.year, startDateParts.month),
+      endDate: combineDateParts(endDateParts.year, endDateParts.month),
+      // For backward compatibility, also set interestedDomains array
+      interestedDomains: formData.interestedDomain ? [formData.interestedDomain] : [],
     };
     await onComplete(submissionData);
   };
@@ -81,7 +112,9 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
         return !!formData.userType;
       case 2:
         if (formData.userType === 'student') {
-          return !!(formData.degree && formData.startDate && formData.endDate && formData.currentYear);
+          const hasStartDate = !!(startDateParts.year && startDateParts.month);
+          const hasEndDate = !!(endDateParts.year && endDateParts.month);
+          return !!(formData.degree && hasStartDate && hasEndDate && formData.currentYear);
         }
         if (formData.userType === 'professional') {
           return !!(formData.currentRole && formData.yearsOfExperience);
@@ -91,7 +124,7 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
         }
         return false;
       case 3:
-        return !!(formData.interestedDomains && formData.interestedDomains.length > 0);
+        return !!(formData.interestedDomain && formData.interestedDomain.trim().length > 0);
       case 4:
         return !!formData.domainExperience && formData.domainExperience.length >= 20;
       default:
@@ -193,27 +226,75 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
                       />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="startDate">Start Date</Label>
-                        <Input
-                          id="startDate"
-                          type="month"
-                          value={formData.startDate || ''}
-                          onChange={(e) => updateFormData('startDate', e.target.value)}
-                          required
-                        />
+                    <div>
+                      <Label>Start Date</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <Select
+                          value={startDateParts.month}
+                          onValueChange={(value) => setStartDateParts(prev => ({ ...prev, month: value }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Month" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {months.map((month) => (
+                              <SelectItem key={month.value} value={month.value}>
+                                {month.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select
+                          value={startDateParts.year}
+                          onValueChange={(value) => setStartDateParts(prev => ({ ...prev, year: value }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Year" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {years.map((year) => (
+                              <SelectItem key={year} value={year}>
+                                {year}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
+                    </div>
 
-                      <div>
-                        <Label htmlFor="endDate">Expected End Date</Label>
-                        <Input
-                          id="endDate"
-                          type="month"
-                          value={formData.endDate || ''}
-                          onChange={(e) => updateFormData('endDate', e.target.value)}
-                          required
-                        />
+                    <div>
+                      <Label>Expected End Date</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <Select
+                          value={endDateParts.month}
+                          onValueChange={(value) => setEndDateParts(prev => ({ ...prev, month: value }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Month" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {months.map((month) => (
+                              <SelectItem key={month.value} value={month.value}>
+                                {month.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select
+                          value={endDateParts.year}
+                          onValueChange={(value) => setEndDateParts(prev => ({ ...prev, year: value }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Year" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {years.map((year) => (
+                              <SelectItem key={year} value={year}>
+                                {year}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
 
@@ -295,44 +376,25 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
               >
                 <div className="text-center mb-6">
                   <Target className="h-12 w-12 mx-auto mb-4 text-primary" />
-                  <h3 className="text-lg font-semibold">What domains interest you?</h3>
-                  <p className="text-muted-foreground">Select one or more areas you want to focus on</p>
+                  <h3 className="text-lg font-semibold">What domain interests you?</h3>
+                  <p className="text-muted-foreground">Enter the area you want to focus on</p>
                 </div>
 
-                <div className="grid gap-4">
-                  {domains.map((domain) => {
-                    const isChecked = formData.interestedDomains?.includes(domain.id) || false;
-                    return (
-                      <div
-                        key={domain.id}
-                        className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-accent/50"
-                      >
-                        <Checkbox
-                          id={domain.id}
-                          checked={isChecked}
-                          onCheckedChange={(checked) => {
-                            const currentDomains = formData.interestedDomains || [];
-                            const newDomains = checked
-                              ? [...currentDomains, domain.id]
-                              : currentDomains.filter(d => d !== domain.id);
-                            updateFormData('interestedDomains', newDomains);
-                          }}
-                        />
-                        <Label htmlFor={domain.id} className="cursor-pointer flex-1">
-                          <div>
-                            <div className="font-medium">{domain.name}</div>
-                            <div className="text-sm text-muted-foreground">{domain.description}</div>
-                          </div>
-                        </Label>
-                      </div>
-                    );
-                  })}
-                </div>
-                {formData.interestedDomains && formData.interestedDomains.length > 0 && (
-                  <p className="text-sm text-muted-foreground text-center">
-                    {formData.interestedDomains.length} domain{formData.interestedDomains.length > 1 ? 's' : ''} selected
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="interestedDomain">Your Domain of Interest</Label>
+                    <Input
+                      id="interestedDomain"
+                      placeholder="e.g., Frontend Development, Machine Learning, Data Science, Cybersecurity..."
+                      value={formData.interestedDomain || ''}
+                      onChange={(e) => updateFormData('interestedDomain', e.target.value)}
+                      required
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Examples: Frontend Development, Backend Development, Fullstack, Machine Learning, DevOps, Data Science, Cybersecurity, Mobile Development, Cloud Computing, etc.
                   </p>
-                )}
+                </div>
               </motion.div>
             )}
 
@@ -350,15 +412,7 @@ export default function OnboardingForm({ onComplete, onSkip, initialData, loadin
                   <h3 className="text-lg font-semibold">Your Experience & Knowledge</h3>
                   <p className="text-muted-foreground">
                     Tell us about your existing skills and experience in{' '}
-                    {formData.interestedDomains && formData.interestedDomains.length > 0 ? (
-                      formData.interestedDomains.length === 1 ? (
-                        domains.find(d => d.id === formData.interestedDomains![0])?.name
-                      ) : (
-                        `${formData.interestedDomains.length} selected domains`
-                      )
-                    ) : (
-                      'your selected domains'
-                    )}
+                    {formData.interestedDomain || 'your selected domain'}
                   </p>
                 </div>
 

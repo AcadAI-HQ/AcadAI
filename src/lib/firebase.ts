@@ -1,7 +1,7 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp, type FirebaseApp, type FirebaseOptions } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, browserSessionPersistence, setPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -25,5 +25,13 @@ if (!firebaseConfig.apiKey) {
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Set session-based persistence - auth clears when browser tab closes
+// This prevents "phantom" sessions and reduces costs at scale
+if (typeof window !== 'undefined') {
+  setPersistence(auth, browserSessionPersistence).catch((error) => {
+    console.error('[Firebase] Failed to set session persistence:', error);
+  });
+}
 
 export { app, auth, db };

@@ -41,7 +41,8 @@
       "Bash(npx tsc:*)",
       "Bash(find:*)",
       "Bash(dir:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm run lint:*)"
     ],
     "deny": [],
     "ask": []
