@@ -208,9 +208,9 @@ export function SubscriptionTab() {
                   You're currently on the free plan with access to:
                 </p>
                 <ul className="text-sm space-y-1 ml-4">
-                  <li>• All roadmap domains</li>
-                  <li>• Basic roadmap content</li>
-                  <li>• Monthly learning resources</li>
+                  <li>• All 14 roadmap domains</li>
+                  <li>• Complete roadmap content</li>
+                  <li>• Progress tracking</li>
                   <li>• Community support</li>
                 </ul>
               </div>
@@ -223,7 +223,7 @@ export function SubscriptionTab() {
                   </Link>
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-2">
-                  Unlock AI hyperpersonalization, chat assistant, and more
+                  Unlock weekly curated resources, AI personalization, and more
                 </p>
               </div>
             </>

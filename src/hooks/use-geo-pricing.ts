@@ -101,14 +101,14 @@ export function useGeoPricing(): PricingData {
 
         // Fallback to default USD pricing on error
         setData({
-          monthly: { price: '5.99', currency: 'USD', symbol: '$' },
+          monthly: { price: '7.99', currency: 'USD', symbol: '$' },
           annual: {
-            price: '59',
+            price: '79',
             currency: 'USD',
             symbol: '$',
-            monthlyEquivalent: '4.92',
-            savings: '12.88',
-            savingsPercent: '18',
+            monthlyEquivalent: '6.58',
+            savings: '16.88',
+            savingsPercent: '17',
           },
           isIndia: false,
           loading: false,

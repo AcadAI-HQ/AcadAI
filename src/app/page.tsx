@@ -1,14 +1,37 @@
+import dynamic from 'next/dynamic';
 import Header from '@/components/landing/header';
-import Hero from '@/components/landing/hero';
-import Bento from '@/components/landing/bento';
-import { Backstory } from '@/components/landing/backstory';
-import Testimonials from '@/components/landing/testimonials';
-import Pricing from '@/components/landing/pricing';
-import FAQ from '@/components/landing/faq';
-import AnimFooter from '@/components/landing/footer';
 import About from '@/components/landing/about';
 import MarqueeSec from '@/components/landing/marqueesec';
+import Pricing from '@/components/landing/pricing';
 import { generateFAQSchema, generateHowToSchema } from '@/lib/geo-content';
+
+// Lazy load heavy components for better initial load performance
+const Hero = dynamic(() => import('@/components/landing/hero'), {
+  loading: () => <div className="min-h-screen bg-black" />,
+});
+
+const Bento = dynamic(() => import('@/components/landing/bento'), {
+  loading: () => <div className="h-96 bg-black" />,
+});
+
+const Backstory = dynamic(
+  () => import('@/components/landing/backstory').then(mod => ({ default: mod.Backstory })),
+  {
+    loading: () => <div className="h-96 bg-black" />,
+  }
+);
+
+const Testimonials = dynamic(() => import('@/components/landing/testimonials'), {
+  loading: () => <div className="h-64 bg-black" />,
+});
+
+const FAQ = dynamic(() => import('@/components/landing/faq'), {
+  loading: () => <div className="h-96 bg-black" />,
+});
+
+const AnimFooter = dynamic(() => import('@/components/landing/footer'), {
+  loading: () => <div className="h-32 bg-black" />,
+});
 
 export default function LandingPage() {
   const faqSchema = generateFAQSchema();

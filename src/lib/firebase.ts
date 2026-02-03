@@ -3,6 +3,7 @@
 import { initializeApp, getApps, getApp, type FirebaseApp, type FirebaseOptions } from "firebase/app";
 import { getAuth, browserSessionPersistence, setPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig: FirebaseOptions = {
@@ -25,6 +26,7 @@ if (!firebaseConfig.apiKey) {
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 // Set session-based persistence - auth clears when browser tab closes
 // This prevents "phantom" sessions and reduces costs at scale
@@ -34,4 +36,4 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export { app, auth, db };
+export { app, auth, db, storage };

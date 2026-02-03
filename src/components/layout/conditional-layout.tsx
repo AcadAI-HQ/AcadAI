@@ -7,7 +7,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/shared/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sidebar, SidebarProvider, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
-import { LayoutDashboard, Route, BrainCircuit, User, BookOpen, MessageSquareHeart } from "lucide-react";
+import { LayoutDashboard, Route, BrainCircuit, User, BookOpen, MessageSquareHeart, Sparkles } from "lucide-react";
+import { AIMentorFAB } from "@/components/ai-mentor/ai-mentor-fab";
 
 // Pages that should not show the sidebar
 const NO_SIDEBAR_PAGES = ['/login', '/signup', '/pricing', '/terms', '/privacy'];
@@ -117,10 +118,13 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
                   <Link href="/dashboard/learning-resources" className="w-full">
                     <SidebarMenuButton
                       isActive={pathname.startsWith('/dashboard/learning-resources')}
-                      tooltip="Explore weekly learning resources"
+                      tooltip="Weekly curated learning resources (Premium)"
                     >
                       <BookOpen />
-                      <span>Learning Resources</span>
+                      <span className="flex items-center gap-2">
+                        Learning Resources
+                        <Sparkles className="h-3 w-3 text-[#29ABE2]" />
+                      </span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>
@@ -158,6 +162,7 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
             </div>
           </main>
         </div>
+        <AIMentorFAB />
       </div>
     </SidebarProvider>
   );

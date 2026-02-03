@@ -9,6 +9,8 @@ dotenv.config();
 import healthRoutes from './routes/health';
 import paymentRoutes from './routes/payment';
 import webhookRoutes from './routes/webhook';
+import aiMentorRoutes from './routes/ai-mentor';
+import hyperpersonalizationRoutes from './routes/hyperpersonalization';
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
@@ -43,6 +45,8 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api/health', healthRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/webhook', webhookRoutes);
+app.use('/api/ai-mentor', aiMentorRoutes);
+app.use('/api/hyperpersonalization', hyperpersonalizationRoutes);
 
 // Root endpoint
 app.get('/', (req: Request, res: Response) => {
@@ -59,6 +63,15 @@ app.get('/', (req: Request, res: Response) => {
         cancel: 'POST /api/payment/cancel',
       },
       webhook: 'POST /api/webhook/dodo-payments',
+      aiMentor: {
+        chat: 'POST /api/ai-mentor/chat',
+      },
+      hyperpersonalization: {
+        start: 'POST /api/hyperpersonalization/start',
+        generate: 'POST /api/hyperpersonalization/generate',
+        reset: 'POST /api/hyperpersonalization/reset',
+        status: 'GET /api/hyperpersonalization/status',
+      },
     },
   });
 });

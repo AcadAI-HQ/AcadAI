@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,8 @@ import { MorphingText } from "../ui/morphing-text";
 
 function ShaderBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const sceneRef = useRef<{
     camera: THREE.Camera;
     scene: THREE.Scene;
@@ -25,8 +27,30 @@ function ShaderBackground() {
     animationId: number;
   } | null>(null);
 
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  // Visibility detection to pause animation when off-screen
   useEffect(() => {
     if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || prefersReducedMotion) return;
 
     const container = containerRef.current;
 
@@ -52,7 +76,7 @@ function ShaderBackground() {
         float lineWidth = 0.002;
 
         float intensity = 0.0;
-        for(int i=0; i < 5; i++){
+        for(int i=0; i < 3; i++){
           intensity += lineWidth * float(i*i) / abs(fract(t + float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
         }
 
@@ -111,15 +135,19 @@ function ShaderBackground() {
     onWindowResize();
     window.addEventListener("resize", onWindowResize, false);
 
-    // Animation loop
+    // Animation loop with visibility check
     const animate = () => {
       const animationId = requestAnimationFrame(animate);
-      uniforms.time.value += 0.05;
-      renderer.render(scene, camera);
 
       if (sceneRef.current) {
         sceneRef.current.animationId = animationId;
       }
+
+      // Skip rendering when not visible to save GPU resources
+      if (!isVisible) return;
+
+      uniforms.time.value += 0.05;
+      renderer.render(scene, camera);
     };
 
     // Store scene references for cleanup
@@ -150,7 +178,21 @@ function ShaderBackground() {
         material.dispose();
       }
     };
-  }, []);
+  }, [isVisible, prefersReducedMotion]);
+
+  // Show static gradient for users who prefer reduced motion
+  if (prefersReducedMotion) {
+    return (
+      <div
+        className="absolute inset-0 w-full h-full"
+        style={{
+          background: "linear-gradient(to bottom, #1a1a1a 0%, #000 100%)",
+          maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
+        }}
+      />
+    );
+  }
 
   return (
     <div

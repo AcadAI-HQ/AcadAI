@@ -57,12 +57,8 @@ export function Pricing() {
 								<div className="space-y-1">
 									<div className="flex items-center justify-between">
 										<h3 className="leading-none font-semibold">Monthly</h3>
-										<div className="flex items-center gap-x-1">
-											<span className="text-muted-foreground text-sm line-through">$8.99</span>
-											<Badge variant="secondary">11% off</Badge>
-										</div>
 									</div>
-									<p className="text-muted-foreground text-sm">Best value for growing businesses!</p>
+									<p className="text-muted-foreground text-sm">Perfect for getting started!</p>
 								</div>
 								<div className="mt-10 space-y-4">
 									<div className="text-muted-foreground flex items-end gap-0.5 text-xl">
@@ -88,10 +84,7 @@ export function Pricing() {
 								<div className="space-y-1">
 									<div className="flex items-center justify-between">
 										<h3 className="leading-none font-semibold">Yearly</h3>
-										<div className="flex items-center gap-x-1">
-											<span className="text-muted-foreground text-sm line-through">$8.99</span>
-											<Badge>22% off</Badge>
-										</div>
+										<Badge>Save 17%</Badge>
 									</div>
 									<p className="text-muted-foreground text-sm">Unlock savings with an annual commitment!</p>
 								</div>
@@ -99,9 +92,9 @@ export function Pricing() {
 									<div className="text-muted-foreground flex items-end text-xl">
 										<span>$</span>
 										<span className="text-foreground -mb-0.5 text-4xl font-extrabold tracking-tighter md:text-5xl">
-											6.99
+											79
 										</span>
-										<span>/month</span>
+										<span>/year</span>
 									</div>
 									<Button className="w-full" asChild>
 										<a href="#">Get Started Now</a>

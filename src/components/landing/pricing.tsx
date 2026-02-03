@@ -38,9 +38,9 @@ export default function Pricing() {
                 Loading pricing...
               </span>
             ) : pricing.isIndia ? (
-              "Invest in your tech career for less than ₹100 per month"
+              "Invest in your tech career for less than ₹10 per day"
             ) : (
-              "Invest in your tech career for less than a cup of coffee per month"
+              "Invest in your tech career for less than $3 per week"
             )}
           </p>
         </motion.div>
@@ -112,7 +112,7 @@ export default function Pricing() {
                     <h3 className="leading-none font-semibold text-white">Annual</h3>
                     <Badge className="bg-[#29ABE2] text-white border-0">
                       <Sparkles className="h-3 w-3 mr-1 inline" />
-                      Save 15%
+                      Save 17%
                     </Badge>
                   </div>
                   <p className="text-gray-400 text-sm">Best value for committed learners</p>
@@ -146,9 +146,14 @@ export default function Pricing() {
               </div>
             </div>
 
-            <div className="text-gray-400 flex items-center justify-center gap-x-2 text-sm">
-              <ShieldCheckIcon className="size-4" />
-              <span>All plans include full access to our platform. No hidden fees. Cancel anytime.</span>
+            <div className="text-gray-400 flex flex-col items-center justify-center gap-2 text-sm">
+              <div className="flex items-center gap-x-2">
+                <ShieldCheckIcon className="size-4" />
+                <span>No hidden fees. Cancel anytime.</span>
+              </div>
+              <p className="text-center text-xs">
+                <span className="text-white">Roadmaps are free for everyone.</span> Premium unlocks weekly curated resources, AI personalization, and more.
+              </p>
             </div>
           </motion.div>
         </div>

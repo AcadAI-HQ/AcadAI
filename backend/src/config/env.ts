@@ -52,12 +52,12 @@ export function loadEnvConfig(): EnvConfig {
 // Prices in smallest currency unit (cents/paise)
 export const PRICING_CONFIG = {
   USD: {
-    monthly: { amount: 599, display: '5.99' },
-    yearly: { amount: 5900, display: '59' },
+    monthly: { amount: 799, display: '7.99' },
+    yearly: { amount: 7900, display: '79' },
   },
   INR: {
-    monthly: { amount: 19900, display: '199' },
-    yearly: { amount: 169900, display: '1699' },
+    monthly: { amount: 29900, display: '299' },
+    yearly: { amount: 299900, display: '2999' },
   },
 } as const;
 

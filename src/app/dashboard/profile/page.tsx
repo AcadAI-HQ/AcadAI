@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ProfilePictureUpload } from "@/components/profile/profile-picture-upload";
 import { Progress } from "@/components/ui/progress";
 import {
   Edit,
@@ -111,16 +111,13 @@ export default function ProfilePage() {
             <User className="h-4 w-4 ml-auto text-muted-foreground" />
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <Avatar className="h-12 w-12">
-                <AvatarImage
-                  src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${user.email}`}
-                  alt={user.displayName ?? 'User'}
-                />
-                <AvatarFallback>
-                  {user.displayName?.charAt(0).toUpperCase() ?? 'U'}
-                </AvatarFallback>
-              </Avatar>
+            <div className="flex items-center space-x-4">
+              <ProfilePictureUpload
+                currentPhotoURL={user.photoURL}
+                displayName={user.displayName}
+                email={user.email}
+                size="md"
+              />
               <div>
                 <p className="font-medium">{user.displayName}</p>
                 <div className="flex items-center text-sm text-muted-foreground">

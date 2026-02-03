@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, increment, serverTimestamp, Timestamp } from "firebase/firestore";
@@ -226,7 +226,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [user, logout]);
 
-  const login = async (email: string, pass: string) => {
+  const login = useCallback(async (email: string, pass: string) => {
     setLoading(true);
     try {
       const result = await signInWithEmailAndPassword(auth, email, pass);
@@ -272,9 +272,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       throw error;
     }
-  };
+  }, [router]);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = useCallback(async () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     try {
@@ -356,9 +356,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoading(false);
         throw error;
     }
-  };
+  }, [router]);
 
-  const signup = async (email: string, pass: string) => {
+  const signup = useCallback(async (email: string, pass: string) => {
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
@@ -416,19 +416,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       throw error;
     }
-  };
+  }, [router]);
 
 
-  const useGeneration = async (domain: string) => {
+  const useGeneration = useCallback(async (domain: string) => {
     if (user) {
       const updates: any = { lastGeneratedDomain: domain };
       const userDocRef = doc(db, "users", user.uid);
       await updateDoc(userDocRef, updates);
       setUser({ ...user, ...updates });
     }
-  };
+  }, [user]);
 
-  const updateUserProfile = async (updates: Partial<UserProfile>) => {
+  const updateUserProfile = useCallback(async (updates: Partial<UserProfile>) => {
     if (user) {
       // Filter out undefined values, empty strings, and null values
       const cleanUpdates = Object.fromEntries(
@@ -443,9 +443,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Update local state with the same cleaned data that was sent to Firestore
       setUser({ ...user, ...cleanUpdates });
     }
-  };
+  }, [user]);
 
-  const resendVerificationEmail = async (email: string, password: string) => {
+  const resendVerificationEmail = useCallback(async (email: string, password: string) => {
     try {
       // Sign in the user temporarily to get their auth object
       const result = await signInWithEmailAndPassword(auth, email, password);
@@ -467,10 +467,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Failed to resend verification email:', error);
       throw error;
     }
-  };
+  }, []);
 
   // Refresh user profile from Firestore (useful after subscription updates)
-  const refreshUserProfile = async (): Promise<UserProfile | null> => {
+  const refreshUserProfile = useCallback(async (): Promise<UserProfile | null> => {
     const currentUser = auth.currentUser;
     if (!currentUser) {
       return null;
@@ -481,10 +481,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(userProfile);
     }
     return userProfile;
-  };
+  }, []);
+
+  const contextValue = useMemo(() => ({
+    user,
+    loading,
+    login,
+    signup,
+    logout,
+    useGeneration,
+    signInWithGoogle,
+    updateUserProfile,
+    resendVerificationEmail,
+    refreshUserProfile,
+  }), [user, loading, login, signup, logout, useGeneration, signInWithGoogle, updateUserProfile, resendVerificationEmail, refreshUserProfile]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, useGeneration, signInWithGoogle, updateUserProfile, resendVerificationEmail, refreshUserProfile }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

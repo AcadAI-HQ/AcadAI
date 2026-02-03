@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrainCircuit, Home, Route, User, Settings, LogOut, Crown, MessageSquareHeart } from "lucide-react";
+import { BrainCircuit, Home, Route, User, Settings, LogOut, Crown, MessageSquareHeart, BookOpen, Lock } from "lucide-react";
+import { Timestamp } from "firebase/firestore";
 import {
   Sidebar,
   SidebarContent,
@@ -19,6 +20,36 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
 
+// Helper to check if subscription is active
+function isSubscriptionActive(subscription: any): boolean {
+  if (!subscription) return false;
+  if (subscription.tier !== 'premium') return false;
+  if (subscription.status !== 'active') return false;
+
+  if (subscription.currentPeriodEnd) {
+    let endDate: Date;
+    if (subscription.currentPeriodEnd instanceof Timestamp) {
+      endDate = subscription.currentPeriodEnd.toDate();
+    } else if (subscription.currentPeriodEnd instanceof Date) {
+      endDate = subscription.currentPeriodEnd;
+    } else if (typeof subscription.currentPeriodEnd === 'string') {
+      endDate = new Date(subscription.currentPeriodEnd);
+    } else if (typeof subscription.currentPeriodEnd === 'object' && 'seconds' in subscription.currentPeriodEnd) {
+      endDate = new Date((subscription.currentPeriodEnd as any).seconds * 1000);
+    } else if (typeof subscription.currentPeriodEnd === 'object' && '_seconds' in subscription.currentPeriodEnd) {
+      endDate = new Date((subscription.currentPeriodEnd as any)._seconds * 1000);
+    } else {
+      return true;
+    }
+
+    if (endDate < new Date()) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 const navigationItems = [
   {
     title: "Dashboard",
@@ -31,6 +62,13 @@ const navigationItems = [
     url: "/dashboard/my-roadmap",
     icon: Route,
     description: "Your generated learning path"
+  },
+  {
+    title: "Learning Resources",
+    url: "/dashboard/learning-resources",
+    icon: BookOpen,
+    description: "Curated weekly learning materials",
+    requiresPremium: true
   },
   {
     title: "Profile",
@@ -46,10 +84,10 @@ const navigationItems = [
   },
   {
     title: "Upgrade to Premium",
-    url: "/subscription",
+    url: "/pricing",
     icon: Crown,
     description: "Unlock premium features",
-    isPremium: true
+    showOnlyForFree: true
   }
 ];
 
@@ -57,7 +95,9 @@ export function DashboardSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
-  const isPremium = user?.subscription?.tier === 'premium' && user?.subscription?.status === 'active';
+  const isPremium = user?.flags?.bypassPremium === true ||
+                    user?.roles?.admin === true ||
+                    isSubscriptionActive(user?.subscription);
 
   return (
     <Sidebar>
@@ -77,22 +117,32 @@ export function DashboardSidebar() {
                 const isActive = pathname === item.url ||
                   (item.url !== "/dashboard" && pathname.startsWith(item.url));
 
-                // Hide premium upgrade link if user is already premium
-                if (item.isPremium && isPremium) {
+                // Hide "Upgrade to Premium" link if user is already premium
+                if (item.showOnlyForFree && isPremium) {
                   return null;
                 }
+
+                // For premium-required items, show with lock indicator if not premium
+                const showPremiumLock = item.requiresPremium && !isPremium;
 
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
-                      tooltip={item.description}
-                      className={item.isPremium ? "bg-gradient-to-r from-[#29ABE2]/10 to-[#8E2DE2]/10 hover:from-[#29ABE2]/20 hover:to-[#8E2DE2]/20" : ""}
+                      tooltip={showPremiumLock ? `${item.description} (Premium)` : item.description}
+                      className={item.showOnlyForFree ? "bg-gradient-to-r from-[#29ABE2]/10 to-[#8E2DE2]/10 hover:from-[#29ABE2]/20 hover:to-[#8E2DE2]/20" : ""}
                     >
-                      <Link href={item.url}>
-                        <item.icon className={`h-4 w-4 ${item.isPremium ? 'text-[#29ABE2]' : ''}`} />
-                        <span className={item.isPremium ? 'bg-gradient-to-r from-[#29ABE2] to-[#8E2DE2] bg-clip-text text-transparent font-medium' : ''}>{item.title}</span>
+                      <Link href={item.url} className="flex items-center justify-between w-full">
+                        <span className="flex items-center gap-2">
+                          <item.icon className={`h-4 w-4 ${item.showOnlyForFree ? 'text-[#29ABE2]' : ''}`} />
+                          <span className={item.showOnlyForFree ? 'bg-gradient-to-r from-[#29ABE2] to-[#8E2DE2] bg-clip-text text-transparent font-medium' : ''}>{item.title}</span>
+                        </span>
+                        {showPremiumLock && (
+                          <span className="flex items-center gap-1 text-yellow-500">
+                            <Lock className="h-3 w-3" />
+                          </span>
+                        )}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

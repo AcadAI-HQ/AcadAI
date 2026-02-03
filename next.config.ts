@@ -2,11 +2,13 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  typescript: {
-    ignoreBuildErrors: true,
+  // Note: typescript.ignoreBuildErrors and eslint.ignoreDuringBuilds are deprecated in Next.js 16
+  // Use next.config CLI options or fix type errors instead
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
-  eslint: {
-    ignoreDuringBuilds: true,
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons'],
   },
   images: {
     remotePatterns: [

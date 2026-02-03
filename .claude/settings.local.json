@@ -42,7 +42,10 @@
       "Bash(find:*)",
       "Bash(dir:*)",
       "Bash(grep:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []
