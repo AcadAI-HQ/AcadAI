@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Loader2, Trash2, BrainCircuit } from "lucide-react";
+import { Send, Loader2, Trash2, BrainCircuit, MessageCircle } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { auth } from "@/lib/firebase";
@@ -27,6 +27,16 @@ const SUGGESTED_PROMPTS = [
   "Explain my roadmap",
 ];
 
+interface UsageStatus {
+  isPremium: boolean;
+  dailyCount: number;
+  monthlyCount: number;
+  dailyRemaining: number;
+  monthlyRemaining: number;
+  dailyLimit: number;
+  monthlyLimit: number;
+}
+
 export function AIMentorChat() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -35,11 +45,40 @@ export function AIMentorChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(true);
   const [isClearing, setIsClearing] = useState(false);
+  const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Use "ai-mentor" as the domain for general mentoring chat
   const chatDomain = "ai-mentor";
+
+  // Fetch usage status
+  const fetchUsageStatus = async () => {
+    if (!user?.uid) return;
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+      const token = await currentUser.getIdToken();
+
+      const response = await fetch(`${API_URL}/api/ai-mentor/status`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUsageStatus(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch usage status:", error);
+    }
+  };
+
+  // Load usage status on mount
+  useEffect(() => {
+    fetchUsageStatus();
+  }, [user?.uid]);
 
   // Load existing messages on mount
   useEffect(() => {
@@ -122,18 +161,32 @@ export function AIMentorChat() {
       });
       setMessages((prev) => [...prev, savedAssistantMessage]);
 
+      // Refresh usage status after successful message
+      fetchUsageStatus();
+
     } catch (error: any) {
       console.error("Failed to send message:", error);
+
+      // Check if it's a rate limit error
+      const isRateLimitError = error.message?.includes("daily limit") || error.message?.includes("monthly limit");
+
       toast({
-        title: "Error",
+        title: isRateLimitError ? "Limit Reached" : "Error",
         description: error.message || "Failed to get AI response. Please try again.",
         variant: "destructive",
       });
 
-      // Add error message to chat for user feedback
+      // Add appropriate error message to chat for user feedback
+      let errorContent = "I'm sorry, I encountered an error processing your request. Please try again.";
+      if (isRateLimitError) {
+        errorContent = error.message;
+        // Refresh usage status to show updated limits
+        fetchUsageStatus();
+      }
+
       const errorMessage = await addMessageToSession(user.uid, chatDomain, {
         role: "assistant",
-        content: "I'm sorry, I encountered an error processing your request. Please try again.",
+        content: errorContent,
       });
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -178,9 +231,31 @@ export function AIMentorChat() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header with clear button */}
-      {messages.length > 0 && (
-        <div className="px-4 py-2 border-b flex items-center justify-end">
+      {/* Header with usage status and clear button */}
+      <div className="px-4 py-2 border-b flex items-center justify-between">
+        {/* Usage status */}
+        {usageStatus && (
+          <div className={`flex items-center gap-2 text-xs ${
+            usageStatus.dailyRemaining === 0 || usageStatus.monthlyRemaining === 0
+              ? "text-destructive"
+              : usageStatus.dailyRemaining <= 5 || usageStatus.monthlyRemaining <= 50
+              ? "text-yellow-500"
+              : "text-muted-foreground"
+          }`}>
+            <MessageCircle className="h-3 w-3" />
+            <span>
+              Today: {usageStatus.dailyRemaining}/{usageStatus.dailyLimit}
+            </span>
+            <span className="opacity-50">•</span>
+            <span>
+              Month: {usageStatus.monthlyRemaining}/{usageStatus.monthlyLimit}
+            </span>
+          </div>
+        )}
+        {!usageStatus && <div />}
+
+        {/* Clear button */}
+        {messages.length > 0 && (
           <Button
             variant="ghost"
             size="sm"
@@ -195,8 +270,8 @@ export function AIMentorChat() {
             )}
             <span className="ml-1">Clear chat</span>
           </Button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Messages Area */}
       <ScrollArea className="flex-1" ref={scrollAreaRef}>
@@ -258,29 +333,46 @@ export function AIMentorChat() {
 
       {/* Input Area */}
       <div className="p-4 border-t">
-        <div className="flex gap-2">
-          <Textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Ask your AI Mentor..."
-            className="min-h-[44px] max-h-[120px] resize-none"
-            rows={1}
-            disabled={isLoading}
-          />
-          <Button
-            onClick={() => handleSend()}
-            disabled={!input.trim() || isLoading}
-            size="icon"
-            className="shrink-0"
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
-        <p className="text-[10px] text-muted-foreground mt-2 text-center">
-          Press Enter to send, Shift+Enter for new line
-        </p>
+        {usageStatus && (usageStatus.dailyRemaining === 0 || usageStatus.monthlyRemaining === 0) ? (
+          <div className="text-center py-2">
+            <p className="text-sm text-destructive font-medium">
+              {usageStatus.dailyRemaining === 0
+                ? "You've reached your daily message limit."
+                : "You've reached your monthly message limit."}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {usageStatus.dailyRemaining === 0
+                ? "Your daily limit resets at midnight."
+                : "Your monthly limit resets on the 1st of next month."}
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex gap-2">
+              <Textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask your AI Mentor..."
+                className="min-h-[44px] max-h-[120px] resize-none"
+                rows={1}
+                disabled={isLoading}
+              />
+              <Button
+                onClick={() => handleSend()}
+                disabled={!input.trim() || isLoading}
+                size="icon"
+                className="shrink-0"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-[10px] text-muted-foreground mt-2 text-center">
+              Press Enter to send, Shift+Enter for new line
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

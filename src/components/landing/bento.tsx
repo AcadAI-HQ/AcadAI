@@ -130,7 +130,7 @@ export default function Bento() {
             }
             description="Customize the roadmaps to suit your skills, proficiency and learning speed"
             href="/signup"
-            cta="Coming Soon"
+            cta="Try Now"
           />
 
           <div className="col-span-1 md:col-span-1 flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl bg-background shadow-lg border border-gray-800">

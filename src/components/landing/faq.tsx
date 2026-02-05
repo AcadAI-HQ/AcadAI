@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     question: "How does Acad AI personalize learning roadmaps?",
-    answer: "Acad AI personalizes roadmaps through three key mechanisms: (1) Skills-based customization that adapts to your existing knowledge, (2) Proficiency tracking that matches content difficulty to your level, and (3) Learning speed optimization that adjusts pacing to your progress. This feature is upcoming soon along with AI chat assistant.",
+    answer: "Acad AI personalizes roadmaps through three key mechanisms: (1) Skills-based customization that adapts to your existing knowledge, (2) Proficiency tracking that matches content difficulty to your level, and (3) Learning speed optimization that adjusts pacing to your progress. Premium users also get access to our AI Mentor chat assistant for personalized guidance.",
   },
   {
     question: "What domains does Acad AI cover?",

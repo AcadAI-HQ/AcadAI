@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { requireAuth, AuthenticatedRequest } from '../middleware/auth';
+import { mentorRateLimiter, getUserUsage } from '../middleware/rate-limiter';
 import { db } from '../config/firebase';
 
 const router = Router();
@@ -8,31 +9,9 @@ const router = Router();
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENAI_API_KEY || '');
 
-// Rate limiting: track requests per user
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 30; // max requests per window
-const RATE_WINDOW = 60 * 1000; // 1 minute window
-
 // Message constraints
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_CHAT_HISTORY_LENGTH = 20;
-
-function isRateLimited(userId: string): boolean {
-  const now = Date.now();
-  const record = rateLimitMap.get(userId);
-
-  if (!record || now > record.resetTime) {
-    rateLimitMap.set(userId, { count: 1, resetTime: now + RATE_WINDOW });
-    return false;
-  }
-
-  if (record.count >= RATE_LIMIT) {
-    return true;
-  }
-
-  record.count++;
-  return false;
-}
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -101,9 +80,12 @@ async function getUserProfile(uid: string): Promise<UserProfile | null> {
 
 /**
  * POST /api/ai-mentor/chat
- * Send a message to the AI Mentor and get a personalized response
+ * Send a message to the AI Mentor and get a personalized response.
+ *
+ * Middleware chain: requireAuth → mentorRateLimiter → handler
+ * Rate limiting runs AFTER auth so req.user.uid is available as the key.
  */
-router.post('/chat', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+router.post('/chat', requireAuth, mentorRateLimiter, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { message, chatHistory } = req.body as {
       message: string;
@@ -127,15 +109,6 @@ router.post('/chat', requireAuth, async (req: AuthenticatedRequest, res: Respons
     const userId = req.user?.uid;
     if (!userId) {
       res.status(401).json({ error: 'User not authenticated' });
-      return;
-    }
-
-    // Rate limiting check
-    if (isRateLimited(userId)) {
-      res.status(429).json({
-        error: 'Too many requests',
-        message: 'Please slow down. Try again in a moment.',
-      });
       return;
     }
 
@@ -295,6 +268,39 @@ Be friendly, supportive, and encouraging while being concise and practical. Keep
       error: 'Chat failed',
       message: error.message || 'Something went wrong. Please try again.',
     });
+  }
+});
+
+/**
+ * GET /api/ai-mentor/status
+ * Get AI Mentor usage status (reads from in-memory rate-limit store).
+ */
+router.get('/status', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user?.uid;
+
+    if (!userId) {
+      res.status(401).json({ error: 'User not authenticated' });
+      return;
+    }
+
+    // Fetch user profile and check premium status
+    const userProfile = await getUserProfile(userId);
+    const usage = getUserUsage(userId);
+
+    res.json({
+      isPremium: isPremiumUser(userProfile),
+      burstUsed: usage.burstUsed,
+      burstLimit: usage.burstLimit,
+      burstRemaining: usage.burstRemaining,
+      dailyUsed: usage.dailyUsed,
+      dailyLimit: usage.dailyLimit,
+      dailyRemaining: usage.dailyRemaining,
+    });
+
+  } catch (error: any) {
+    console.error('[AI Mentor] Status error:', error);
+    res.status(500).json({ error: 'Failed to get status' });
   }
 });
 

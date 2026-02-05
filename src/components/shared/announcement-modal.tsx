@@ -9,7 +9,7 @@ export function AnnouncementModal() {
 
   useEffect(() => {
     // Check if the announcement has been shown before
-    const hasSeenAnnouncement = localStorage.getItem('hasSeenAnnouncement_jan2026');
+    const hasSeenAnnouncement = localStorage.getItem('hasSeenAnnouncement_feb2026_ai_features');
     if (!hasSeenAnnouncement) {
       // Show modal after a short delay for better UX
       setTimeout(() => setIsOpen(true), 1000);
@@ -18,7 +18,7 @@ export function AnnouncementModal() {
 
   const handleClose = () => {
     setIsOpen(false);
-    localStorage.setItem('hasSeenAnnouncement_jan2026', 'true');
+    localStorage.setItem('hasSeenAnnouncement_feb2026_ai_features', 'true');
   };
 
   return (
@@ -136,7 +136,7 @@ export function AnnouncementModal() {
                     </div>
                   </div>
 
-                  {/* Hyperpersonalization Update */}
+                  {/* AI Features Now Live */}
                   <div className="relative bg-black rounded-xl p-6">
                     <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
                       <div className="absolute inset-0 border-trail-box" style={{ animationDelay: '1s' }} />
@@ -144,16 +144,19 @@ export function AnnouncementModal() {
                     <div className="relative z-10">
                       <h3 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
                         <Zap className="w-5 h-5 text-yellow-400" />
-                        Hyperpersonalization Coming Soon
+                        AI Features Now Live!
                       </h3>
                       <p className="text-gray-300 leading-relaxed">
-                        The AI-powered hyperpersonalization feature has been delayed as my co-founder who was working on it has left.
+                        Two powerful AI features are now available for premium users:
                         <span className="block mt-2 font-medium text-[#8E2DE2]">
-                          However, since I'm now building it from scratch, I'm making it more advanced and better than originally planned.
+                          🎯 Hyperpersonalization - Customize your roadmap based on your skills, goals, and learning style.
+                        </span>
+                        <span className="block mt-2 font-medium text-[#29ABE2]">
+                          🤖 AI Mentor - Get personalized guidance from an AI assistant that knows your learning journey.
                         </span>
                       </p>
                       <p className="text-gray-400 text-sm mt-3">
-                        Stay tuned for an even more powerful personalization experience!
+                        Premium users get 3 hyperpersonalizations per month and 50 AI Mentor messages per day!
                       </p>
                     </div>
                   </div>
