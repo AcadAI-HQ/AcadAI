@@ -15,9 +15,20 @@ import hyperpersonalizationRoutes from './routes/hyperpersonalization';
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS configuration
+// CORS configuration - supports comma-separated origins in CORS_ORIGIN
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:9002')
+  .split(',')
+  .map(o => o.trim());
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:9002',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. server-to-server, curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, origin || true);
+    } else {
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
   credentials: true
 }));
 
