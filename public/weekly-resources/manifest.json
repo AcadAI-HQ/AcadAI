@@ -1,75 +1,75 @@
 {
-  "lastUpdated": "2026-01-21T12:00:00Z",
+  "lastUpdated": "2026-02-03T12:00:00Z",
   "domains": {
     "frontend": {
       "maxWeek": 12,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "backend": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "fullstack": {
       "maxWeek": 12,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "ml": {
       "maxWeek": 8,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "devops": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "android": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "ios": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "blockchain": {
       "maxWeek": 8,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "ui-ux": {
       "maxWeek": 8,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "product-engineering": {
       "maxWeek": 8,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "game-dev-aaa": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "game-dev-indie": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "cybersecurity": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     },
     "data-science": {
       "maxWeek": 10,
-      "availableWeeks": [1, 2],
-      "nextWeekDate": "2026-01-27"
+      "availableWeeks": [2, 3],
+      "nextWeekDate": "2026-02-10"
     }
   }
 }
