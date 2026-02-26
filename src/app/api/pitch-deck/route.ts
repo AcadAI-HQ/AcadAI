@@ -600,7 +600,7 @@ export async function GET() {
   s09(pptx); s10(pptx); s11(pptx); s12(pptx);
   s13(pptx); s14(pptx); s15(pptx); s16(pptx);
 
-  const buffer = await pptx.write('nodebuffer') as Buffer;
+  const buffer = await pptx.write({ outputType: 'nodebuffer' }) as Buffer;
 
   return new NextResponse(buffer, {
     headers: {
