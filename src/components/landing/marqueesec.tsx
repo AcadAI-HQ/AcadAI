@@ -42,20 +42,20 @@ export default function MarqueeSec() {
             <span
               className={`transition-all duration-500 ${
                 activeIndex === 0
-                  ? 'text-white'
-                  : 'text-transparent [-webkit-text-stroke:1px_white] sm:[-webkit-text-stroke:2px_white] [text-stroke:1px_white] sm:[text-stroke:2px_white]'
+                  ? 'text-[#111827]'
+                  : 'text-transparent [-webkit-text-stroke:1px_#111827] sm:[-webkit-text-stroke:2px_#111827] [text-stroke:1px_#111827] sm:[text-stroke:2px_#111827]'
               }`}
-              style={activeIndex !== 0 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px white' : '2px white' } : {}}
+              style={activeIndex !== 0 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px #111827' : '2px #111827' } : {}}
             >
               Exams.
             </span>
             <span
               className={`transition-all duration-500 ${
                 activeIndex === 1
-                  ? 'text-white'
-                  : 'text-transparent [-webkit-text-stroke:1px_white] sm:[-webkit-text-stroke:2px_white] [text-stroke:1px_white] sm:[text-stroke:2px_white]'
+                  ? 'text-[#111827]'
+                  : 'text-transparent [-webkit-text-stroke:1px_#111827] sm:[-webkit-text-stroke:2px_#111827] [text-stroke:1px_#111827] sm:[text-stroke:2px_#111827]'
               }`}
-              style={activeIndex !== 1 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px white' : '2px white' } : {}}
+              style={activeIndex !== 1 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px #111827' : '2px #111827' } : {}}
             >
               Interviews.
             </span>
@@ -66,20 +66,20 @@ export default function MarqueeSec() {
             <span
               className={`transition-all duration-500 ${
                 activeIndex === 2
-                  ? 'text-white'
-                  : 'text-transparent [-webkit-text-stroke:1px_white] sm:[-webkit-text-stroke:2px_white] [text-stroke:1px_white] sm:[text-stroke:2px_white]'
+                  ? 'text-[#111827]'
+                  : 'text-transparent [-webkit-text-stroke:1px_#111827] sm:[-webkit-text-stroke:2px_#111827] [text-stroke:1px_#111827] sm:[text-stroke:2px_#111827]'
               }`}
-              style={activeIndex !== 2 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px white' : '2px white' } : {}}
+              style={activeIndex !== 2 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px #111827' : '2px #111827' } : {}}
             >
               Skills.
             </span>
             <span
               className={`transition-all duration-500 ${
                 activeIndex === 3
-                  ? 'text-white'
-                  : 'text-transparent [-webkit-text-stroke:1px_white] sm:[-webkit-text-stroke:2px_white] [text-stroke:1px_white] sm:[text-stroke:2px_white]'
+                  ? 'text-[#111827]'
+                  : 'text-transparent [-webkit-text-stroke:1px_#111827] sm:[-webkit-text-stroke:2px_#111827] [text-stroke:1px_#111827] sm:[text-stroke:2px_#111827]'
               }`}
-              style={activeIndex !== 3 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px white' : '2px white' } : {}}
+              style={activeIndex !== 3 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px #111827' : '2px #111827' } : {}}
             >
               Projects.
             </span>
@@ -90,10 +90,10 @@ export default function MarqueeSec() {
             <span
               className={`transition-all duration-500 ${
                 activeIndex === 4
-                  ? 'text-white'
-                  : 'text-transparent [-webkit-text-stroke:1px_white] sm:[-webkit-text-stroke:2px_white] [text-stroke:1px_white] sm:[text-stroke:2px_white]'
+                  ? 'text-[#111827]'
+                  : 'text-transparent [-webkit-text-stroke:1px_#111827] sm:[-webkit-text-stroke:2px_#111827] [text-stroke:1px_#111827] sm:[text-stroke:2px_#111827]'
               }`}
-              style={activeIndex !== 4 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px white' : '2px white' } : {}}
+              style={activeIndex !== 4 ? { WebkitTextStroke: window.innerWidth < 640 ? '1px #111827' : '2px #111827' } : {}}
             >
               Everything
             </span>
@@ -104,7 +104,7 @@ export default function MarqueeSec() {
           <HoverBorderGradient
             containerClassName="rounded-full"
             as="button"
-            className="dark:bg-black bg-black text-white px-6 py-3 sm:px-8 sm:py-4 text-base sm:text-lg md:text-xl font-semibold shadow-sm shadow-cyan-700"
+            className="bg-[#111827] text-white px-6 py-3 sm:px-8 sm:py-4 text-base sm:text-lg md:text-xl font-semibold shadow-sm shadow-cyan-700"
             onClick={() => router.push('/signup')}
           >
             <span>Master Now</span>

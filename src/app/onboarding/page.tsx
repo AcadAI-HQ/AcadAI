@@ -118,37 +118,31 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-2xl">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <BrainCircuit className="h-8 w-8 text-primary" />
-            <span className="font-headline text-2xl font-bold text-foreground">Acad AI</span>
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-lg">
+        {/* Logo */}
+        <div className="flex items-center justify-center gap-2.5 mb-8">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#3B82F6]/15">
+              <BrainCircuit className="h-5 w-5 text-[#3B82F6]" />
+            </div>
+            <span className="font-headline text-xl font-semibold">Acad AI</span>
           </Link>
-          <h1 className="text-3xl font-headline font-bold mb-2">Welcome to Acad AI!</h1>
-          <p className="text-muted-foreground text-lg">
-            Let's personalize your learning experience to create the perfect roadmap for you.
-          </p>
         </div>
 
-        {/* Onboarding Form */}
-        <OnboardingForm
-          onComplete={handleCompleteOnboarding}
-          onSkip={handleSkip}
-          initialData={user}
-          loading={loading}
-        />
-
-        {/* Footer */}
-        <div className="text-center mt-8 text-sm text-muted-foreground">
-          <p>
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline">
-              Sign in
-            </Link>
-          </p>
+        {/* Card */}
+        <div className="rounded-2xl border border-border/60 bg-card p-6 sm:p-8 shadow-sm">
+          <OnboardingForm
+            onComplete={handleCompleteOnboarding}
+            onSkip={handleSkip}
+            initialData={user}
+            loading={loading}
+          />
         </div>
+
+        <p className="text-center mt-5 text-xs text-muted-foreground/50">
+          Takes less than 2 minutes · Free forever
+        </p>
       </div>
     </div>
   );

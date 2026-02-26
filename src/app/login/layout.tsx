@@ -3,5 +3,5 @@ import { seoConfigs } from '@/lib/seo';
 export const metadata = seoConfigs.login;
 
 export default function LoginLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <div className="force-light">{children}</div>;
 }

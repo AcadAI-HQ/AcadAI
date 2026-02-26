@@ -6,7 +6,7 @@ import { AuroraText } from "../ui/aurora-text"
 
 export default function About() {
   return (
-    <section id="about" className="relative w-full py-20 md:py-32 bg-black">
+    <section id="about" className="relative w-full py-20 md:py-32 bg-white">
       <div className="container mx-auto px-4">
         <div className="space-y-12 md:space-y-16">
           {/* Text content - Left aligned */}
@@ -21,7 +21,7 @@ export default function About() {
               <AuroraText colors={["#3546b5ff", "#1E90FF", "#00CED1", "#87CEEB"]}>Land that dream tech job faster.</AuroraText>
             </p>
 
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#111827] leading-tight">
               An AI that tells you exactly what the companies are hiring for, so that you can streamline your learning process.
             </h2>
           </motion.div>

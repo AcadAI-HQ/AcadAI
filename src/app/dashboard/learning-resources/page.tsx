@@ -104,19 +104,19 @@ export default function LearningResourcesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2">
+      <div>
+        <h1 className="font-headline text-2xl font-bold md:text-3xl">
           Learning Resources
         </h1>
-        <p className="text-gray-400 text-lg">
+        <p className="mt-1 text-sm text-muted-foreground">
           Weekly curated resources to deepen your knowledge across different domains
         </p>
       </div>
 
       {/* Domain Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {domainConfig.map((domain) => {
           const availableWeeks =
             manifest?.domains[domain.id]?.availableWeeks.length || 0;

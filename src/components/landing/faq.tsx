@@ -1,76 +1,132 @@
-"use client";
+'use client';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { motion } from "framer-motion";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus } from 'lucide-react';
 
-// GEO-optimized FAQs with clear, citation-friendly answers
 const faqs = [
   {
-    question: "What is Acad AI?",
-    answer: "Acad AI is an AI-powered platform that generates hyper-personalized learning roadmaps for tech careers. It customizes learning paths based on your existing skills, proficiency level, and learning speed across domains like Frontend, Backend, Fullstack, Machine Learning, and DevOps.",
+    question: 'How are the roadmaps built from job market data?',
+    answer:
+      'We pull requirements from thousands of active job postings across major tech roles and weight them by frequency and recency. Your roadmap reflects what companies are actually hiring for right now — not what a curriculum designer thought mattered two years ago.',
   },
   {
-    question: "How does Acad AI personalize learning roadmaps?",
-    answer: "Acad AI personalizes roadmaps through three key mechanisms: (1) Skills-based customization that adapts to your existing knowledge, (2) Proficiency tracking that matches content difficulty to your level, and (3) Learning speed optimization that adjusts pacing to your progress. Premium users also get access to our AI Mentor chat assistant for personalized guidance.",
+    question: 'What domains does Acad AI cover?',
+    answer:
+      'Frontend, Backend, Fullstack, Machine Learning, DevOps, and 9 more specialisations. Each domain has a full structured path — foundational concepts through production-grade skills, with curated resources at every stage.',
   },
   {
-    question: "What domains does Acad AI cover?",
-    answer: "Acad AI provides comprehensive learning roadmaps for 14 major tech domains: Frontend Development (React, Vue, JavaScript), Backend Development (APIs, databases, Node.js, Python), Fullstack Development (MERN stack, complete web apps), Machine Learning (Python, TensorFlow, PyTorch, MLOps), and DevOps (CI/CD, Docker, Kubernetes, cloud platforms) and many others.",
+    question: 'How does personalisation work?',
+    answer:
+      'During onboarding we capture your current skills, experience level, and goal. That profile reshapes the depth, pacing, and resource recommendations throughout your roadmap. No two users get the same path.',
   },
   {
-    question: "Is Acad AI free to use?",
-    answer: "No, we have had a free tier from last September but that free tier is no longer available.",
+    question: 'Is there a free tier?',
+    answer:
+      'There was one until last September. There isn\'t now. Maintaining live data pipelines and curating resources at this quality requires the subscription to be sustainable. The pricing is deliberately low — cheaper than a single tech book per month.',
   },
   {
-    question: "How is Acad AI different from other learning platforms?",
-    answer: "Unlike generic learning platforms, Acad AI provides roadmaps that dynamically adapt to individual learners. The platform considers your existing skills, proficiency level, and learning pace to create a truly customized learning experience, rather than offering one-size-fits-all content.",
+    question: 'Can I cancel anytime?',
+    answer:
+      'Yes, both plans are cancel-anytime with no lock-in. Monthly billing stops at the end of the billing cycle. Annual billing is non-refundable after 7 days but you keep access through the period you paid for.',
   },
   {
-    question: "Who should use Acad AI?",
-    answer: "Acad AI is ideal for career switchers transitioning into tech, self-taught developers seeking structured learning, bootcamp graduates deepening specific skills, and working professionals learning new technologies with limited time. The platform adapts to each user's background and goals.",
+    question: 'Who is Acad AI best suited for?',
+    answer:
+      'Anyone who wants to get hired in tech and is tired of guessing what to learn. Career switchers, self-taught developers, bootcamp grads, and working professionals pivoting to a new specialisation all get the most out of it.',
   },
 ];
 
-const FAQ = () => {
+function Item({
+  question,
+  answer,
+  open,
+  onToggle,
+}: {
+  question: string;
+  answer: string;
+  open: boolean;
+  onToggle: () => void;
+}) {
   return (
-    <section id="faq" className="py-20 md:py-28">
-      <div className="container max-w-4xl mx-auto">
-        <div className="text-center">
-          <h2 className="font-headline text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-4 text-white/80 text-lg">
-            Have questions? We have answers. If you can't find what you're looking for, feel free to contact us.
-          </p>
-        </div>
-        <motion.div
-          className="mt-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+    <div className="border-b border-black/[0.08]">
+      <button
+        className="w-full flex items-start justify-between gap-6 py-5 text-left"
+        onClick={onToggle}
+      >
+        <span className="text-[0.9375rem] font-medium text-[#111827] leading-snug">
+          {question}
+        </span>
+        <motion.span
+          animate={{ rotate: open ? 45 : 0 }}
+          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-0.5 shrink-0"
         >
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left font-semibold text-lg hover:no-underline">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-base">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
+          <Plus className="h-4 w-4 text-black/35" />
+        </motion.span>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <p className="pb-6 text-sm text-black/50 leading-relaxed max-w-lg">
+              {answer}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function FAQ() {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <section id="faq" className="py-24 lg:py-32 bg-white">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+
+          {/* Left — heading */}
+          <div className="lg:pt-1">
+            <motion.h2
+              className="font-headline text-[clamp(1.8rem,3vw,2.6rem)] font-normal leading-[1.1] tracking-tight text-[#111827]"
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Everything you{' '}
+              <span className="text-black/35">need to know</span>
+            </motion.h2>
+          </div>
+
+          {/* Right — accordion */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {faqs.map((faq, i) => (
+              <Item
+                key={i}
+                question={faq.question}
+                answer={faq.answer}
+                open={open === i}
+                onToggle={() => setOpen(open === i ? null : i)}
+              />
             ))}
-          </Accordion>
-        </motion.div>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );
-};
-
-export default FAQ;
+}

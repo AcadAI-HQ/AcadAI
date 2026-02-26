@@ -3,5 +3,5 @@ import { seoConfigs } from '@/lib/seo';
 export const metadata = seoConfigs.signup;
 
 export default function SignupLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <div className="force-light">{children}</div>;
 }

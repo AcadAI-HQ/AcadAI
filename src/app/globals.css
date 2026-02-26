@@ -4,58 +4,74 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
+    --background: oklch(0.98 0.002 90);
+    --foreground: oklch(0.12 0 0);
     --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card-foreground: oklch(0.12 0 0);
     --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 98%;
-    --accent-foreground: 0 0% 9%;
+    --popover-foreground: oklch(0.12 0 0);
+    --primary: oklch(0.12 0 0);
+    --primary-foreground: oklch(0.98 0 0);
+    --secondary: oklch(0.96 0.002 90);
+    --secondary-foreground: oklch(0.12 0 0);
+    --muted: oklch(0.94 0.002 90);
+    --muted-foreground: oklch(0.45 0 0);
+    --accent: oklch(0.65 0.15 25);
+    --accent-foreground: oklch(0.98 0 0);
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --radius: 0.5rem;
+    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --border: oklch(0.9 0.002 90);
+    --input: oklch(0.9 0.002 90);
+    --ring: oklch(0.12 0 0);
+    --radius: 0rem;
     --chart-1: 0 0% 74%;
     --chart-2: 0 0% 63%;
     --chart-3: 0 0% 52%;
     --chart-4: 0 0% 41%;
     --chart-5: 0 0% 30%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 98%;
-    --accent-foreground: 0 0% 9%;
+    --background: oklch(0.1 0 0);
+    --foreground: oklch(0.95 0 0);
+    --card: oklch(0.12 0 0);
+    --card-foreground: oklch(0.95 0 0);
+    --popover: oklch(0.12 0 0);
+    --popover-foreground: oklch(0.95 0 0);
+    --primary: oklch(0.95 0 0);
+    --primary-foreground: oklch(0.1 0 0);
+    --secondary: oklch(0.18 0 0);
+    --secondary-foreground: oklch(0.95 0 0);
+    --muted: oklch(0.22 0 0);
+    --muted-foreground: oklch(0.6 0 0);
+    --accent: oklch(0.7 0.12 25);
+    --accent-foreground: oklch(0.1 0 0);
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --border: oklch(0.22 0 0);
+    --input: oklch(0.22 0 0);
+    --ring: oklch(0.5 0 0);
     --chart-1: 0 0% 74%;
     --chart-2: 0 0% 63%;
     --chart-3: 0 0% 52%;
     --chart-4: 0 0% 41%;
     --chart-5: 0 0% 30%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
   }
   .theme {
     --animate-pulse: pulse var(--duration) ease-out infinite;
@@ -66,6 +82,7 @@
     --animate-aurora: aurora 8s ease-in-out infinite alternate;
     --animate-grid: grid 15s linear infinite;
     --animate-ripple: ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite;
+    --color-destructive-foreground: var(--destructive-foreground);
   }
 }
 
@@ -144,4 +161,506 @@
   to {
     transform: translateY(calc(-100% - var(--gap)));
   }
+}
+
+/* ─── Hero roadmap SVG animations ─── */
+.rm-line {
+  stroke-dasharray: 520;
+  stroke-dashoffset: 520;
+  animation: rm-draw 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.rm-flow {
+  stroke-dasharray: 10 14;
+  animation: rm-flow 1.7s linear infinite;
+  opacity: 0.65;
+}
+.rm-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rm-pulse 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.rm-pulse-slow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rm-pulse 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.rm-ring {
+  stroke-dasharray: 6 10;
+  animation: rm-ring 2.2s linear infinite;
+  opacity: 0.75;
+}
+.rm-traveler {
+  animation: rm-travel 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  filter: drop-shadow(0 10px 18px rgba(17, 17, 17, 0.1));
+}
+
+@keyframes rm-draw {
+  0%   { stroke-dashoffset: 520; opacity: 0.75; }
+  28%  { stroke-dashoffset: 300; opacity: 0.85; }
+  55%  { stroke-dashoffset: 140; opacity: 1; }
+  100% { stroke-dashoffset: 0;   opacity: 1; }
+}
+@keyframes rm-flow {
+  to { stroke-dashoffset: -48; }
+}
+@keyframes rm-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.06); }
+}
+@keyframes rm-ring {
+  to { stroke-dashoffset: -64; }
+}
+@keyframes rm-travel {
+  0%   { transform: translate(0px, 0px);   opacity: 0; }
+  8%   {                                   opacity: 1; }
+  45%  { transform: translate(-10px, 148px); }
+  75%  { transform: translate(10px, 305px);  }
+  100% { transform: translate(0px, 440px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-line, .rm-flow, .rm-pulse, .rm-pulse-slow, .rm-ring, .rm-traveler {
+    animation: none !important;
+  }
+}
+
+/* ─── Hero gradient blob animations ─── */
+.hero-blob {
+  will-change: transform, opacity;
+}
+
+@keyframes hero-blob-1 {
+  0%   { transform: scale(1)    translate(0px,   0px);  opacity: 0.82; }
+  100% { transform: scale(1.09) translate(0px,  16px);  opacity: 1;    }
+}
+@keyframes hero-blob-2 {
+  0%   { transform: scale(1)    translate(0px,  0px); opacity: 0.7; }
+  100% { transform: scale(1.13) translate(18px, 8px); opacity: 0.95; }
+}
+@keyframes hero-blob-3 {
+  0%   { transform: scale(1)    translate(0px,   0px); opacity: 0.65; }
+  100% { transform: scale(1.1)  translate(-14px, 10px); opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob { animation: none !important; }
+}
+
+/* ─── Light theme override for auth pages ─── */
+.force-light {
+  --background:             0 0% 100%;
+  --foreground:             222.2 84% 4.9%;
+  --card:                   0 0% 100%;
+  --card-foreground:        222.2 84% 4.9%;
+  --popover:                0 0% 100%;
+  --popover-foreground:     222.2 84% 4.9%;
+  --primary:                222.2 47.4% 11.2%;
+  --primary-foreground:     210 40% 98%;
+  --secondary:              210 40% 96.1%;
+  --secondary-foreground:   222.2 47.4% 11.2%;
+  --muted:                  210 40% 96.1%;
+  --muted-foreground:       215.4 16.3% 46.9%;
+  --accent:                 210 40% 96.1%;
+  --accent-foreground:      222.2 47.4% 11.2%;
+  --destructive:            0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border:                 214.3 31.8% 91.4%;
+  --input:                  214.3 31.8% 91.4%;
+  --ring:                   222.2 84% 4.9%;
+}
+
+/*
+  The glass-button / glass-input CSS inside sign-up.tsx uses
+  `oklch(from var(--background) l c h / x%)` — a relative-color syntax
+  that requires var(--background) to be a valid CSS color. Our variable
+  stores raw HSL components (`0 0% 100%`) which satisfy Tailwind's
+  `hsl(var(--background))` but are NOT a valid standalone color, so
+  every oklch() expression resolves to transparent.
+
+  Fix: scope explicit rgba() replacements to .force-light so the
+  glass elements render correctly on the light auth pages.
+*/
+
+/* ── glass-button ── */
+.force-light .glass-button {
+  backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+  background: linear-gradient(
+    -75deg,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.22),
+    rgba(255,255,255,0.05)
+  ) !important;
+  box-shadow:
+    inset 0  0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.50),
+    0  0.25em 0.125em -0.125em rgba(0,0,0,0.20),
+    0  0     0.1em    0.25em inset rgba(255,255,255,0.22) !important;
+}
+.force-light .glass-button:hover {
+  box-shadow:
+    inset 0  0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.50),
+    0  0.15em 0.05em -0.1em  rgba(0,0,0,0.25),
+    0  0     0.05em   0.1em inset rgba(255,255,255,0.50) !important;
+}
+.force-light .glass-button-wrap:has(.glass-button:active) .glass-button {
+  box-shadow:
+    inset 0  0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.50),
+    0  0.125em 0.125em -0.125em rgba(0,0,0,0.20),
+    0  0      0.1em    0.25em inset rgba(255,255,255,0.22),
+    0  0.225em 0.05em  0      rgba(0,0,0,0.05),
+    0  0.25em  0       0      rgba(255,255,255,0.75),
+    inset 0 0.25em 0.05em 0   rgba(0,0,0,0.15) !important;
+}
+.force-light .glass-button::after {
+  background:
+    conic-gradient(
+      from var(--angle-1) at 50% 50%,
+      rgba(0,0,0,0.50) 0%,
+      transparent 5% 40%,
+      rgba(0,0,0,0.50) 50%,
+      transparent 60% 95%,
+      rgba(0,0,0,0.50) 100%
+    ),
+    linear-gradient(180deg, rgba(255,255,255,0.50), rgba(255,255,255,0.50)) !important;
+  box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255,255,255,0.50) !important;
+}
+.force-light .glass-button-text {
+  color: rgba(0,0,0,0.88) !important;
+  text-shadow: 0 0.25em 0.05em rgba(0,0,0,0.10) !important;
+}
+.force-light .glass-button-text::after {
+  background: linear-gradient(
+    var(--angle-2),
+    transparent 0%,
+    rgba(255,255,255,0.50) 40% 50%,
+    transparent 55%
+  ) !important;
+}
+.force-light .glass-button-shadow::after {
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.20),
+    rgba(0,0,0,0.10)
+  ) !important;
+}
+
+/* ── glass-input ── */
+.force-light .glass-input {
+  background: linear-gradient(
+    -75deg,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.22),
+    rgba(255,255,255,0.05)
+  ) !important;
+  box-shadow:
+    inset 0  0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.50),
+    0  0.25em 0.125em -0.125em rgba(0,0,0,0.20),
+    0  0     0.1em    0.25em inset rgba(255,255,255,0.22) !important;
+}
+.force-light .glass-input-wrap:focus-within .glass-input {
+  box-shadow:
+    inset 0  0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.50),
+    0  0.15em 0.05em -0.1em  rgba(0,0,0,0.25),
+    0  0     0.05em   0.1em inset rgba(255,255,255,0.50) !important;
+}
+.force-light .glass-input::after {
+  background:
+    conic-gradient(
+      from var(--angle-1) at 50% 50%,
+      rgba(0,0,0,0.50) 0%,
+      transparent 5% 40%,
+      rgba(0,0,0,0.50) 50%,
+      transparent 60% 95%,
+      rgba(0,0,0,0.50) 100%
+    ),
+    linear-gradient(180deg, rgba(255,255,255,0.50), rgba(255,255,255,0.50)) !important;
+  box-shadow: inset 0 0 0 calc(clamp(1px, 0.0625em, 4px) / 2) rgba(255,255,255,0.50) !important;
+}
+.force-light .glass-input-text-area::after {
+  background: linear-gradient(
+    var(--angle-2),
+    transparent 0%,
+    rgba(255,255,255,0.50) 40% 50%,
+    transparent 55%
+  ) !important;
+}
+
+/* ─── Glass button — global base styles (rgba, works on any background) ───
+   The identical CSS also lives as an inline <style> in sign-up.tsx but only
+   injects when that component renders. These globals make .glass-button* classes
+   available everywhere (e.g. the landing page nav).
+─── */
+.glass-button-wrap {
+  --anim-time: 400ms;
+  --anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --border-width: clamp(1px, 0.0625em, 4px);
+  position: relative;
+  z-index: 2;
+  transform-style: preserve-3d;
+  transition: transform var(--anim-time) var(--anim-ease);
+}
+.glass-button-wrap:has(.glass-button:active) {
+  transform: rotateX(25deg);
+}
+.glass-button-shadow {
+  --shadow-cutoff-fix: 2em;
+  position: absolute;
+  width:  calc(100% + var(--shadow-cutoff-fix));
+  height: calc(100% + var(--shadow-cutoff-fix));
+  top:  calc(0% - var(--shadow-cutoff-fix) / 2);
+  left: calc(0% - var(--shadow-cutoff-fix) / 2);
+  filter: blur(clamp(2px, 0.125em, 12px));
+  transition: filter var(--anim-time) var(--anim-ease);
+  pointer-events: none;
+  z-index: 0;
+}
+.glass-button-shadow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.10));
+  width:  calc(100% - var(--shadow-cutoff-fix) - 0.25em);
+  height: calc(100% - var(--shadow-cutoff-fix) - 0.25em);
+  top:  calc(var(--shadow-cutoff-fix) - 0.5em);
+  left: calc(var(--shadow-cutoff-fix) - 0.875em);
+  padding: 0.125em;
+  box-sizing: border-box;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: all var(--anim-time) var(--anim-ease);
+  opacity: 1;
+}
+.glass-button {
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+  transition: all var(--anim-time) var(--anim-ease);
+  background: linear-gradient(-75deg,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.22),
+    rgba(255,255,255,0.05)
+  );
+  box-shadow:
+    inset 0  0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.50),
+    0  0.25em 0.125em -0.125em rgba(0,0,0,0.20),
+    0  0     0.1em    0.25em inset rgba(255,255,255,0.22),
+    0  0     0       0       white;
+}
+.glass-button:hover {
+  transform: translateY(1px);
+  backdrop-filter: blur(clamp(1px, 0.08em, 3px));
+  box-shadow:
+    inset 0  0.25em  0.35em  0      rgba(0,0,0,0.18),
+    inset 0  0.05em  0.1em   0      rgba(0,0,0,0.10),
+    inset 0 -0.05em  0.05em  0      rgba(255,255,255,0.18),
+    0  0     0       0       white;
+}
+.glass-button-text {
+  color: rgba(0,0,0,0.88);
+  text-shadow: 0 0.25em 0.05em rgba(0,0,0,0.10);
+  transition: all var(--anim-time) var(--anim-ease);
+}
+.glass-button:hover .glass-button-text {
+  text-shadow: 0.025em 0.025em 0.025em rgba(0,0,0,0.12);
+}
+.glass-button-text::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width:  calc(100% - var(--border-width));
+  height: calc(100% - var(--border-width));
+  top:  calc(0% + var(--border-width) / 2);
+  left: calc(0% + var(--border-width) / 2);
+  box-sizing: border-box;
+  border-radius: 9999px;
+  overflow: clip;
+  background: linear-gradient(var(--angle-2), transparent 0%, rgba(255,255,255,0.50) 40% 50%, transparent 55%);
+  z-index: 3;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  transition:
+    background-position calc(var(--anim-time) * 1.25) var(--anim-ease),
+    --angle-2 calc(var(--anim-time) * 1.25) var(--anim-ease);
+}
+.glass-button:hover .glass-button-text::after  { background-position: 25% 50%; }
+.glass-button:active .glass-button-text::after { background-position: 50% 15%; --angle-2: -15deg; }
+.glass-button::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: 9999px;
+  width:  calc(100% + var(--border-width));
+  height: calc(100% + var(--border-width));
+  top:  calc(0% - var(--border-width) / 2);
+  left: calc(0% - var(--border-width) / 2);
+  padding: var(--border-width);
+  box-sizing: border-box;
+  background:
+    conic-gradient(from var(--angle-1) at 50% 50%,
+      rgba(0,0,0,0.50) 0%, transparent 5% 40%,
+      rgba(0,0,0,0.50) 50%, transparent 60% 95%,
+      rgba(0,0,0,0.50) 100%
+    ),
+    linear-gradient(180deg, rgba(255,255,255,0.50), rgba(255,255,255,0.50));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: all var(--anim-time) var(--anim-ease), --angle-1 500ms ease;
+  box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255,255,255,0.50);
+  pointer-events: none;
+}
+.glass-button:hover::after  { --angle-1: -125deg; }
+.glass-button:active::after { --angle-1:  -75deg; }
+.glass-button-wrap:has(.glass-button:hover)  .glass-button-shadow { filter: blur(clamp(1px, 0.03em, 3px)); }
+.glass-button-wrap:has(.glass-button:hover)  .glass-button-shadow::after { top: calc(var(--shadow-cutoff-fix) - 0.25em); opacity: 0.3; }
+.glass-button-wrap:has(.glass-button:active) .glass-button-shadow { filter: blur(clamp(2px, 0.125em, 12px)); }
+.glass-button-wrap:has(.glass-button:active) .glass-button-shadow::after { top: calc(var(--shadow-cutoff-fix) - 0.5em); opacity: 0.75; }
+.glass-button-wrap:has(.glass-button:active) .glass-button-text { text-shadow: 0.025em 0.25em 0.05em rgba(0,0,0,0.12); }
+.glass-button-wrap:has(.glass-button:active) .glass-button {
+  box-shadow:
+    inset 0  0.125em 0.125em rgba(0,0,0,0.05),
+    inset 0 -0.125em 0.125em rgba(255,255,255,0.50),
+    0  0.125em 0.125em -0.125em rgba(0,0,0,0.20),
+    0  0      0.1em    0.25em inset rgba(255,255,255,0.22),
+    0  0.225em 0.05em  0      rgba(0,0,0,0.05),
+    0  0.25em  0       0      rgba(255,255,255,0.75),
+    inset 0 0.25em 0.05em 0   rgba(0,0,0,0.15);
+}
+
+/* ─── Nav Log In — invisible at rest, 3-D debossed on hover ─── */
+.nav-login-btn {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(0,0,0,0.75);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    background  0.18s ease,
+    box-shadow  0.18s ease,
+    color       0.18s ease;
+}
+.nav-login-btn:hover {
+  color: rgba(0,0,0,0.85);
+  /* Barely-there tint so the hole reads as a surface depression, not a void */
+  background: rgba(0,0,0,0.04);
+  box-shadow:
+    /* Solid top rim — same "edge" idea as raised btn's solid bottom, just inward */
+    inset 0 3px 0 0   rgba(0,0,0,0.22),
+    /* Soft diffuse shadow falling into the depression */
+    inset 0 6px 14px  rgba(0,0,0,0.10),
+    /* Floor of the depression catches light from below */
+    inset 0 -1px 0    rgba(255,255,255,0.90),
+    /* Outer bottom rim — the surface edge curving back up catches direct light */
+    0 1px 0           rgba(255,255,255,0.75);
+}
+.nav-login-btn:active {
+  color: rgba(0,0,0,0.90);
+  background: rgba(0,0,0,0.07);
+  box-shadow:
+    inset 0 4px 0 0   rgba(0,0,0,0.28),
+    inset 0 8px 18px  rgba(0,0,0,0.14),
+    inset 0 -1px 0    rgba(255,255,255,0.80),
+    0 1px 0           rgba(255,255,255,0.60);
+}
+
+/* ─── 3-D raised CTA button — blue ─── */
+.cta-raised-btn {
+  background: linear-gradient(180deg, #5ba3fb 0%, #3b82f6 44%, #2563eb 100%);
+  border-top:    1px solid rgba(255, 255, 255, 0.28);
+  border-left:   1px solid rgba(255, 255, 255, 0.10);
+  border-right:  1px solid rgba(21,  65,  193, 0.50);
+  border-bottom: 1px solid rgba(21,  65,  193, 0.80);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),  /* top inner highlight */
+    0 4px 0 0   #1d4ed8,                        /* solid bottom edge — the "depth" */
+    0 8px 24px  rgba(37, 99, 235, 0.38);        /* ambient shadow */
+  transform: translateY(0);
+  transition: box-shadow 0.13s ease, transform 0.13s ease, background 0.13s ease;
+  user-select: none;
+}
+
+.cta-raised-btn:hover {
+  background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 44%, #1d4ed8 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 2px 0 0   #1d4ed8,
+    0 5px 16px  rgba(37, 99, 235, 0.45);
+  transform: translateY(2px);
+}
+
+.cta-raised-btn:active {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0px 0 0   #1d4ed8,
+    0 2px 8px   rgba(37, 99, 235, 0.30);
+  transform: translateY(4px);
+}
+
+/* ─── 3-D raised CTA button — black ─── */
+.cta-raised-btn-dark {
+  background: linear-gradient(180deg, #3a3a3a 0%, #1c1c1c 44%, #0d0d0d 100%);
+  border-top:    1px solid rgba(255, 255, 255, 0.14);
+  border-left:   1px solid rgba(255, 255, 255, 0.06);
+  border-right:  1px solid rgba(0, 0, 0, 0.55);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.75);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 0 0   #000,
+    0 8px 20px  rgba(0, 0, 0, 0.32);
+  transform: translateY(0);
+  transition: box-shadow 0.13s ease, transform 0.13s ease, background 0.13s ease;
+  user-select: none;
+}
+
+.cta-raised-btn-dark:hover {
+  background: linear-gradient(180deg, #444 0%, #222 44%, #111 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 2px 0 0   #000,
+    0 5px 14px  rgba(0, 0, 0, 0.38);
+  transform: translateY(2px);
+}
+
+.cta-raised-btn-dark:active {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0px 0 0   #000,
+    0 2px 6px   rgba(0, 0, 0, 0.28);
+  transform: translateY(4px);
+}
+
+/* Shine sweep */
+.cta-shine {
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 70%
+  );
+  animation: cta-shine 4.2s ease-in-out 1.4s infinite;
+  animation-fill-mode: both;
+}
+
+@keyframes cta-shine {
+  0%   { transform: translateX(-160%) skewX(-15deg); opacity: 0; }
+  4%   { opacity: 1; }
+  22%  { transform: translateX(220%)  skewX(-15deg); opacity: 0; }
+  100% { transform: translateX(220%)  skewX(-15deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-shine { animation: none !important; }
 }

@@ -84,7 +84,7 @@ const testimonials = [
 
 function TestimonialCard({ img, name, username, body, country }: (typeof testimonials)[number]) {
   return (
-    <Card className="w-72 shadow-lg shadow-white/50">
+    <Card className="w-72 shadow-md shadow-black/8">
       <CardContent className="p-5">
         <div className="flex items-center gap-3">
           <Avatar className="size-11">
@@ -110,7 +110,7 @@ export default function Testimonials() {
       {/* Left side - Text content */}
       <div className="flex-1 lg:h-[300px] flex flex-col text-center lg:text-left">
           <AuroraText className="text-base sm:text-lg md:text-xl font-semibold tracking-lighter capitalize px-4 lg:pl-4 lg:pr-0" colors={["#8A2BE2", "#9932CC", "#BA55D3", "#DDA0DD"]} speed={1}>Trusted by devs and students worldwide</AuroraText>
-          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight p-4 lg:pr-8'>What our users are saying about Acad AI</h1>
+          <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#111827] leading-tight p-4 lg:pr-8'>What our users are saying about Acad AI</h1>
           <div className='mx-auto lg:ml-4 lg:mx-0 mt-6 lg:mt-8'>
             <Link href="/signup">
               <HoverBorderGradient>Join Them Today</HoverBorderGradient>
@@ -155,10 +155,10 @@ export default function Testimonials() {
         </div>
 
         {/* Gradient overlays to mask all edges */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 sm:h-32 bg-gradient-to-b from-black to-transparent z-10"></div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-gradient-to-t from-black to-transparent z-10"></div>
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 sm:h-32 bg-gradient-to-b from-white to-transparent z-10"></div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-gradient-to-t from-white to-transparent z-10"></div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
       </div>
     </div>
   );

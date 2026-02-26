@@ -19,13 +19,13 @@ const DARK_GLOBE_CONFIG: COBEOptions = {
   devicePixelRatio: 2,
   phi: 0,
   theta: 0.3,
-  dark: 1,
+  dark: 0,
   diffuse: 1.2,
   mapSamples: 16000,
   mapBrightness: 6,
-  baseColor: [0.3, 0.3, 0.3],
-  markerColor: [0.1, 0.8, 1],
-  glowColor: [0.1, 0.1, 0.1],
+  baseColor: [0.85, 0.90, 0.98],
+  markerColor: [0.1, 0.6, 1],
+  glowColor: [0.7, 0.85, 1.0],
   markers: [],
 };
 
@@ -46,7 +46,7 @@ export default function Bento() {
   const [isRoadmapHovered, setIsRoadmapHovered] = useState(false);
 
   return (
-    <section className="w-full py-16 md:py-24 bg-black">
+    <section className="w-full py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -55,10 +55,10 @@ export default function Bento() {
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#111827]">
             Everything You Need
           </h2>
-          <p className="mt-4 text-base md:text-lg text-white/60 max-w-xl mx-auto">
+          <p className="mt-4 text-base md:text-lg text-black/50 max-w-xl mx-auto">
             Powerful features to accelerate your tech career journey
           </p>
         </motion.div>
@@ -66,7 +66,7 @@ export default function Bento() {
         <BentoGrid className="grid-cols-1 md:grid-cols-4 gap-4">
           <BentoCard
             name="Global Market Analysis"
-            className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 border border-gray-800"
+            className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 border border-gray-200"
             background={
               <div className="absolute bottom-0 right-0 w-[100%] h-[100%]">
                 <Globe className="h-full w-full" config={DARK_GLOBE_CONFIG} />
@@ -79,7 +79,7 @@ export default function Bento() {
 
           <BentoCard
             name="Roadmaps for Any Domain"
-            className="col-span-1 md:col-span-2 border border-gray-800"
+            className="col-span-1 md:col-span-2 border border-gray-200"
             background={
               isRoadmapHovered ? (
                 <AnimatedList
@@ -89,11 +89,11 @@ export default function Bento() {
                   {domains.map((domain) => (
                     <div
                       key={domain}
-                      className="flex items-center gap-2 sm:gap-3 rounded-lg bg-black p-2 sm:p-3 backdrop-blur-sm"
-                      style={{ boxShadow: "0 2px 8px rgba(255,255,255,0.2)" }}
+                      className="flex items-center gap-2 sm:gap-3 rounded-lg bg-gray-100 p-2 sm:p-3 backdrop-blur-sm"
+                      style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
                     >
-                      <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-white" />
-                      <span className="text-sm sm:text-base text-white/70">{domain}</span>
+                      <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-600" />
+                      <span className="text-sm sm:text-base text-gray-700">{domain}</span>
                     </div>
                   ))}
                 </AnimatedList>
@@ -102,14 +102,14 @@ export default function Bento() {
                   {domains.slice(0, 3).map((domain, i) => (
                     <div
                       key={domain}
-                      className="flex items-center gap-2 sm:gap-3 rounded-lg bg-black p-2 sm:p-3 backdrop-blur-sm"
+                      className="flex items-center gap-2 sm:gap-3 rounded-lg bg-gray-100 p-2 sm:p-3 backdrop-blur-sm"
                       style={{
                         opacity: 1 - i * 0.2,
                         boxShadow: "0 2px 8px rgba(255,255,255,0.2)",
                       }}
                     >
-                      <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-white" />
-                      <span className="text-sm sm:text-base text-white/70">{domain}</span>
+                      <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-600" />
+                      <span className="text-sm sm:text-base text-gray-700">{domain}</span>
                     </div>
                   ))}
                 </div>
@@ -124,7 +124,7 @@ export default function Bento() {
 
           <BentoCard
             name="Hyperpersonalization"
-            className="col-span-1 md:col-span-1 border border-gray-800"
+            className="col-span-1 md:col-span-1 border border-gray-200"
             background={
               <InteractiveGridPattern/>
             }
@@ -133,11 +133,11 @@ export default function Bento() {
             cta="Try Now"
           />
 
-          <div className="col-span-1 md:col-span-1 flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl bg-background shadow-lg border border-gray-800">
-            <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl font-bold text-white text-center">
+          <div className="col-span-1 md:col-span-1 flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl bg-gray-50 shadow-sm border border-gray-200">
+            <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl font-bold text-[#111827] text-center">
               Join {userCount.toLocaleString()}+ devs and students
             </h3>
-            <p className="mb-4 sm:mb-6 text-xs sm:text-sm text-white/70 text-center">
+            <p className="mb-4 sm:mb-6 text-xs sm:text-sm text-black/60 text-center">
               Don't trust us. Trust the market data.
             </p>
             <InteractiveHoverButton

@@ -1,162 +1,258 @@
 "use client";
 
-import React from 'react';
-import { PlusIcon, ShieldCheckIcon, Loader2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { BorderTrail } from '@/components/ui/border-trail';
 import { useGeoPricing } from '@/hooks/use-geo-pricing';
+import { Loader2, ShieldCheck, Check } from 'lucide-react';
 import Link from 'next/link';
+import { useUserCount } from '@/hooks/use-user-count';
+
+const MONTHLY_FEATURES = [
+  'All 14+ domain roadmaps',
+  'Weekly curated resources',
+  'Personalized learning path',
+  'Cancel anytime',
+];
+
+const YEARLY_FEATURES = [
+  'Everything in Monthly',
+  'AI-powered personalization',
+  'Priority roadmap updates',
+  'Biggest savings — pay once, learn all year',
+];
 
 export default function Pricing() {
   const pricing = useGeoPricing();
+  const { userCount, loading } = useUserCount();
+
+  // Monthly is popular in India, yearly everywhere else
+  const monthlyPopped = pricing.isIndia && !pricing.loading;
+  const yearlyPopped = !pricing.isIndia && !pricing.loading;
+
+  const savingsPct = pricing.annual.savingsPercent || '17';
 
   return (
-    <section id="pricing" className="relative min-h-screen overflow-hidden py-24 bg-black">
-      <div className="mx-auto w-full max-w-6xl space-y-5 px-4">
+    <section id="pricing" className="py-24 lg:py-32 bg-white">
+      <div className="max-w-6xl mx-auto px-6">
+
+        {/* Heading */}
+        <div className="mb-14 text-center">
+          <motion.p
+            className="text-[11px] font-semibold uppercase tracking-widest text-black/30 mb-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            Pricing
+          </motion.p>
+          <motion.h2
+            className="font-headline text-[clamp(2.2rem,4.5vw,3.2rem)] font-normal leading-[1.07] tracking-tight text-[#111827] mb-4"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Simple pricing.{' '}
+            <span className="text-[#3B82F6]">Real value.</span>
+          </motion.h2>
+          <motion.p
+            className="text-base text-black/40"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.12 }}
+          >
+            Join{" "}
+              {loading ? (
+                <span className="animate-pulse">...</span>
+              ) : (
+                <span className="font-semibold text-[#111827]">{userCount.toLocaleString()}+</span>
+              )}{" "}
+            developers already on their path.
+          </motion.p>
+        </div>
+
+        {/* Cards */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          className="mx-auto max-w-2xl grid md:grid-cols-2 gap-5 items-center"
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true }}
-          className="mx-auto max-w-xl space-y-5"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="flex justify-center">
-            <div className="rounded-lg border border-gray-800 px-4 py-1 font-mono text-white">
-              Pricing
-            </div>
-          </div>
-          <h2 className="mt-5 text-center text-2xl font-bold tracking-tighter md:text-3xl lg:text-4xl text-white">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="text-gray-400 mt-5 text-center text-sm md:text-base">
-            {pricing.loading ? (
-              <span className="inline-flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Loading pricing...
-              </span>
-            ) : pricing.isIndia ? (
-              "Invest in your tech career for less than ₹10 per day"
-            ) : (
-              "Invest in your tech career for less than $3 per week"
+
+          {/* ── Monthly ── */}
+          <div
+            className="relative flex flex-col rounded-2xl p-7 transition-shadow duration-300"
+            style={monthlyPopped ? {
+              background: '#ffffff',
+              border: '1px solid rgba(59,130,246,0.22)',
+              boxShadow: '0 8px 32px rgba(59,130,246,0.10), 0 2px 8px rgba(0,0,0,0.06)',
+              transform: 'translateY(-4px)',
+            } : {
+              background: '#EDEEF0',
+              border: '1px solid rgba(0,0,0,0.06)',
+              boxShadow: 'inset 0 3px 10px rgba(0,0,0,0.13), inset 0 1px 3px rgba(0,0,0,0.10), inset 3px 0 8px rgba(0,0,0,0.05), inset 0 -2px 8px rgba(255,255,255,0.90), inset -2px 0 6px rgba(255,255,255,0.55)',
+            }}
+          >
+            {/* Popular badge */}
+            {monthlyPopped && (
+              <div className="mb-4">
+                <span className="rounded-full bg-[#111827] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
+                  Most Popular in 🇮🇳
+                </span>
+              </div>
             )}
+
+            <div className="mb-6">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-black/40 mb-1">Monthly</h3>
+              <p className="text-xs text-black/30">Flexible. Start or stop anytime.</p>
+            </div>
+
+            {pricing.loading ? (
+              <div className="flex items-center gap-2 h-14 mb-6">
+                <Loader2 className="h-5 w-5 animate-spin text-black/25" />
+              </div>
+            ) : (
+              <div className="mb-6">
+                <div className="flex items-end gap-1 leading-none">
+                  <span className="text-base text-black/35 pb-1">{pricing.monthly.symbol}</span>
+                  <span className="text-5xl font-bold tracking-tighter text-[#111827]">{pricing.monthly.price}</span>
+                  <span className="text-sm text-black/35 pb-1">/mo</span>
+                </div>
+              </div>
+            )}
+
+            <ul className="flex-1 space-y-2.5 mb-8">
+              {MONTHLY_FEATURES.map((f) => (
+                <li key={f} className="flex items-start gap-2.5">
+                  <Check
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                    style={{ color: monthlyPopped ? '#3B82F6' : 'rgba(0,0,0,0.30)' }}
+                  />
+                  <span className="text-sm text-black/50">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/signup"
+              className="block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors"
+              style={monthlyPopped ? {
+                background: '#3B82F6', color: '#fff',
+              } : {
+                background: '#E4E5E7', color: '#111827',
+              }}
+            >
+              Get Started
+            </Link>
+          </div>
+
+          {/* ── Yearly ── */}
+          <div
+            className="relative flex flex-col rounded-2xl p-7 transition-shadow duration-300"
+            style={yearlyPopped ? {
+              background: '#ffffff',
+              border: '1px solid rgba(0, 0, 0, 0.22)',
+              boxShadow: '0 8px 32px rgba(59,130,246,0.10), 0 2px 8px rgba(0,0,0,0.06)',
+              transform: 'translateY(-4px)',
+            } : {
+              background: '#EDEEF0',
+              border: '1px solid rgba(0,0,0,0.06)',
+              boxShadow: 'inset 0 3px 10px rgba(0,0,0,0.13), inset 0 1px 3px rgba(0,0,0,0.10), inset 3px 0 8px rgba(0,0,0,0.05), inset 0 -2px 8px rgba(255,255,255,0.90), inset -2px 0 6px rgba(255,255,255,0.55)',
+            }}
+          >
+            {/* Popular badge */}
+            {yearlyPopped && (
+              <div className="mb-4">
+                <span className="rounded-full bg-[#3B82F6] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
+                  Most Popular
+                </span>
+              </div>
+            )}
+
+            {/* Savings badge — top right */}
+            {!pricing.loading && (
+              <div className="absolute right-6 top-6">
+                <span className="rounded-full border border-black bg-white px-2.5 py-1 text-[11px] font-semibold text-black">
+                  Save {savingsPct}%
+                </span>
+              </div>
+            )}
+
+            <div className="mb-6">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-black/40 mb-1">Yearly</h3>
+              <p className="text-xs text-black/40">Best value for committed learners.</p>
+            </div>
+
+            {pricing.loading ? (
+              <div className="flex items-center gap-2 h-14 mb-6">
+                <Loader2 className="h-5 w-5 animate-spin text-black/25" />
+              </div>
+            ) : (
+              <div className="mb-6">
+                <div className="flex items-end gap-1 leading-none">
+                  <span className="text-base text-black/35 pb-1">{pricing.annual.symbol}</span>
+                  <span className="text-5xl font-bold tracking-tighter text-[#111827]">{pricing.annual.price}</span>
+                  <span className="text-sm text-black/35 pb-1">/yr</span>
+                </div>
+                <p className="mt-2 text-sm text-black/40">
+                  Just{' '}
+                  <span className="font-semibold text-[#3B82F6]">
+                    {pricing.annual.symbol}{pricing.annual.monthlyEquivalent}/mo
+                  </span>
+                  {' '}—{' '}
+                  <span className="line-through text-black/70">
+                    {pricing.monthly.symbol}{pricing.monthly.price}/mo
+                  </span>
+                </p>
+              </div>
+            )}
+
+            <ul className="flex-1 space-y-2.5 mb-8">
+              {YEARLY_FEATURES.map((f) => (
+                <li key={f} className="flex items-start gap-2.5">
+                  <Check
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                    style={{ color: yearlyPopped ? '#3B82F6' : 'rgba(0,0,0,0.30)' }}
+                  />
+                  <span className="text-sm text-black/50">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/signup"
+              className="block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors"
+              style={yearlyPopped ? {
+                background: '#000000', color: '#fff',
+              } : {
+                background: '#E4E5E7', color: '#111827',
+              }}
+            >
+              Get Started
+            </Link>
+          </div>
+
+        </motion.div>
+
+        {/* Trust line */}
+        <motion.div
+          className="mt-8 flex flex-col items-center gap-1.5"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <div className="flex items-center gap-2 text-xs text-black/40">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            <span>No hidden fees. Cancel anytime.</span>
+          </div>
+          <p className="text-xs text-black/45 text-center">
+            Premium unlocks weekly resources, AI personalization, and more.
           </p>
         </motion.div>
 
-        <div className="relative">
-          <div
-            className={cn(
-              'z--10 pointer-events-none absolute inset-0 size-full',
-              'bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)]',
-              'bg-[size:32px_32px]',
-              '[mask-image:radial-gradient(ellipse_at_center,black_10%,transparent)]',
-            )}
-          />
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            viewport={{ once: true }}
-            className="mx-auto w-full max-w-2xl space-y-2"
-          >
-            <div className="grid md:grid-cols-2 bg-black relative border border-gray-800 p-4">
-              <PlusIcon className="absolute -top-3 -left-3 size-5.5 text-gray-700" />
-              <PlusIcon className="absolute -top-3 -right-3 size-5.5 text-gray-700" />
-              <PlusIcon className="absolute -bottom-3 -left-3 size-5.5 text-gray-700" />
-              <PlusIcon className="absolute -right-3 -bottom-3 size-5.5 text-gray-700" />
-
-              {/* Monthly Plan */}
-              <div className="w-full px-4 pt-5 pb-4">
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <h3 className="leading-none font-semibold text-white">Monthly</h3>
-                  </div>
-                  <p className="text-gray-400 text-sm">Perfect for getting started</p>
-                </div>
-                <div className="mt-10 space-y-4">
-                  {pricing.loading ? (
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                      <span className="text-gray-400">Loading...</span>
-                    </div>
-                  ) : (
-                    <div className="text-gray-400 flex items-end gap-0.5 text-xl">
-                      <span>{pricing.monthly.symbol}</span>
-                      <span className="text-white -mb-0.5 text-4xl font-extrabold tracking-tighter md:text-5xl">
-                        {pricing.monthly.price}
-                      </span>
-                      <span>/month</span>
-                    </div>
-                  )}
-                  <Button className="w-full bg-white text-black hover:bg-gray-200" asChild>
-                    <Link href="/signup">Get Started</Link>
-                  </Button>
-                </div>
-              </div>
-
-              {/* Annual Plan */}
-              <div className="relative w-full rounded-lg border border-gray-800 px-4 pt-5 pb-4">
-                <BorderTrail
-                  className="bg-white"
-                  style={{
-                    boxShadow:
-                      '0px 0px 60px 30px rgb(255 255 255 / 50%), 0 0 100px 60px rgb(0 0 0 / 50%), 0 0 140px 90px rgb(0 0 0 / 50%)',
-                  }}
-                  size={100}
-                />
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <h3 className="leading-none font-semibold text-white">Annual</h3>
-                    <Badge className="bg-[#29ABE2] text-white border-0">
-                      <Sparkles className="h-3 w-3 mr-1 inline" />
-                      Save 17%
-                    </Badge>
-                  </div>
-                  <p className="text-gray-400 text-sm">Best value for committed learners</p>
-                </div>
-                <div className="mt-10 space-y-4">
-                  {pricing.loading ? (
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                      <span className="text-gray-400">Loading...</span>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="text-gray-400 flex items-end text-xl">
-                        <span>{pricing.annual.symbol}</span>
-                        <span className="text-white -mb-0.5 text-4xl font-extrabold tracking-tighter md:text-5xl">
-                          {pricing.annual.price}
-                        </span>
-                        <span>/year</span>
-                      </div>
-                      <p className="text-sm text-gray-400">
-                        That's just <span className="text-[#29ABE2] font-semibold">
-                          {pricing.annual.symbol}{pricing.annual.monthlyEquivalent}/month
-                        </span>
-                      </p>
-                    </>
-                  )}
-                  <Button className="w-full bg-[#29ABE2] text-white hover:bg-[#2196ce]" asChild>
-                    <Link href="/signup">Get Started Now</Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-gray-400 flex flex-col items-center justify-center gap-2 text-sm">
-              <div className="flex items-center gap-x-2">
-                <ShieldCheckIcon className="size-4" />
-                <span>No hidden fees. Cancel anytime.</span>
-              </div>
-              <p className="text-center text-xs">
-                <span className="text-white">Roadmaps are free for everyone.</span> Premium unlocks weekly curated resources, AI personalization, and more.
-              </p>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   );

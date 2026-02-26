@@ -1,21 +1,24 @@
 import type {Metadata} from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { EB_Garamond, Geist } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { Providers } from './providers';
 import { ConditionalLayout } from '@/components/layout/conditional-layout';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
-const inter = Inter({
+const geist = Geist({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-geist',
   display: 'swap',
+  fallback: ['Geist Fallback', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 });
 
-const spaceGrotesk = Space_Grotesk({
+const ebGaramond = EB_Garamond({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-eb-garamond',
   display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+  fallback: ['Georgia', 'ui-serif', 'serif'],
 });
 
 export const metadata: Metadata = {
@@ -121,7 +124,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`dark ${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`dark ${geist.variable} ${ebGaramond.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"

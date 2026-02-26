@@ -1,321 +1,199 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { PulsatingButton } from '@/components/ui/pulsating-button';
-import { ShimmerButton } from '@/components/ui/shimmer-button';
-import { useUserCount } from '@/hooks/use-user-count';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { MorphingText } from "../ui/morphing-text";
-
-function ShaderBackground() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const sceneRef = useRef<{
-    camera: THREE.Camera;
-    scene: THREE.Scene;
-    renderer: THREE.WebGLRenderer;
-    uniforms: {
-      time: { type: string; value: number };
-      resolution: { type: string; value: THREE.Vector2 };
-    };
-    animationId: number;
-  } | null>(null);
-
-  // Check for reduced motion preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
-
-  // Visibility detection to pause animation when off-screen
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!containerRef.current || prefersReducedMotion) return;
-
-    const container = containerRef.current;
-
-    // Vertex shader
-    const vertexShader = `
-      void main() {
-        gl_Position = vec4( position, 1.0 );
-      }
-    `;
-
-    // Fragment shader - white and grey gradient with bottom fade
-    const fragmentShader = `
-      #define TWO_PI 6.2831853072
-      #define PI 3.14159265359
-
-      precision highp float;
-      uniform vec2 resolution;
-      uniform float time;
-
-      void main(void) {
-        vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-        float t = time * 0.05;
-        float lineWidth = 0.002;
-
-        float intensity = 0.0;
-        for(int i=0; i < 3; i++){
-          intensity += lineWidth * float(i*i) / abs(fract(t + float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
-        }
-
-        // White and grey gradient
-        float grad = smoothstep(-1.0, 1.0, uv.y);
-        vec3 white = vec3(1.0);
-        vec3 grey = vec3(0.85, 0.85, 0.85);
-        vec3 color = mix(white, grey, grad) * intensity * 1.2;
-
-        // Fade to black at bottom
-        float fadeStart = -0.5;
-        float fadeEnd = -1.5;
-        float fade = smoothstep(fadeEnd, fadeStart, uv.y);
-        color *= fade;
-
-        gl_FragColor = vec4(color, 1.0);
-      }
-    `;
-
-    // Initialize Three.js scene
-    const camera = new THREE.Camera();
-    camera.position.z = 1;
-
-    const scene = new THREE.Scene();
-    const geometry = new THREE.PlaneGeometry(2, 2);
-
-    const uniforms = {
-      time: { type: "f", value: 1.0 },
-      resolution: { type: "v2", value: new THREE.Vector2() },
-    };
-
-    const material = new THREE.ShaderMaterial({
-      uniforms: uniforms,
-      vertexShader: vertexShader,
-      fragmentShader: fragmentShader,
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-
-    container.appendChild(renderer.domElement);
-
-    // Handle window resize
-    const onWindowResize = () => {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      renderer.setSize(width, height);
-      uniforms.resolution.value.x = renderer.domElement.width;
-      uniforms.resolution.value.y = renderer.domElement.height;
-    };
-
-    // Initial resize
-    onWindowResize();
-    window.addEventListener("resize", onWindowResize, false);
-
-    // Animation loop with visibility check
-    const animate = () => {
-      const animationId = requestAnimationFrame(animate);
-
-      if (sceneRef.current) {
-        sceneRef.current.animationId = animationId;
-      }
-
-      // Skip rendering when not visible to save GPU resources
-      if (!isVisible) return;
-
-      uniforms.time.value += 0.05;
-      renderer.render(scene, camera);
-    };
-
-    // Store scene references for cleanup
-    sceneRef.current = {
-      camera,
-      scene,
-      renderer,
-      uniforms,
-      animationId: 0,
-    };
-
-    // Start animation
-    animate();
-
-    // Cleanup function
-    return () => {
-      window.removeEventListener("resize", onWindowResize);
-
-      if (sceneRef.current) {
-        cancelAnimationFrame(sceneRef.current.animationId);
-
-        if (container && sceneRef.current.renderer.domElement) {
-          container.removeChild(sceneRef.current.renderer.domElement);
-        }
-
-        sceneRef.current.renderer.dispose();
-        geometry.dispose();
-        material.dispose();
-      }
-    };
-  }, [isVisible, prefersReducedMotion]);
-
-  // Show static gradient for users who prefer reduced motion
-  if (prefersReducedMotion) {
-    return (
-      <div
-        className="absolute inset-0 w-full h-full"
-        style={{
-          background: "linear-gradient(to bottom, #1a1a1a 0%, #000 100%)",
-          maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
-        }}
-      />
-    );
-  }
-
-  return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 w-full h-full"
-      style={{
-        background: "#000",
-        overflow: "hidden",
-        maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
-      }}
-    />
-  );
-}
 
 export default function HeroWithShader() {
-  const { userCount, loading } = useUserCount();
-
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center text-center">
-      {/* Shader Background */}
-      <ShaderBackground />
+    <section className="relative flex min-h-screen flex-col overflow-hidden bg-white pb-16 md:pb-24">
 
-      {/* Gradient fade overlay to blend with next section */}
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black via-black/50 to-transparent z-[5]" />
+      {/* Animated gradient blobs */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[96%] overflow-hidden">
+        {/* Main bloom — top center, tall */}
+        <div
+          className="hero-blob absolute rounded-full"
+          style={{
+            width: '160%', height: '95%',
+            top: '-38%', left: '-30%',
+            background: 'radial-gradient(ellipse, rgba(59,130,246,0.24) 0%, transparent 62%)',
+            animation: 'hero-blob-1 9s ease-in-out infinite alternate',
+          }}
+        />
+        {/* Lighter accent — left, pushed lower */}
+        <div
+          className="hero-blob absolute rounded-full"
+          style={{
+            width: '80%', height: '75%',
+            top: '20%', left: '-12%',
+            background: 'radial-gradient(ellipse, rgba(96,165,250,0.13) 0%, transparent 58%)',
+            animation: 'hero-blob-2 12s ease-in-out infinite alternate',
+          }}
+        />
+        {/* Deeper accent — right, pushed lower */}
+        <div
+          className="hero-blob absolute rounded-full"
+          style={{
+            width: '70%', height: '65%',
+            top: '18%', right: '-10%',
+            background: 'radial-gradient(ellipse, rgba(37,99,235,0.13) 0%, transparent 58%)',
+            animation: 'hero-blob-3 10s ease-in-out infinite alternate',
+          }}
+        />
+      </div>
 
-      {/* Content */}
+      {/* Dot grid */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.038) 1px, transparent 1px)',
+          backgroundSize: '36px 36px',
+          maskImage: 'radial-gradient(ellipse 75% 55% at 50% 30%, black 30%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 75% 55% at 50% 30%, black 30%, transparent 100%)',
+        }}
+      />
+
+      {/* ── Centered copy ── */}
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 pb-10 pt-28 text-center">
+
+        <motion.h1
+          className="font-headline mb-6 font-normal"
+          style={{ lineHeight: 1.04, letterSpacing: '-0.01em' }}
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <span className="block text-[clamp(2.8rem,7vw,5.25rem)] text-[#111827]">
+            AI that helps you
+          </span>
+          <span className="block text-[clamp(2.8rem,7vw,5.25rem)] text-[#3B82F6]">
+            land tech jobs.
+          </span>
+        </motion.h1>
+
+        <motion.p
+          className="mb-10 max-w-m text-base sm:text-lg leading-relaxed"
+          style={{ color: 'rgba(17,24,39,0.70)' }}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.18 }}
+        >
+          Personalized guidance to learn the right skills, build real projects,
+          and move toward your first tech role — faster.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+        >
+          <Link
+            id="hero-cta"
+            href="/signup"
+            className="cta-raised-btn group relative inline-flex items-center gap-2.5 overflow-hidden rounded-xl px-8 py-3.5 text-sm font-semibold text-white"
+          >
+            <span className="cta-shine pointer-events-none absolute inset-0" aria-hidden />
+            Start Your Tech Roadmap
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </Link>
+        </motion.div>
+      </div>
+
+      {/* ── Product video placeholder ── */}
       <motion.div
-        className="relative z-10 container"
-        initial={{ opacity: 0, y: 20 }}
+        className="relative z-10 mx-auto w-full max-w-5xl px-6"
+        initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1.1, delay: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{
+          filter: 'drop-shadow(0 32px 72px rgba(59,130,246,0.13)) drop-shadow(0 8px 24px rgba(0,0,0,0.06))',
+        }}
       >
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-tight font-headline">
-            <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              AI That
-            </span>
-            <span className="my-3 sm:my-4 p-2"><MorphingText texts={["Shapes", "Saves"]}/></span>
-            <span>Your Tech Career</span>
-          </h1>
+        {/* macOS-style browser chrome */}
+        <div className="flex items-center gap-2 rounded-t-2xl border border-b-0 border-black/[0.07] bg-[#f3f4f6] px-4 py-3">
+          <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
+          <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
+          <span className="h-3 w-3 rounded-full bg-[#28C840]" />
+          <div className="mx-4 flex-1 rounded-md border border-black/[0.06] bg-white/80 px-3 py-1.5 text-xs text-black/35">
+            acadai.app/roadmap
+          </div>
+        </div>
 
-          <p className="mb-8 sm:mb-10 text-base sm:text-lg lg:text-xl xl:text-2xl leading-7 sm:leading-8 text-white/80 max-w-2xl lg:max-w-3xl mx-auto px-2">
-            Stop guessing what the companies want—know exactly what they are hiring for today.
-          </p>
+        {/*
+          TODO: Replace the placeholder below with a <video> or <iframe> when ready.
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
-            <PulsatingButton className="w-full sm:w-auto shadow-2xl shadow-white/25">
-              <Link href="/signup">
-                Start Creating
-                <ArrowRight className="ml-2 h-5 w-5 inline" />
-              </Link>
-            </PulsatingButton>
-            <ShimmerButton className="font-semibold bg-transparent w-full sm:w-auto">
-              <Link href="#about">
-                Learn More
-              </Link>
-            </ShimmerButton>
+          YouTube embed example:
+          <div className="relative w-full overflow-hidden rounded-b-2xl border border-t-0 border-black/[0.07]" style={{ aspectRatio: '16/9' }}>
+            <iframe
+              className="absolute inset-0 h-full w-full"
+              src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        */}
+
+        {/* Video placeholder body */}
+        <div
+          className="relative w-full overflow-hidden rounded-b-2xl border border-t-0 border-black/[0.07]"
+          style={{
+            aspectRatio: '16/9',
+            background: 'linear-gradient(140deg, #0f172a 0%, #1e2d4f 40%, #0f1b35 70%, #0a1628 100%)',
+          }}
+        >
+          {/* Subtle grid */}
+          <div
+            className="absolute inset-0 opacity-[0.10]"
+            style={{
+              backgroundImage:
+                'linear-gradient(rgba(96,165,250,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(96,165,250,0.5) 1px, transparent 1px)',
+              backgroundSize: '64px 64px',
+            }}
+          />
+          {/* Center glow */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 55% 50% at 50% 52%, rgba(59,130,246,0.20) 0%, transparent 72%)',
+            }}
+          />
+          {/* Corner accents */}
+          <div
+            className="absolute left-0 top-0 h-72 w-72 opacity-25"
+            style={{ background: 'radial-gradient(ellipse, rgba(99,102,241,0.35) 0%, transparent 70%)' }}
+          />
+          <div
+            className="absolute bottom-0 right-0 h-72 w-72 opacity-20"
+            style={{ background: 'radial-gradient(ellipse, rgba(59,130,246,0.30) 0%, transparent 70%)' }}
+          />
+
+          {/* Play button */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+            <div
+              className="flex h-[4.5rem] w-[4.5rem] cursor-pointer items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-white/20"
+              role="button"
+              aria-label="Play product demo"
+            >
+              <Play className="h-7 w-7 translate-x-0.5 fill-white text-white" />
+            </div>
+            <p className="text-sm font-medium tracking-wide text-white/40">
+              Product demo · Coming soon
+            </p>
           </div>
 
-          <div className="flex flex-col items-center gap-3">
-            {/* Text with user count */}
-            <p className="text-white/80 text-sm sm:text-base">
-              Join{" "}
-              {loading ? (
-                <span className="animate-pulse">...</span>
-              ) : (
-                <span className="font-semibold text-white">{userCount.toLocaleString()}+</span>
-              )}{" "}
-              other students and devs on the platform.
-            </p>
-
-            {/* Avatar Stack with count in last circle */}
-            <div className="flex -space-x-3 flex-wrap justify-center gap-y-2 sm:flex-nowrap sm:gap-y-0">
-              <Avatar className="h-8 w-8 border-2 border-black">
-                <AvatarImage src="https://i.pravatar.cc/150?img=1" alt="User 1" />
-                <AvatarFallback>U1</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
-                <AvatarImage src="https://i.pravatar.cc/150?img=2" alt="User 2" />
-                <AvatarFallback>U2</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
-                <AvatarImage src="https://i.pravatar.cc/150?img=3" alt="User 3" />
-                <AvatarFallback>U3</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
-                <AvatarImage src="https://i.pravatar.cc/150?img=4" alt="User 4" />
-                <AvatarFallback>U4</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black">
-                <AvatarImage src="https://i.pravatar.cc/150?img=5" alt="User 5" />
-                <AvatarFallback>U5</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black hidden sm:block">
-                <AvatarImage src="https://i.pravatar.cc/150?img=6" alt="User 6" />
-                <AvatarFallback>U6</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black hidden sm:block">
-                <AvatarImage src="https://i.pravatar.cc/150?img=7" alt="User 7" />
-                <AvatarFallback>U7</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black hidden md:block">
-                <AvatarImage src="https://i.pravatar.cc/150?img=8" alt="User 8" />
-                <AvatarFallback>U8</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black hidden md:block">
-                <AvatarImage src="https://i.pravatar.cc/150?img=9" alt="User 9" />
-                <AvatarFallback>U9</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-8 border-2 border-black hidden lg:block">
-                <AvatarImage src="https://i.pravatar.cc/150?img=10" alt="User 10" />
-                <AvatarFallback>U10</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-8 w-auto max-w-[200px] sm:max-w-none border-2 border-black bg-black p-2">
-                <AvatarFallback className="text-white text-xs font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
-                  {loading ? "..." : `${userCount.toLocaleString()}+`} <span className="hidden sm:inline"> users using Acad AI</span>
-                </AvatarFallback>
-              </Avatar>
+          {/* Mock bottom bar */}
+          <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3 opacity-20">
+            <div className="h-8 w-8 shrink-0 rounded-full bg-blue-400/50" />
+            <div className="flex-1 space-y-1.5">
+              <div className="h-2 w-36 rounded-full bg-white/30" />
+              <div className="h-1.5 w-24 rounded-full bg-white/20" />
             </div>
+            <div className="h-7 w-20 shrink-0 rounded-full border border-blue-400/40 bg-blue-500/20" />
           </div>
         </div>
       </motion.div>
+
     </section>
   );
 }

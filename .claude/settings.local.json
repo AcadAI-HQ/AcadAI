@@ -45,7 +45,9 @@
       "Bash(npm run lint:*)",
       "Bash(npm ls:*)",
       "Bash(npm uninstall:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(tail:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,69 +1,60 @@
 import dynamic from 'next/dynamic';
-import Header from '@/components/landing/header';
-import About from '@/components/landing/about';
-import MarqueeSec from '@/components/landing/marqueesec';
-import Pricing from '@/components/landing/pricing';
-import { generateFAQSchema, generateHowToSchema } from '@/lib/geo-content';
+import Header, { FloatingCTA } from '@/components/landing/header';
 
-// Lazy load heavy components for better initial load performance
 const Hero = dynamic(() => import('@/components/landing/hero'), {
-  loading: () => <div className="min-h-screen bg-black" />,
+  loading: () => <div className="min-h-screen bg-white" />,
 });
 
-const Bento = dynamic(() => import('@/components/landing/bento'), {
-  loading: () => <div className="h-96 bg-black" />,
+const Benefits = dynamic(() => import('@/components/landing/benefits'), {
+  loading: () => <div className="h-[800px] bg-white" />,
 });
 
-const Backstory = dynamic(
-  () => import('@/components/landing/backstory').then(mod => ({ default: mod.Backstory })),
-  {
-    loading: () => <div className="h-96 bg-black" />,
-  }
-);
+const HowItWorks = dynamic(() => import('@/components/landing/howitworks'), {
+  loading: () => <div className="h-[700px] bg-white" />,
+});
 
-const Testimonials = dynamic(() => import('@/components/landing/testimonials'), {
-  loading: () => <div className="h-64 bg-black" />,
+const SocialProof = dynamic(() => import('@/components/landing/socialproof'), {
+  loading: () => <div className="h-[600px] bg-white" />,
+});
+
+const Differentiators = dynamic(() => import('@/components/landing/differentiators'), {
+  loading: () => <div className="h-[600px] bg-white" />,
+});
+
+const Pricing = dynamic(() => import('@/components/landing/pricing'), {
+  loading: () => <div className="h-[600px] bg-white" />,
 });
 
 const FAQ = dynamic(() => import('@/components/landing/faq'), {
-  loading: () => <div className="h-96 bg-black" />,
+  loading: () => <div className="h-[500px] bg-white" />,
 });
 
-const AnimFooter = dynamic(() => import('@/components/landing/footer'), {
-  loading: () => <div className="h-32 bg-black" />,
+const CTA = dynamic(() => import('@/components/landing/cta'), {
+  loading: () => <div className="h-[400px] bg-white" />,
+});
+
+const Footer = dynamic(() => import('@/components/landing/footer'), {
+  loading: () => <div className="h-[320px] bg-[#0A0A0A]" />,
 });
 
 export default function LandingPage() {
-  const faqSchema = generateFAQSchema();
-  const howToSchema = generateHowToSchema();
-
   return (
-    <div className="flex flex-col min-h-screen bg-black relative">
-      {/* GEO: FAQ Schema for AI engines */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      {/* GEO: HowTo Schema for AI parsing */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-
+    <div className="force-light flex flex-col min-h-screen bg-white relative">
+      <FloatingCTA />
       <main className="flex-1 relative z-10">
         <div className="relative">
           <Header />
           <Hero />
         </div>
-        <About />
-        <MarqueeSec/>
-        <Bento />
-        <Backstory />
-        <Testimonials/>
+        <Benefits />
+        <HowItWorks />
+        <SocialProof />
+        <Differentiators />
         <Pricing />
         <FAQ />
+        <CTA />
       </main>
-      <AnimFooter />
+      <Footer />
     </div>
   );
 }

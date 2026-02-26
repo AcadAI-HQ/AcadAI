@@ -88,98 +88,97 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-10">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-headline font-bold">Profile</h1>
-          <p className="text-muted-foreground">
+          <h1 className="font-headline text-2xl font-bold md:text-3xl">Profile</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             Manage your personal information and learning preferences
           </p>
         </div>
-        <Button onClick={() => setIsEditModalOpen(true)}>
+        <Button onClick={() => setIsEditModalOpen(true)} size="sm">
           <Edit className="h-4 w-4 mr-2" />
           Edit Profile
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {/* Personal Information */}
-        <Card>
-          <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Personal Information</CardTitle>
-            <User className="h-4 w-4 ml-auto text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <ProfilePictureUpload
-                currentPhotoURL={user.photoURL}
-                displayName={user.displayName}
-                email={user.email}
-                size="md"
-              />
-              <div>
-                <p className="font-medium">{user.displayName}</p>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Mail className="h-3 w-3 mr-1" />
-                  {user.email}
-                </div>
+      {/* Identity hero card */}
+      <Card className="border-border/60">
+        <CardContent className="p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+            <ProfilePictureUpload
+              currentPhotoURL={user.photoURL}
+              displayName={user.displayName}
+              email={user.email}
+              size="md"
+            />
+            <div className="flex-1 min-w-0">
+              <p className="text-lg font-semibold leading-tight">{user.displayName}</p>
+              <div className="flex items-center gap-1.5 mt-0.5 text-sm text-muted-foreground">
+                <Mail className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{user.email}</span>
+              </div>
+              {user.userType && (
+                <Badge variant="secondary" className="mt-2 capitalize text-xs">
+                  {user.userType}
+                </Badge>
+              )}
+            </div>
+            <div className="sm:text-right shrink-0">
+              <p className="text-xs text-muted-foreground mb-1.5">Profile completion</p>
+              <div className="flex sm:flex-col items-center sm:items-end gap-3 sm:gap-1">
+                <span
+                  className="text-2xl font-bold"
+                  style={{ color: completionPercentage >= 75 ? '#22C55E' : completionPercentage >= 50 ? '#F97316' : '#EF4444' }}
+                >
+                  {completionPercentage}%
+                </span>
+                <Progress value={completionPercentage} className="w-28 h-1.5" />
               </div>
             </div>
-            <div className="pt-2">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm">Profile Completion</span>
-                <span className="text-sm font-medium">{completionPercentage}%</span>
-              </div>
-              <Progress value={completionPercentage} />
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* User Type & Background */}
-        <Card>
-          <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Background</CardTitle>
-            {user.userType === 'student' && <GraduationCap className="h-4 w-4 ml-auto text-muted-foreground" />}
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {/* Personal Information — removed (moved to hero) */}
+        {/* Background card */}
+        <Card className="border-border/60">
+          <CardHeader className="flex flex-row items-center space-y-0 pb-3">
+            <CardTitle className="text-sm font-semibold">Background</CardTitle>
+            {user.userType === 'student'      && <GraduationCap className="h-4 w-4 ml-auto text-muted-foreground" />}
             {user.userType === 'professional' && <Briefcase className="h-4 w-4 ml-auto text-muted-foreground" />}
-            {user.userType === 'learner' && <BookOpen className="h-4 w-4 ml-auto text-muted-foreground" />}
+            {user.userType === 'learner'      && <BookOpen className="h-4 w-4 ml-auto text-muted-foreground" />}
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm font-medium">User Type</p>
-              <Badge variant="secondary" className="mt-1">
-                {formatUserType(user.userType)}
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">User Type</p>
+              <Badge variant="secondary" className="capitalize text-xs">
+                {user.userType ? user.userType : 'Not specified'}
               </Badge>
             </div>
 
             {user.userType === 'student' && (
               <>
                 <div>
-                  <p className="text-sm font-medium">Degree</p>
-                  <p className="text-sm text-muted-foreground">
-                    {user.degree || 'Not specified'}
-                  </p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Degree</p>
+                  <p className="text-sm">{user.degree || 'Not specified'}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-sm font-medium flex items-center">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      Duration
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1">
+                      <Calendar className="h-3 w-3" /> Duration
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      {user.startDate && user.endDate
-                        ? `${user.startDate} - ${user.endDate}`
-                        : 'Not specified'}
+                    <p className="text-xs">
+                      {user.startDate && user.endDate ? `${user.startDate} – ${user.endDate}` : 'Not specified'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium flex items-center">
-                      <Award className="h-3 w-3 mr-1" />
-                      Current Year
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1">
+                      <Award className="h-3 w-3" /> Year
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      {user.currentYear ? `${user.currentYear} Year` : 'Not specified'}
-                    </p>
+                    <p className="text-xs">{user.currentYear ? `Year ${user.currentYear}` : 'Not specified'}</p>
                   </div>
                 </div>
               </>
@@ -188,49 +187,46 @@ export default function ProfilePage() {
             {user.userType === 'professional' && (
               <>
                 <div>
-                  <p className="text-sm font-medium">Current Role</p>
-                  <p className="text-sm text-muted-foreground">
-                    {user.currentRole || 'Not specified'}
-                  </p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Current Role</p>
+                  <p className="text-sm">{user.currentRole || 'Not specified'}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium flex items-center">
-                    <Clock className="h-3 w-3 mr-1" />
-                    Experience
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1">
+                    <Clock className="h-3 w-3" /> Experience
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    {getYearsOfExperienceText(user.yearsOfExperience)}
-                  </p>
+                  <p className="text-sm">{getYearsOfExperienceText(user.yearsOfExperience)}</p>
                 </div>
               </>
             )}
 
             {user.userType === 'learner' && (
               <div>
-                <p className="text-sm font-medium">Description</p>
-                <p className="text-sm text-muted-foreground">
-                  {user.description || 'Not specified'}
-                </p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">About</p>
+                <p className="text-sm leading-relaxed">{user.description || 'Not specified'}</p>
               </div>
             )}
           </CardContent>
         </Card>
 
         {/* Learning Preferences */}
-        <Card>
-          <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Learning Preferences</CardTitle>
+        <Card className="border-border/60">
+          <CardHeader className="flex flex-row items-center space-y-0 pb-3">
+            <CardTitle className="text-sm font-semibold">Learning Preferences</CardTitle>
             <Target className="h-4 w-4 ml-auto text-muted-foreground" />
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm font-medium">Interested Domain</p>
-              <Badge variant="default" className="mt-1">
-                {selectedDomain?.name || 'Not specified'}
-              </Badge>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Interested Domain</p>
+              {selectedDomain ? (
+                <Badge className="text-xs bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20 hover:bg-[#3B82F6]/15">
+                  {selectedDomain.name}
+                </Badge>
+              ) : (
+                <p className="text-sm text-muted-foreground">Not specified</p>
+              )}
             </div>
             <div>
-              <p className="text-sm font-medium">Domain Experience</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Domain Experience</p>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {user.domainExperience || 'Not specified'}
               </p>
@@ -241,17 +237,15 @@ export default function ProfilePage() {
 
       {/* Skills */}
       {user.skills && user.skills.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Skills</CardTitle>
-            <CardDescription>
-              Your listed skills and competencies
-            </CardDescription>
+        <Card className="border-border/60">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold">Skills</CardTitle>
+            <CardDescription className="text-xs">Your listed skills and competencies</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {user.skills.map((skill, index) => (
-                <Badge key={index} variant="outline">
+                <Badge key={index} variant="outline" className="text-xs">
                   {skill}
                 </Badge>
               ))}
