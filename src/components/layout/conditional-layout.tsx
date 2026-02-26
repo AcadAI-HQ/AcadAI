@@ -12,7 +12,7 @@ import { AIMentorSheet } from "@/components/ai-mentor/ai-mentor-sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Pages that should not show the sidebar
-const NO_SIDEBAR_PAGES = ['/login', '/signup', '/pricing', '/terms', '/privacy', '/pitch', '/onboarding'];
+const NO_SIDEBAR_PAGES = ['/login', '/signup', '/pricing', '/terms', '/privacy', '/onboarding'];
 
 const NAV_ITEMS = [
   { title: 'Dashboard',          icon: LayoutDashboard,    href: '/dashboard',                     matchFn: (p: string) => p === '/dashboard' },

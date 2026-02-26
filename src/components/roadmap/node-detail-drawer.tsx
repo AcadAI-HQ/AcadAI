@@ -61,7 +61,7 @@ interface ParsedResource {
   title: string;
   domain: string;
   type: "video" | "article" | "tutorial" | "documentation" | "course" | "tool";
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
   color: string;
 }
 
