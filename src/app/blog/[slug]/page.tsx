@@ -1,8 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getAllPosts, getPostBySlug, formatDate } from '@/lib/blog';
 import { BlogContent } from '@/components/blog/blog-content';
 import { ArrowLeft, Clock, Calendar } from 'lucide-react';
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acadai.org';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -13,13 +16,42 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+
+  const url = `${BASE_URL}/blog/${post.slug}`;
+
   return {
-    title: `${post.title} — Acad AI Blog`,
+    title: post.title,
     description: post.excerpt,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      type: 'article',
+      url,
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: new Date(post.date).toISOString(),
+      tags: post.tags,
+      siteName: 'Acad AI',
+      images: [
+        {
+          url: `${BASE_URL}/og-image.png`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [`${BASE_URL}/og-image.png`],
+    },
   };
 }
 
@@ -29,8 +61,50 @@ export default async function BlogPostPage({ params }: Props) {
 
   if (!post) notFound();
 
+  const url = `${BASE_URL}/blog/${post.slug}`;
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.date).toISOString(),
+    url,
+    image: `${BASE_URL}/og-image.png`,
+    keywords: post.tags.join(', '),
+    author: {
+      '@type': 'Organization',
+      name: 'Acad AI',
+      url: BASE_URL,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Acad AI',
+      url: BASE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${BASE_URL}/brain-icon.ico`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+    },
+    isPartOf: {
+      '@type': 'Blog',
+      name: 'Acad AI Blog',
+      url: `${BASE_URL}/blog`,
+    },
+  };
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+
       {/* Back link */}
       <Link
         href="/blog"

@@ -7,8 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/shared/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sidebar, SidebarProvider, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
-import { LayoutDashboard, Route, BrainCircuit, User, BookOpen, MessageSquareHeart, Sparkles, LogOut } from "lucide-react";
-import { AIMentorSheet } from "@/components/ai-mentor/ai-mentor-sheet";
+import { LayoutDashboard, Route, BrainCircuit, User, BookOpen, MessageSquareHeart, Sparkles, LogOut, Bot } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Pages that should not show the sidebar
@@ -18,6 +17,7 @@ const NAV_ITEMS = [
   { title: 'Dashboard',          icon: LayoutDashboard,    href: '/dashboard',                     matchFn: (p: string) => p === '/dashboard' },
   { title: 'My Roadmap',         icon: Route,              href: '/dashboard/my-roadmap',          matchFn: (p: string) => p.startsWith('/dashboard/my-roadmap') || p.startsWith('/roadmap/') },
   { title: 'Learning Resources', icon: BookOpen,           href: '/dashboard/learning-resources',  matchFn: (p: string) => p.startsWith('/dashboard/learning-resources'), badge: true },
+  { title: 'AI Mentor',          icon: Bot,                href: '/dashboard/ai-mentor',           matchFn: (p: string) => p.startsWith('/dashboard/ai-mentor'), badge: true },
   { title: 'Profile',            icon: User,               href: '/dashboard/profile',             matchFn: (p: string) => p === '/dashboard/profile' },
   { title: 'Feedback',           icon: MessageSquareHeart, href: '/dashboard/feedback',            matchFn: (p: string) => p === '/dashboard/feedback' },
 ];
@@ -26,7 +26,6 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
   const { user, loading, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
-  const [isAIMentorOpen, setIsAIMentorOpen] = useState(false);
 
   // Protected routes that require authentication
   const protectedRoutes = ['/dashboard', '/roadmap'];
@@ -142,19 +141,6 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
               </SidebarMenu>
             </nav>
 
-            {/* AI Mentor button */}
-            <div className="px-2 pb-2">
-              <div className="h-px bg-border/60 mb-2" />
-              <button
-                onClick={() => setIsAIMentorOpen(true)}
-                className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-              >
-                <BrainCircuit className="h-4 w-4 shrink-0" />
-                <span className="flex-1 text-left">AI Mentor</span>
-                <Sparkles className="h-3 w-3 shrink-0 text-[#29ABE2]" />
-              </button>
-            </div>
-
             {/* User footer */}
             <div className="border-t border-border/60 p-3">
               <div className="flex items-center gap-3 rounded-lg px-2 py-2">
@@ -187,14 +173,13 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
         {/* ── Main area ── */}
         <SidebarInset className="flex flex-1 flex-col min-w-0">
           <Navbar />
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto isolate">
             <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 py-5">
               {children}
             </div>
           </main>
         </SidebarInset>
 
-        <AIMentorSheet open={isAIMentorOpen} onOpenChange={setIsAIMentorOpen} />
       </div>
     </SidebarProvider>
   );

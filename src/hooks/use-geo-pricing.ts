@@ -15,13 +15,13 @@ const PRICING = {
     },
   },
   USD: {
-    monthly: { price: '7.99', currency: 'USD', symbol: '$' },
+    monthly: { price: '10.99', currency: 'USD', symbol: '$' },
     annual: {
-      price: '79',
+      price: '109',
       currency: 'USD',
       symbol: '$',
-      monthlyEquivalent: '6.58',
-      savings: '16.88',
+      monthlyEquivalent: '9.08',
+      savings: '22.88',
       savingsPercent: '17',
     },
   },

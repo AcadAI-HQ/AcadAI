@@ -1,10 +1,13 @@
 "use client";
 
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useGeoPricing } from '@/hooks/use-geo-pricing';
-import { Loader2, ShieldCheck, Check } from 'lucide-react';
+import { Loader2, ShieldCheck, Check, Tag, Copy, CopyCheck } from 'lucide-react';
 import Link from 'next/link';
 import { useUserCount } from '@/hooks/use-user-count';
+
+const PROMO_CODE = 'ACADA1T0M00N';
 
 const MONTHLY_FEATURES = [
   'All 14+ domain roadmaps',
@@ -23,6 +26,14 @@ const YEARLY_FEATURES = [
 export default function Pricing() {
   const pricing = useGeoPricing();
   const { userCount, loading } = useUserCount();
+  const [copied, setCopied] = useState(false);
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(PROMO_CODE).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   // Monthly is popular in India, yearly everywhere else
   const monthlyPopped = pricing.isIndia && !pricing.loading;
@@ -234,6 +245,44 @@ export default function Pricing() {
             </Link>
           </div>
 
+        </motion.div>
+
+        {/* Promo code banner */}
+        <motion.div
+          className="mx-auto mt-6 max-w-2xl"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+        >
+          <div className="flex flex-col sm:flex-row items-center gap-3 rounded-2xl border border-dashed border-[#3B82F6]/30 bg-[#3B82F6]/[0.04] px-5 py-4">
+            <div className="flex items-center gap-2 shrink-0">
+              <Tag className="h-4 w-4 text-[#3B82F6]" />
+              <span className="text-xs font-semibold text-[#3B82F6] uppercase tracking-wider">
+                Launch Offer
+              </span>
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-sm text-black/60">
+                Get{' '}
+                <span className="font-semibold text-[#111827]">10% off</span>
+                {' '}your first billing cycle — any plan.
+                {' '}
+                <span className="text-black/40 text-xs">First 50 uses only.</span>
+              </p>
+            </div>
+            <button
+              onClick={copyCode}
+              className="flex items-center gap-2 rounded-xl border border-[#3B82F6]/25 bg-white px-4 py-2 text-sm font-mono font-semibold text-[#111827] shadow-sm transition-all hover:border-[#3B82F6]/50 hover:shadow-md active:scale-95 shrink-0"
+              title="Copy promo code"
+            >
+              <span className="tracking-wider">{PROMO_CODE}</span>
+              {copied
+                ? <CopyCheck className="h-3.5 w-3.5 text-[#3B82F6]" />
+                : <Copy className="h-3.5 w-3.5 text-black/30" />
+              }
+            </button>
+          </div>
         </motion.div>
 
         {/* Trust line */}

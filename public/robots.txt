@@ -1,22 +1,137 @@
-# robots.txt for Acad AI
-# Allow all crawlers
+# robots.txt for Acad AI — https://www.acadai.org
 
+# ── General crawlers ────────────────────────────────────────────────
 User-agent: *
 Allow: /
-
-# Disallow admin and authentication pages
+Allow: /blog/
+Allow: /roadmap/
+Allow: /pricing
 Disallow: /dashboard/
 Disallow: /login
 Disallow: /signup
 Disallow: /onboarding
 Disallow: /api/
 
-# Allow public pages
+# ── OpenAI / ChatGPT ────────────────────────────────────────────────
+User-agent: GPTBot
+Allow: /
+Allow: /blog/
 Allow: /roadmap/
-Allow: /pricing
+Disallow: /dashboard/
+Disallow: /api/
 
-# Sitemap location
+User-agent: ChatGPT-User
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Anthropic / Claude ──────────────────────────────────────────────
+User-agent: Claude-Web
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Perplexity ──────────────────────────────────────────────────────
+User-agent: PerplexityBot
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Google (AI Overviews / Gemini) ──────────────────────────────────
+User-agent: GoogleOther
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Meta AI ─────────────────────────────────────────────────────────
+User-agent: meta-externalagent
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+User-agent: FacebookBot
+Allow: /
+Allow: /blog/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Microsoft / Copilot ─────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Cohere ──────────────────────────────────────────────────────────
+User-agent: cohere-ai
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── You.com ─────────────────────────────────────────────────────────
+User-agent: YouBot
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Diffbot (knowledge graph) ────────────────────────────────────────
+User-agent: Diffbot
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Common Crawl (AI training datasets) ─────────────────────────────
+User-agent: CCBot
+Allow: /
+Allow: /blog/
+Allow: /roadmap/
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── Sitemap ─────────────────────────────────────────────────────────
 Sitemap: https://www.acadai.org/sitemap.xml
-
-# Crawl-delay (optional, adjust as needed)
-Crawl-delay: 1

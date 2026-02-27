@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next';
+import { getAllPosts } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acadai.org';
 
-  // All 14 available roadmap domains
   const roadmapDomains = [
     'frontend',
     'backend',
@@ -17,33 +17,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'game-dev-indie',
     'game-dev-aaa',
     'android',
-    'iOS',
+    'ios',
     'blockchain',
   ];
 
-  // Main pages
-  const mainPages = [
+  const mainPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'weekly',
       priority: 1,
     },
     {
       url: `${baseUrl}/pricing`,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'weekly',
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
     },
   ];
 
-  // Roadmap pages
-  const roadmapPages = roadmapDomains.map((domain) => ({
+  const roadmapPages: MetadataRoute.Sitemap = roadmapDomains.map((domain) => ({
     url: `${baseUrl}/roadmap/${domain}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
+    changeFrequency: 'monthly',
     priority: 0.8,
   }));
 
-  return [...mainPages, ...roadmapPages];
+  const posts = getAllPosts();
+  const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [...mainPages, ...roadmapPages, ...blogPages];
 }

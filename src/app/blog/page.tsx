@@ -1,11 +1,40 @@
 import { getAllPosts } from '@/lib/blog';
 import { PostCard } from '@/components/blog/post-card';
 import { PenLine } from 'lucide-react';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Blog — Acad AI',
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.acadai.org';
+
+export const metadata: Metadata = {
+  title: 'Blog — Tech Career Guides & Learning Strategies | Acad AI',
   description:
-    'Career advice, learning strategies, and technical guides for developers breaking into tech.',
+    'Career advice, learning strategies, and technical guides for developers breaking into tech. No fluff — practical content on learning, job hunting, and building a career.',
+  alternates: {
+    canonical: `${BASE_URL}/blog`,
+  },
+  openGraph: {
+    type: 'website',
+    url: `${BASE_URL}/blog`,
+    siteName: 'Acad AI',
+    title: 'Acad AI Blog — Career Guides for Developers',
+    description:
+      'Career advice, learning strategies, and technical guides for developers breaking into tech. No fluff — practical content on learning, job hunting, and building a career.',
+    images: [
+      {
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Acad AI Blog — Career Guides for Developers',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Acad AI Blog — Career Guides for Developers',
+    description:
+      'Career advice, learning strategies, and technical guides for developers breaking into tech.',
+    images: [`${BASE_URL}/og-image.png`],
+  },
 };
 
 export default function BlogPage() {
