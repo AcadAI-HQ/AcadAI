@@ -1,9 +1,8 @@
 {
   "domain": "game-dev-indie",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Game Audio, Polish & Publishing",
   "description": "Master game audio design, visual polish techniques, and the publishing process for indie games. Learn to implement sound effects, music systems, particle effects, screen shake, and navigate publishing on Steam, itch.io, and mobile platforms.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 200,
   "mainArticle": {
@@ -35,17 +34,25 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 45
-    },
-    {
-      "id": "resource-3",
-      "title": "Game Audio Design with Unity",
-      "description": "Unity's official guide to implementing audio systems in games",
-      "url": "https://learn.unity.com/tutorial/working-with-audio",
-      "type": "tutorial",
-      "difficulty": "intermediate",
-      "estimatedTime": 40
     }
   ],
-  "topics": ["Game Audio", "Game Polish", "Publishing", "Steam", "Game Feel", "Marketing"],
-  "keywords": ["game audio", "polish", "juice", "screen shake", "particles", "steam publishing", "itch.io", "game marketing", "indie publishing"]
+  "topics": [
+    "Game Audio",
+    "Game Polish",
+    "Publishing",
+    "Steam",
+    "Game Feel",
+    "Marketing"
+  ],
+  "keywords": [
+    "game audio",
+    "polish",
+    "juice",
+    "screen shake",
+    "particles",
+    "steam publishing",
+    "itch.io",
+    "game marketing",
+    "indie publishing"
+  ]
 }

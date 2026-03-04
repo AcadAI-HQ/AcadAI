@@ -8,6 +8,7 @@ const post: BlogPost = {
     'System design interviews trip up even experienced developers. The reason isn\'t a lack of technical knowledge — it\'s not knowing how to think about systems at scale.',
   readTime: '10 min read',
   tags: ['System Design', 'Interviews', 'Backend'],
+  coverImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80&auto=format',
   content: `System design interviews trip up even experienced developers. The reason isn't a lack of technical knowledge — it's not knowing how to *think* about systems.
 
 This post covers the core concepts that show up repeatedly in system design discussions, whether you're interviewing or just trying to build better software.
@@ -19,6 +20,8 @@ Writing code that works on your laptop is one skill. Designing systems that serv
 Even if you're not interviewing right now, understanding these concepts makes you a better engineer day-to-day.
 
 ## The Building Blocks
+
+![Server infrastructure in a modern data center](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80&auto=format)
 
 ### 1. Scalability
 
@@ -125,7 +128,9 @@ Start with these resources to go deeper:
 - AWS/GCP architecture whitepapers — real systems documented in detail
 - Engineering blogs (Uber, Airbnb, Netflix, Discord) — how production systems evolved
 
-System design improves with deliberate practice. Start with simple problems (design a URL shortener) before moving to complex ones (design Twitter). Explain your thinking out loud — the communication matters as much as the answer.`,
+System design improves with deliberate practice. Start with simple problems (design a URL shortener) before moving to complex ones (design Twitter). Explain your thinking out loud — the communication matters as much as the answer.
+
+In a structured backend development or fullstack development roadmap, system design typically appears at the intermediate-to-advanced stage — after you've built real projects and understand individual components through direct experience. If you're working through a backend learning path and want to know exactly where system design fits relative to everything else you need to learn, [AcadAI](https://www.acadai.org) maps out the full progression from fundamentals to senior-level concepts.`,
 };
 
 export default post;

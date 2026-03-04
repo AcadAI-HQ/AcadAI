@@ -1,9 +1,8 @@
 {
   "domain": "backend",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: API Security & Rate Limiting",
   "description": "Master API security fundamentals including authentication, authorization, input validation, rate limiting, and common vulnerability prevention. Learn to build secure, production-ready APIs that withstand real-world threats.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 200,
   "mainArticle": {
@@ -35,17 +34,26 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 30
-    },
-    {
-      "id": "resource-3",
-      "title": "JWT Best Practices - Auth0",
-      "description": "Comprehensive guide to JWT best practices for secure authentication",
-      "url": "https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/",
-      "type": "article",
-      "difficulty": "intermediate",
-      "estimatedTime": 35
     }
   ],
-  "topics": ["API Security", "Rate Limiting", "Authentication", "Authorization", "Input Validation", "JWT"],
-  "keywords": ["api security", "rate limiting", "jwt", "authentication", "authorization", "RBAC", "input validation", "CORS", "helmet", "bcrypt"]
+  "topics": [
+    "API Security",
+    "Rate Limiting",
+    "Authentication",
+    "Authorization",
+    "Input Validation",
+    "JWT"
+  ],
+  "keywords": [
+    "api security",
+    "rate limiting",
+    "jwt",
+    "authentication",
+    "authorization",
+    "RBAC",
+    "input validation",
+    "CORS",
+    "helmet",
+    "bcrypt"
+  ]
 }

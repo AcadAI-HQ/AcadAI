@@ -1,9 +1,8 @@
 {
   "domain": "cybersecurity",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Penetration Testing Tools & Methodology",
   "description": "Master penetration testing methodology and essential tools including Nmap, Burp Suite, Metasploit, and Wireshark. Learn the phases of a professional pentest from reconnaissance to reporting, following ethical and legal frameworks.",
-  "publishedDate": "2026-02-03",
   "difficulty": "advanced",
   "estimatedTime": 220,
   "mainArticle": {
@@ -35,17 +34,25 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 60
-    },
-    {
-      "id": "resource-3",
-      "title": "PortSwigger Web Security Academy",
-      "description": "Free, hands-on web security training from the creators of Burp Suite",
-      "url": "https://portswigger.net/web-security",
-      "type": "tutorial",
-      "difficulty": "intermediate",
-      "estimatedTime": 45
     }
   ],
-  "topics": ["Penetration Testing", "Nmap", "Burp Suite", "Metasploit", "Security Auditing", "Ethical Hacking"],
-  "keywords": ["penetration testing", "nmap", "burp suite", "metasploit", "ethical hacking", "vulnerability assessment", "security testing", "OSCP", "wireshark"]
+  "topics": [
+    "Penetration Testing",
+    "Nmap",
+    "Burp Suite",
+    "Metasploit",
+    "Security Auditing",
+    "Ethical Hacking"
+  ],
+  "keywords": [
+    "penetration testing",
+    "nmap",
+    "burp suite",
+    "metasploit",
+    "ethical hacking",
+    "vulnerability assessment",
+    "security testing",
+    "OSCP",
+    "wireshark"
+  ]
 }

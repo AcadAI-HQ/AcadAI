@@ -8,6 +8,7 @@ const post: BlogPost = {
     "If you've been sending out applications and getting silence, there's usually a pattern — and it's fixable. Here are the most common reasons candidates don't make it past the first round.",
   readTime: '6 min read',
   tags: ['Career', 'Job Hunt', 'Portfolio'],
+  coverImage: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&q=80&auto=format',
   content: `If you've been sending out applications and getting silence or rejections, it's frustrating. But there's usually a pattern — and it's fixable.
 
 After looking at what hiring managers and senior developers actually say when they review junior portfolios and applications, here are the most common reasons candidates don't make it past the first round.
@@ -52,6 +53,8 @@ You don't need a GitHub that looks like a senior engineer's. You need one that s
 
 ## 3. The Resume Doesn't Speak to What Companies Actually Look For
 
+![Writing a developer resume and reviewing job applications](https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&q=80&auto=format)
+
 Most junior developer resumes focus on what candidates *know*. Hiring managers are looking for evidence of what candidates have *done*.
 
 Compare these:
@@ -90,7 +93,7 @@ Similarly, applying for backend roles without any database experience, or applyi
 
 **The fix isn't to stop applying — it's to prioritize:**
 
-Look at 10–15 job postings for the role you want. Identify the skills that appear in 70%+ of them. Those are the gaps to fill.
+Look at 10–15 job postings for the role you want. Identify the skills that appear in 70%+ of them. Those are the gaps to fill. A structured tech career roadmap — tailored to your target domain — gives you a clear, prioritized checklist of exactly what companies expect at each level. [AcadAI](https://www.acadai.org) builds personalized developer roadmaps that map your current skills against what the job market actually requires.
 
 You don't need everything. You need the core requirements plus evidence you can learn quickly.
 

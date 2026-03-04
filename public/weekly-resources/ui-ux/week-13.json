@@ -1,9 +1,8 @@
 {
   "domain": "ui-ux",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Design Systems & Prototyping with Figma",
   "description": "Master design system creation including component libraries, design tokens, typography scales, and color systems. Learn advanced Figma prototyping with auto layout, variants, interactive components, and developer handoff workflows.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 200,
   "mainArticle": {
@@ -35,17 +34,25 @@
       "type": "article",
       "difficulty": "intermediate",
       "estimatedTime": 35
-    },
-    {
-      "id": "resource-3",
-      "title": "Material Design 3 Guidelines",
-      "description": "Google's comprehensive design system as a reference for building your own",
-      "url": "https://m3.material.io/",
-      "type": "article",
-      "difficulty": "intermediate",
-      "estimatedTime": 40
     }
   ],
-  "topics": ["Design Systems", "Figma", "Prototyping", "Design Tokens", "Component Libraries", "Developer Handoff"],
-  "keywords": ["design system", "figma", "prototyping", "design tokens", "component library", "auto layout", "variants", "developer handoff", "ui kit"]
+  "topics": [
+    "Design Systems",
+    "Figma",
+    "Prototyping",
+    "Design Tokens",
+    "Component Libraries",
+    "Developer Handoff"
+  ],
+  "keywords": [
+    "design system",
+    "figma",
+    "prototyping",
+    "design tokens",
+    "component library",
+    "auto layout",
+    "variants",
+    "developer handoff",
+    "ui kit"
+  ]
 }

@@ -104,6 +104,20 @@ const components: Components = {
     );
   },
   pre: ({ children }) => <>{children}</>,
+  img: ({ src, alt }) => (
+    <figure className="my-8">
+      <img
+        src={src || ''}
+        alt={alt || ''}
+        className="w-full rounded-xl border border-gray-100 shadow-sm object-cover"
+      />
+      {alt && (
+        <figcaption className="mt-3 text-center text-sm text-gray-400 italic">
+          {alt}
+        </figcaption>
+      )}
+    </figure>
+  ),
 };
 
 export function BlogContent({ content }: { content: string }) {

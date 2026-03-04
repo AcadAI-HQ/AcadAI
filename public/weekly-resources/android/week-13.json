@@ -1,9 +1,8 @@
 {
   "domain": "android",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Navigation, Data Persistence & Networking",
   "description": "Master Android app architecture with Jetpack Navigation, Room database for local persistence, and Retrofit for networking. Learn to build data-driven Android applications with proper offline support and API integration.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 210,
   "mainArticle": {
@@ -35,17 +34,25 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 40
-    },
-    {
-      "id": "resource-3",
-      "title": "Retrofit Documentation",
-      "description": "Official Retrofit documentation for type-safe HTTP client",
-      "url": "https://square.github.io/retrofit/",
-      "type": "article",
-      "difficulty": "intermediate",
-      "estimatedTime": 35
     }
   ],
-  "topics": ["Navigation", "Room Database", "Retrofit", "Networking", "Data Persistence", "Offline-First"],
-  "keywords": ["jetpack navigation", "room database", "retrofit", "networking", "data persistence", "offline-first", "repository pattern", "datastore", "android"]
+  "topics": [
+    "Navigation",
+    "Room Database",
+    "Retrofit",
+    "Networking",
+    "Data Persistence",
+    "Offline-First"
+  ],
+  "keywords": [
+    "jetpack navigation",
+    "room database",
+    "retrofit",
+    "networking",
+    "data persistence",
+    "offline-first",
+    "repository pattern",
+    "datastore",
+    "android"
+  ]
 }

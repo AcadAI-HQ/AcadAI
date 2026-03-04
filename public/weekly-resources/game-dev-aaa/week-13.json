@@ -1,9 +1,8 @@
 {
   "domain": "game-dev-aaa",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Game Physics, Animation & AI Systems",
   "description": "Master game physics engines, character animation systems, and AI behavior in Unreal Engine 5. Learn collision detection, rigid body dynamics, skeletal animation, blend spaces, behavior trees, and navigation meshes for AAA-quality games.",
-  "publishedDate": "2026-02-03",
   "difficulty": "advanced",
   "estimatedTime": 230,
   "mainArticle": {
@@ -35,17 +34,26 @@
       "type": "tutorial",
       "difficulty": "advanced",
       "estimatedTime": 45
-    },
-    {
-      "id": "resource-3",
-      "title": "Game Physics Tutorial - Real-Time Collision Detection",
-      "description": "Comprehensive resource on collision detection algorithms and physics simulation",
-      "url": "https://realtimecollisiondetection.net/",
-      "type": "article",
-      "difficulty": "advanced",
-      "estimatedTime": 40
     }
   ],
-  "topics": ["Game Physics", "Animation", "AI Systems", "Behavior Trees", "Collision Detection", "Unreal Engine 5"],
-  "keywords": ["game physics", "animation", "behavior trees", "navmesh", "collision detection", "IK", "blend spaces", "state machine", "unreal engine", "AI"]
+  "topics": [
+    "Game Physics",
+    "Animation",
+    "AI Systems",
+    "Behavior Trees",
+    "Collision Detection",
+    "Unreal Engine 5"
+  ],
+  "keywords": [
+    "game physics",
+    "animation",
+    "behavior trees",
+    "navmesh",
+    "collision detection",
+    "IK",
+    "blend spaces",
+    "state machine",
+    "unreal engine",
+    "AI"
+  ]
 }

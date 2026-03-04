@@ -1,75 +1,61 @@
 {
-  "lastUpdated": "2026-02-03T12:00:00Z",
+  "lastUpdated": "2026-03-04T12:00:00Z",
   "domains": {
     "frontend": {
-      "maxWeek": 12,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "backend": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "fullstack": {
-      "maxWeek": 12,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "ml": {
-      "maxWeek": 8,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "devops": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "android": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "ios": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "blockchain": {
-      "maxWeek": 8,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "ui-ux": {
-      "maxWeek": 8,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "product-engineering": {
-      "maxWeek": 8,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "game-dev-aaa": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "game-dev-indie": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "cybersecurity": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     },
     "data-science": {
-      "maxWeek": 10,
-      "availableWeeks": [2, 3],
-      "nextWeekDate": "2026-02-10"
+      "maxWeek": 13,
+      "availableWeeks": [13]
     }
   }
 }

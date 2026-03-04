@@ -143,6 +143,17 @@ export default async function BlogPostPage({ params }: Props) {
         </span>
       </div>
 
+      {/* Cover image */}
+      {post.coverImage && (
+        <div className="mb-10">
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            className="w-full rounded-2xl border border-gray-100 shadow-sm object-cover max-h-[420px]"
+          />
+        </div>
+      )}
+
       {/* Content */}
       <BlogContent content={post.content} />
 

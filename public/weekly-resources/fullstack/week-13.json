@@ -1,9 +1,8 @@
 {
   "domain": "fullstack",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Deployment & CI/CD for Full-Stack Apps",
   "description": "Master deployment strategies and CI/CD pipelines for full-stack applications. Learn Docker containerization, cloud deployment on Vercel and AWS, GitHub Actions workflows, and production monitoring best practices.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 210,
   "mainArticle": {
@@ -35,17 +34,25 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 50
-    },
-    {
-      "id": "resource-3",
-      "title": "Vercel Deployment Documentation",
-      "description": "Complete guide to deploying Next.js applications on Vercel",
-      "url": "https://vercel.com/docs/deployments/overview",
-      "type": "article",
-      "difficulty": "intermediate",
-      "estimatedTime": 30
     }
   ],
-  "topics": ["Deployment", "CI/CD", "Docker", "GitHub Actions", "Vercel", "Production"],
-  "keywords": ["deployment", "CI/CD", "docker", "github actions", "vercel", "aws", "containerization", "monitoring", "devops"]
+  "topics": [
+    "Deployment",
+    "CI/CD",
+    "Docker",
+    "GitHub Actions",
+    "Vercel",
+    "Production"
+  ],
+  "keywords": [
+    "deployment",
+    "CI/CD",
+    "docker",
+    "github actions",
+    "vercel",
+    "aws",
+    "containerization",
+    "monitoring",
+    "devops"
+  ]
 }

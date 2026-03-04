@@ -1,9 +1,8 @@
 {
   "domain": "frontend",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Testing React Applications",
   "description": "Master testing React applications with Jest, React Testing Library, and end-to-end testing with Playwright. Learn unit testing, integration testing, and E2E testing strategies for building reliable, maintainable frontend applications.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 210,
   "mainArticle": {
@@ -35,17 +34,24 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 40
-    },
-    {
-      "id": "resource-3",
-      "title": "Kent C. Dodds - Common Mistakes with RTL",
-      "description": "Common mistakes developers make with React Testing Library and how to avoid them",
-      "url": "https://kentcdodds.com/blog/common-mistakes-with-react-testing-library",
-      "type": "article",
-      "difficulty": "intermediate",
-      "estimatedTime": 30
     }
   ],
-  "topics": ["Testing", "Jest", "React Testing Library", "Playwright", "E2E Testing", "Unit Testing"],
-  "keywords": ["jest", "testing-library", "playwright", "unit test", "integration test", "e2e", "mocking", "test-driven development"]
+  "topics": [
+    "Testing",
+    "Jest",
+    "React Testing Library",
+    "Playwright",
+    "E2E Testing",
+    "Unit Testing"
+  ],
+  "keywords": [
+    "jest",
+    "testing-library",
+    "playwright",
+    "unit test",
+    "integration test",
+    "e2e",
+    "mocking",
+    "test-driven development"
+  ]
 }

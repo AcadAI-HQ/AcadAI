@@ -65,7 +65,8 @@
       "Bash(node C:/tmp/ci3.js)",
       "Bash(node C:/tmp/ci4.js)",
       "Bash(node C:/tmp/ci5.js)",
-      "Bash(node C:/tmp/ci6.js)"
+      "Bash(node C:/tmp/ci6.js)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

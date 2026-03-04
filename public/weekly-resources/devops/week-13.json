@@ -1,9 +1,8 @@
 {
   "domain": "devops",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: CI/CD Pipelines & Infrastructure as Code",
   "description": "Master CI/CD pipeline design with GitHub Actions and GitLab CI, and Infrastructure as Code with Terraform and Ansible. Learn to automate deployments, manage cloud infrastructure declaratively, and implement GitOps workflows.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 220,
   "mainArticle": {
@@ -35,17 +34,25 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 45
-    },
-    {
-      "id": "resource-3",
-      "title": "Ansible Getting Started Guide",
-      "description": "Official Ansible documentation for configuration management",
-      "url": "https://docs.ansible.com/ansible/latest/getting_started/",
-      "type": "tutorial",
-      "difficulty": "intermediate",
-      "estimatedTime": 40
     }
   ],
-  "topics": ["CI/CD", "Infrastructure as Code", "Terraform", "GitHub Actions", "Ansible", "GitOps"],
-  "keywords": ["CI/CD", "terraform", "github actions", "ansible", "infrastructure as code", "gitops", "deployment pipeline", "automation", "devops"]
+  "topics": [
+    "CI/CD",
+    "Infrastructure as Code",
+    "Terraform",
+    "GitHub Actions",
+    "Ansible",
+    "GitOps"
+  ],
+  "keywords": [
+    "CI/CD",
+    "terraform",
+    "github actions",
+    "ansible",
+    "infrastructure as code",
+    "gitops",
+    "deployment pipeline",
+    "automation",
+    "devops"
+  ]
 }

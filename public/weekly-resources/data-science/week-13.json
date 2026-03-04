@@ -1,9 +1,8 @@
 {
   "domain": "data-science",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Statistical Analysis & Hypothesis Testing",
   "description": "Master statistical analysis fundamentals including probability distributions, hypothesis testing, confidence intervals, A/B testing, and regression analysis. Learn to draw valid conclusions from data using Python's scipy and statsmodels libraries.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 210,
   "mainArticle": {
@@ -35,17 +34,26 @@
       "type": "article",
       "difficulty": "intermediate",
       "estimatedTime": 40
-    },
-    {
-      "id": "resource-3",
-      "title": "Statsmodels Documentation",
-      "description": "Python library for statistical modeling, hypothesis testing, and data exploration",
-      "url": "https://www.statsmodels.org/stable/index.html",
-      "type": "tutorial",
-      "difficulty": "intermediate",
-      "estimatedTime": 35
     }
   ],
-  "topics": ["Statistics", "Hypothesis Testing", "Probability", "Regression", "Confidence Intervals", "A/B Testing"],
-  "keywords": ["hypothesis testing", "t-test", "chi-square", "ANOVA", "regression", "confidence intervals", "p-value", "correlation", "scipy", "statsmodels"]
+  "topics": [
+    "Statistics",
+    "Hypothesis Testing",
+    "Probability",
+    "Regression",
+    "Confidence Intervals",
+    "A/B Testing"
+  ],
+  "keywords": [
+    "hypothesis testing",
+    "t-test",
+    "chi-square",
+    "ANOVA",
+    "regression",
+    "confidence intervals",
+    "p-value",
+    "correlation",
+    "scipy",
+    "statsmodels"
+  ]
 }

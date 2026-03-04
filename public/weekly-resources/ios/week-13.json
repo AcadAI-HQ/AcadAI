@@ -1,9 +1,8 @@
 {
   "domain": "ios",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Networking, Data Persistence & App Architecture",
   "description": "Master iOS networking with URLSession and async/await, data persistence with Core Data and SwiftData, and scalable app architecture patterns including MVVM and The Composable Architecture (TCA).",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 210,
   "mainArticle": {
@@ -35,17 +34,25 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 40
-    },
-    {
-      "id": "resource-3",
-      "title": "MVVM in SwiftUI - Stanford CS193p",
-      "description": "Stanford's comprehensive lecture on MVVM architecture in SwiftUI",
-      "url": "https://cs193p.sites.stanford.edu/",
-      "type": "video",
-      "difficulty": "intermediate",
-      "estimatedTime": 50
     }
   ],
-  "topics": ["Networking", "SwiftData", "Core Data", "MVVM", "URLSession", "App Architecture"],
-  "keywords": ["urlsession", "swiftdata", "core data", "mvvm", "networking", "persistence", "async await", "repository pattern", "dependency injection"]
+  "topics": [
+    "Networking",
+    "SwiftData",
+    "Core Data",
+    "MVVM",
+    "URLSession",
+    "App Architecture"
+  ],
+  "keywords": [
+    "urlsession",
+    "swiftdata",
+    "core data",
+    "mvvm",
+    "networking",
+    "persistence",
+    "async await",
+    "repository pattern",
+    "dependency injection"
+  ]
 }

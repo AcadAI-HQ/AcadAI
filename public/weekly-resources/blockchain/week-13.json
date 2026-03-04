@@ -1,9 +1,8 @@
 {
   "domain": "blockchain",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: DeFi Protocols, Testing & Security Auditing",
   "description": "Master DeFi protocol development including token standards, AMMs, lending protocols, and yield farming. Learn comprehensive smart contract testing with Hardhat and Foundry, and security auditing techniques to prevent exploits.",
-  "publishedDate": "2026-02-03",
   "difficulty": "advanced",
   "estimatedTime": 230,
   "mainArticle": {
@@ -35,17 +34,26 @@
       "type": "tutorial",
       "difficulty": "advanced",
       "estimatedTime": 50
-    },
-    {
-      "id": "resource-3",
-      "title": "Smart Contract Security Best Practices",
-      "description": "Consensys guide to smart contract security patterns and pitfalls",
-      "url": "https://consensys.github.io/smart-contract-best-practices/",
-      "type": "article",
-      "difficulty": "advanced",
-      "estimatedTime": 40
     }
   ],
-  "topics": ["DeFi", "Smart Contract Testing", "Security Auditing", "Hardhat", "Foundry", "Solidity"],
-  "keywords": ["defi", "smart contracts", "testing", "security audit", "hardhat", "foundry", "solidity", "amm", "lending", "reentrancy"]
+  "topics": [
+    "DeFi",
+    "Smart Contract Testing",
+    "Security Auditing",
+    "Hardhat",
+    "Foundry",
+    "Solidity"
+  ],
+  "keywords": [
+    "defi",
+    "smart contracts",
+    "testing",
+    "security audit",
+    "hardhat",
+    "foundry",
+    "solidity",
+    "amm",
+    "lending",
+    "reentrancy"
+  ]
 }

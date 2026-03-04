@@ -1,9 +1,8 @@
 {
   "domain": "ml",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Model Training, Evaluation & Hyperparameter Tuning",
   "description": "Master the complete model training lifecycle including training loops, evaluation metrics, cross-validation, hyperparameter tuning with Grid Search, Random Search, and Bayesian optimization. Learn to avoid overfitting and build models that generalize well.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 220,
   "mainArticle": {
@@ -35,17 +34,26 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 40
-    },
-    {
-      "id": "resource-3",
-      "title": "Google ML Crash Course - Training & Evaluation",
-      "description": "Google's guide to training models and choosing evaluation metrics",
-      "url": "https://developers.google.com/machine-learning/crash-course",
-      "type": "article",
-      "difficulty": "intermediate",
-      "estimatedTime": 45
     }
   ],
-  "topics": ["Model Training", "Evaluation Metrics", "Cross-Validation", "Hyperparameter Tuning", "Overfitting", "Regularization"],
-  "keywords": ["model training", "evaluation", "hyperparameter tuning", "cross-validation", "grid search", "random search", "optuna", "overfitting", "regularization", "early stopping"]
+  "topics": [
+    "Model Training",
+    "Evaluation Metrics",
+    "Cross-Validation",
+    "Hyperparameter Tuning",
+    "Overfitting",
+    "Regularization"
+  ],
+  "keywords": [
+    "model training",
+    "evaluation",
+    "hyperparameter tuning",
+    "cross-validation",
+    "grid search",
+    "random search",
+    "optuna",
+    "overfitting",
+    "regularization",
+    "early stopping"
+  ]
 }

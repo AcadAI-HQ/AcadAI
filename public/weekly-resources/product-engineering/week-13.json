@@ -1,9 +1,8 @@
 {
   "domain": "product-engineering",
-  "weekNumber": 3,
+  "weekNumber": 13,
   "title": "Deep Dive: Product Analytics & Data-Driven Decisions",
   "description": "Master product analytics including event tracking, funnel analysis, cohort analysis, A/B testing, and data-driven decision-making. Learn to implement analytics with tools like Mixpanel, Amplitude, and PostHog to drive product growth.",
-  "publishedDate": "2026-02-03",
   "difficulty": "intermediate",
   "estimatedTime": 200,
   "mainArticle": {
@@ -35,17 +34,26 @@
       "type": "tutorial",
       "difficulty": "intermediate",
       "estimatedTime": 40
-    },
-    {
-      "id": "resource-3",
-      "title": "Lean Analytics by Alistair Croll",
-      "description": "Framework for using data to build a better startup faster",
-      "url": "https://leananalyticsbook.com/",
-      "type": "article",
-      "difficulty": "intermediate",
-      "estimatedTime": 35
     }
   ],
-  "topics": ["Product Analytics", "A/B Testing", "Funnel Analysis", "Cohort Analysis", "Growth Metrics", "Data-Driven"],
-  "keywords": ["product analytics", "a/b testing", "funnel analysis", "cohort analysis", "retention", "metrics", "mixpanel", "amplitude", "posthog", "data-driven"]
+  "topics": [
+    "Product Analytics",
+    "A/B Testing",
+    "Funnel Analysis",
+    "Cohort Analysis",
+    "Growth Metrics",
+    "Data-Driven"
+  ],
+  "keywords": [
+    "product analytics",
+    "a/b testing",
+    "funnel analysis",
+    "cohort analysis",
+    "retention",
+    "metrics",
+    "mixpanel",
+    "amplitude",
+    "posthog",
+    "data-driven"
+  ]
 }

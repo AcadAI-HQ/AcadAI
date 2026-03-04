@@ -6,4 +6,5 @@ export interface BlogPost {
   readTime: string;
   tags: string[];
   content: string;
+  coverImage?: string;
 }

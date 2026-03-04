@@ -37,6 +37,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: BASE_URL,
   },
+  verification: {
+    google: 'PASTE_YOUR_CODE_HERE',
+  },
   formatDetection: {
     email: false,
     address: false,
