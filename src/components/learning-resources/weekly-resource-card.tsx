@@ -34,9 +34,11 @@ export function WeeklyResourceCard({
     advanced: 'bg-red-500/10 text-red-500 border-red-500/20',
   };
 
-  const publishedAgo = formatDistance(new Date(publishedDate), new Date(), {
-    addSuffix: true,
-  });
+  const parsedDate = publishedDate ? new Date(publishedDate) : null;
+  const publishedAgo =
+    parsedDate && !isNaN(parsedDate.getTime())
+      ? formatDistance(parsedDate, new Date(), { addSuffix: true })
+      : null;
 
   return (
     <motion.div
@@ -76,10 +78,12 @@ export function WeeklyResourceCard({
               <Clock className="h-4 w-4" />
               <span>{estimatedTime} min</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span>{publishedAgo}</span>
-            </div>
+            {publishedAgo && (
+              <div className="flex items-center gap-1">
+                <Calendar className="h-4 w-4" />
+                <span>{publishedAgo}</span>
+              </div>
+            )}
           </div>
 
           {completedResources > 0 && (

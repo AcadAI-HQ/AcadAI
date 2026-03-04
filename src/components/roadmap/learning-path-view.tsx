@@ -264,7 +264,7 @@ export function LearningPathView({ roadmap, domain }: LearningPathViewProps) {
   }));
 
   return (
-    <div className="relative pb-20">
+    <div className="relative pb-20 isolate">
       {/* Progress Header */}
       <motion.div
         className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 -mx-4 px-4 py-4 mb-8"
