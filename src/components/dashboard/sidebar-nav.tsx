@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
+import { getCatAvatar } from "@/lib/avatar";
 
 // Helper to check if subscription is active
 function isSubscriptionActive(subscription: any): boolean {
@@ -163,7 +164,7 @@ export function DashboardSidebar() {
                   <div className="flex items-center gap-3 px-2 py-2">
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        src={`https://api.dicebear.com/8.x/adventurer/svg?seed=${user.email}`}
+                        src={getCatAvatar(user.email)}
                         alt={user.displayName ?? 'User'}
                       />
                       <AvatarFallback>

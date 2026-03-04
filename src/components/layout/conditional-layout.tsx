@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Sidebar, SidebarProvider, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { LayoutDashboard, Route, BrainCircuit, User, BookOpen, MessageSquareHeart, Sparkles, LogOut, Bot } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getCatAvatar } from "@/lib/avatar";
 
 // Pages that should not show the sidebar
 const NO_SIDEBAR_PAGES = ['/login', '/signup', '/pricing', '/terms', '/privacy', '/onboarding'];
@@ -146,7 +147,7 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
               <div className="flex items-center gap-3 rounded-lg px-2 py-2">
                 <Avatar className="h-8 w-8 shrink-0">
                   <AvatarImage
-                    src={user?.photoURL || `https://api.dicebear.com/8.x/adventurer/svg?seed=${user?.email}`}
+                    src={getCatAvatar(user?.email)}
                     alt={user?.displayName ?? 'User'}
                   />
                   <AvatarFallback className="text-xs bg-[#3B82F6]/10 text-[#3B82F6] font-semibold">

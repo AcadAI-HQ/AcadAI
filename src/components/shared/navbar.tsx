@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogOut, PanelLeft, User } from "lucide-react";
+import { getCatAvatar } from "@/lib/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,7 +68,7 @@ export function Navbar() {
             <button className="flex h-8 w-8 items-center justify-center rounded-full overflow-hidden ring-1 ring-border/60 hover:ring-[#3B82F6]/40 transition-all">
               <Avatar className="h-8 w-8">
                 <AvatarImage
-                  src={user?.photoURL || `https://api.dicebear.com/8.x/adventurer/svg?seed=${user?.email}`}
+                  src={getCatAvatar(user?.email)}
                   alt={user?.displayName ?? "User"}
                 />
                 <AvatarFallback className="text-xs bg-[#3B82F6]/10 text-[#3B82F6] font-semibold">

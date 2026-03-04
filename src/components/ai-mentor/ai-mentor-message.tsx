@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { BrainCircuit } from "lucide-react";
+import { getCatAvatar } from "@/lib/avatar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { ChatMessage } from "@/types";
 import ReactMarkdown from "react-markdown";
@@ -32,9 +33,7 @@ export function AIMentorMessage({
     return "U";
   };
 
-  const getUserFallbackUrl = () => {
-    return `https://api.dicebear.com/8.x/adventurer/svg?seed=${userEmail || "user"}`;
-  };
+  const getUserFallbackUrl = () => getCatAvatar(userEmail);
 
   return (
     <div
@@ -46,7 +45,7 @@ export function AIMentorMessage({
       {isUser ? (
         <Avatar className="h-8 w-8 shrink-0">
           <AvatarImage
-            src={userPhotoURL || getUserFallbackUrl()}
+            src={getUserFallbackUrl()}
             alt={userDisplayName || "User"}
           />
           <AvatarFallback className="text-xs font-medium">
