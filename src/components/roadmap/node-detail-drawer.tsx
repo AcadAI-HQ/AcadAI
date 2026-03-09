@@ -30,7 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { RoadmapProgress } from "@/types";
 import { markStepComplete } from "@/lib/progress-service";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface FlattenedStep {
   id: string;
@@ -307,6 +307,18 @@ export function NodeDetailDrawer({
 }: NodeDetailDrawerProps) {
   const [completing, setCompleting] = useState(false);
 
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   // Parse resources
   const parsedResources = useMemo(() => {
     if (!step?.resources) return [];
@@ -350,7 +362,12 @@ export function NodeDetailDrawer({
 
   return (
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <SheetContent side="bottom" className="h-[90vh] rounded-t-3xl">
+      <SheetContent
+        side="bottom"
+        className="h-[90vh] rounded-t-3xl bg-white"
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+      >
         <div className="max-w-2xl mx-auto h-full flex flex-col">
           <SheetHeader className="text-left pb-4 border-b shrink-0">
             {/* Section badge */}
