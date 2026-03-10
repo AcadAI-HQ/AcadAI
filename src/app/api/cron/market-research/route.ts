@@ -16,7 +16,7 @@ import { acquireLock, releaseLock } from '@/lib/pipeline-guard';
 import { runMarketResearchAgent } from '@/lib/agents/market-research-agent';
 
 export const runtime = 'nodejs';
-export const maxDuration = 600;
+export const maxDuration = 300;
 
 const WINDOW_HOURS = 648; // 27 days
 const JOB_NAME = 'market-research' as const;

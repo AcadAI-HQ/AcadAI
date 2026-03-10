@@ -17,7 +17,7 @@ import { acquireLock, releaseLock } from '@/lib/pipeline-guard';
 import { runLearningResourcesAgent } from '@/lib/agents/learning-resources-agent';
 
 export const runtime = 'nodejs';
-export const maxDuration = 600;
+export const maxDuration = 300;
 
 // 144h = 6 days. Weekly cron fires every 7 days, so this gives 1 day of slack.
 const WINDOW_HOURS = 144;
