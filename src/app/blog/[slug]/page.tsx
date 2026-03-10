@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getAllPosts, getPostBySlug, formatDate } from '@/lib/blog';
+import { getAllPostsIncludingDynamic, getPostBySlugIncludingDynamic } from '@/lib/blog-server';
+import { formatDate } from '@/lib/blog';
 import { BlogContent } from '@/components/blog/blog-content';
 import { ArrowLeft, Clock, Calendar } from 'lucide-react';
 
@@ -11,14 +12,17 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Re-check Firestore every hour; unknown slugs (new AI posts) render on-demand
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPostsIncludingDynamic();
   return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlugIncludingDynamic(slug);
   if (!post) return {};
 
   const url = `${BASE_URL}/blog/${post.slug}`;
@@ -57,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlugIncludingDynamic(slug);
 
   if (!post) notFound();
 

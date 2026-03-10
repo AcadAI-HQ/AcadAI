@@ -11,6 +11,19 @@ import { LayoutDashboard, Route, BrainCircuit, User, BookOpen, MessageSquareHear
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getCatAvatar } from "@/lib/avatar";
 
+function useSpotlightDots(uid: string | undefined) {
+  const [dots, setDots] = useState({ mentor: false, resources: false });
+
+  useEffect(() => {
+    if (!uid) return;
+    const mentorVisited    = localStorage.getItem("acadai_visited_mentor") === "1";
+    const resourcesVisited = localStorage.getItem("acadai_visited_resources") === "1";
+    setDots({ mentor: !mentorVisited, resources: !resourcesVisited });
+  }, [uid]);
+
+  return dots;
+}
+
 // Pages that should not show the sidebar
 const NO_SIDEBAR_PAGES = ['/login', '/signup', '/pricing', '/terms', '/privacy', '/onboarding'];
 
@@ -38,6 +51,9 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
       router.replace('/');
     }
   }, [user, loading, isProtectedRoute, router]);
+
+  // Must be called unconditionally before any early returns
+  const spotlightDots = useSpotlightDots(user?.uid);
 
   // Don't show sidebar on specific pages or when user is not authenticated
   // Show sidebar on authenticated pages except login/signup and landing page
@@ -129,7 +145,17 @@ export function ConditionalLayout({ children }: { children: ReactNode }) {
                               : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
                           }`}
                         >
-                          <item.icon className={`h-4 w-4 shrink-0 ${active ? 'text-[#3B82F6]' : ''}`} />
+                          <span className="relative shrink-0">
+                            <item.icon className={`h-4 w-4 ${active ? 'text-[#3B82F6]' : ''}`} />
+                            {/* Spotlight dot for unvisited AI Mentor */}
+                            {item.title === 'AI Mentor' && spotlightDots.mentor && !active && (
+                              <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#3B82F6] animate-pulse" />
+                            )}
+                            {/* Spotlight dot for unvisited Learning Resources */}
+                            {item.title === 'Learning Resources' && spotlightDots.resources && !active && (
+                              <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#3B82F6] animate-pulse" />
+                            )}
+                          </span>
                           <span className="flex-1">{item.title}</span>
                           {item.badge && (
                             <Sparkles className="h-3 w-3 shrink-0 text-[#29ABE2]" />

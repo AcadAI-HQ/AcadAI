@@ -13,35 +13,34 @@ export function EmptyResourceState({
 }: EmptyResourceStateProps) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] text-center px-4">
-      <div className="rounded-full bg-gray-800 p-6 mb-6">
-        <BookOpen className="h-12 w-12 text-gray-400" />
+      <div className="rounded-full bg-muted p-6 mb-6">
+        <BookOpen className="h-12 w-12 text-muted-foreground" />
       </div>
 
-      <h3 className="text-2xl font-semibold text-white mb-2">
-        No Resources Available Yet
+      <h3 className="text-2xl font-semibold text-foreground mb-2">
+        {domain ? `${domain} resources are coming soon.` : 'No resources published yet.'}
       </h3>
 
-      <p className="text-gray-400 mb-6 max-w-md">
+      <p className="text-muted-foreground mb-6 max-w-md leading-relaxed">
         {domain
-          ? `We haven't published any learning resources for ${domain} yet.`
-          : 'No learning resources are available at the moment.'}
+          ? `AcadAI curates fresh learning resources every Monday. Your first batch for this domain will be ready in the next weekly update.`
+          : 'AcadAI researches and curates resources every Monday. Check back then — or explore one of the domains that\'s already available.'}
         {nextWeekDate && (
-          <span className="block mt-2">
-            Check back on <span className="text-[#29ABE2]">{nextWeekDate}</span>{' '}
-            for new content!
+          <span className="block mt-2 text-sm">
+            Next update: <span className="text-[#29ABE2] font-medium">{nextWeekDate}</span>
           </span>
         )}
       </p>
 
-      <div className="flex gap-4">
+      <div className="flex gap-3 flex-wrap justify-center">
         <Link href="/dashboard/learning-resources">
-          <Button variant="outline" className="border-gray-700">
-            Explore Other Domains
+          <Button variant="outline">
+            Explore other domains
           </Button>
         </Link>
         <Link href="/dashboard">
-          <Button className="bg-[#29ABE2] hover:bg-[#2194c5] text-white">
-            Return to Dashboard
+          <Button variant="ghost" className="text-muted-foreground">
+            Back to Dashboard
           </Button>
         </Link>
       </div>

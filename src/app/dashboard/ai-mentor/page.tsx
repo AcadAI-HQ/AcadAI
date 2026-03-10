@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useFeatureAccess } from "@/hooks/use-feature-access";
 import { AIMentorChat } from "@/components/ai-mentor/ai-mentor-chat";
@@ -38,6 +39,11 @@ function PremiumUpgradePrompt() {
 export default function AIMentorPage() {
   const { user } = useAuth();
   const { hasAccess } = useFeatureAccess("chat");
+
+  useEffect(() => {
+    // Mark AI Mentor as visited (clears spotlight dot + onboarding widget tracking)
+    localStorage.setItem("acadai_visited_mentor", "1");
+  }, []);
 
   return (
     // Escape the container's px-4/sm:px-6 py-5 padding, fill from navbar down

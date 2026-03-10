@@ -16,9 +16,12 @@ import {
   ChevronRight,
   MessageSquareHeart,
 } from "lucide-react";
+import { AiEngineStatusCard } from "@/components/dashboard/ai-engine-status-card";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { getUserProgress } from "@/lib/progress-service";
+import { PremiumWelcomeModal } from "@/components/onboarding/premium-welcome-modal";
+import { GettingStartedWidget } from "@/components/onboarding/getting-started-widget";
 
 const DOMAINS = [
   { id: "frontend",            name: "Frontend Dev",        desc: "React, CSS, JS & more",          accent: "#3B82F6" },
@@ -51,9 +54,11 @@ const fadeUp = (delay = 0) => ({
 });
 
 export default function DashboardPage() {
-  const { user } = useAuth();
-  const [progressPct, setProgressPct]       = useState<number | null>(null);
-  const [daysSinceVisit, setDaysSinceVisit] = useState<number | null>(null);
+  const { user, updateUserProfile } = useAuth();
+  const [progressPct, setProgressPct]             = useState<number | null>(null);
+  const [daysSinceVisit, setDaysSinceVisit]       = useState<number | null>(null);
+  const [showWelcomeModal, setShowWelcomeModal]   = useState(false);
+  const [hasCompletedStep, setHasCompletedStep]   = useState(false);
 
   const firstName    = user?.displayName?.split(" ")[0] || "there";
   const hasRoadmap   = !!user?.lastGeneratedDomain;
@@ -91,11 +96,22 @@ export default function DashboardPage() {
         .then((p) => {
           if (p && p.totalSteps > 0) {
             setProgressPct(Math.round((p.completedCount / p.totalSteps) * 100));
+            setHasCompletedStep(p.completedCount > 0);
           }
         })
         .catch(() => {});
     }
-  }, [user?.uid, user?.lastGeneratedDomain]);
+
+    // Show premium welcome modal for new premium subscribers
+    if (user?.subscription?.tier === "premium" && !user?.premiumOnboardingComplete) {
+      setShowWelcomeModal(true);
+    }
+  }, [user?.uid, user?.lastGeneratedDomain, user?.subscription?.tier, user?.premiumOnboardingComplete]);
+
+  const handleWelcomeModalDismiss = () => {
+    setShowWelcomeModal(false);
+    updateUserProfile({ premiumOnboardingComplete: true }).catch(() => {});
+  };
 
   // Context-aware message inside the welcome banner
   const contextualMessage = (() => {
@@ -117,8 +133,15 @@ export default function DashboardPage() {
       : `Welcome back after ${daysSinceVisit} days! Ready to pick up where you left off?`
     : null;
 
+  const isPremium = user?.subscription?.tier === "premium";
+
   return (
     <div className="space-y-7 pb-10">
+
+      {/* ── Premium welcome modal (one-time) ── */}
+      {showWelcomeModal && (
+        <PremiumWelcomeModal onDismiss={handleWelcomeModalDismiss} />
+      )}
 
       {/* ── Welcome banner ── */}
       <motion.div {...fadeUp(0)}>
@@ -237,6 +260,23 @@ export default function DashboardPage() {
           ))}
         </div>
       </motion.div>
+
+      {/* ── AI Engine status ── */}
+      <motion.div {...fadeUp(0.16)}>
+        <AiEngineStatusCard
+          roadmapUpdatedDaysAgo={2}
+          resourcesRefreshedDaysAgo={5}
+          latestBlogTitle="How to Get Your First Developer Job in 2026"
+          latestBlogSlug="first-developer-job-2026"
+        />
+      </motion.div>
+
+      {/* ── Getting started widget (premium, post-modal) ── */}
+      {isPremium && user?.premiumOnboardingComplete && user?.uid && (
+        <motion.div {...fadeUp(0.17)}>
+          <GettingStartedWidget uid={user.uid} hasCompletedStep={hasCompletedStep} />
+        </motion.div>
+      )}
 
       {/* ── Domain picker ── */}
       <motion.div {...fadeUp(0.18)}>

@@ -109,6 +109,7 @@ export interface UserProfile {
 
   // Onboarding fields
   profileComplete?: boolean;
+  premiumOnboardingComplete?: boolean;
   userType?: 'student' | 'professional' | 'learner';
 
   // Student fields

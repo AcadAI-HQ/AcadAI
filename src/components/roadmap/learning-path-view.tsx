@@ -20,6 +20,7 @@ import { PathNode } from "./path-node";
 import { NodeDetailDrawer } from "./node-detail-drawer";
 import { Progress } from "@/components/ui/progress";
 import { Trophy, Flame, Star, Zap, Award } from "lucide-react";
+import { useFeatureAccess } from "@/hooks/use-feature-access";
 
 interface LearningPathViewProps {
   roadmap: RoadmapFile;
@@ -95,6 +96,7 @@ const getMilestoneMessage = (percentage: number): MilestoneMessage | null => {
 
 export function LearningPathView({ roadmap, domain }: LearningPathViewProps) {
   const { user } = useAuth();
+  const { hasAccess: hasMentorAccess } = useFeatureAccess("chat");
   const [progress, setProgress] = useState<RoadmapProgress | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedStep, setSelectedStep] = useState<FlattenedStep | null>(null);
@@ -461,6 +463,7 @@ export function LearningPathView({ roadmap, domain }: LearningPathViewProps) {
         progress={progress}
         userId={user?.uid || ""}
         domain={domain}
+        hasMentorAccess={hasMentorAccess}
       />
     </div>
   );

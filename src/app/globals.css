@@ -105,6 +105,43 @@
   .animate-spin-around {
     animation: spin-around calc(var(--speed) * 2) linear infinite !important;
   }
+
+  /* AI icon shimmer effect — used on DomainResourceCard icon when hasAiContent */
+  .ai-icon-shimmer {
+    position: relative;
+  }
+  .ai-icon-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(192, 132, 252, 0.25) 50%,
+      transparent 60%
+    );
+    background-size: 200% 100%;
+    animation: ai-shimmer 2.8s ease-in-out infinite;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  @keyframes ai-shimmer {
+    0%   { background-position: 200% center; }
+    100% { background-position: -200% center; }
+  }
+
+  /* Gradient border utility for Personalize button */
+  .gradient-border-ai {
+    background: linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
+                linear-gradient(to right, rgba(59,130,246,0.4), rgba(142,45,226,0.4)) border-box;
+    border: 1px solid transparent;
+  }
+  .gradient-border-ai:hover {
+    background: linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
+                linear-gradient(to right, rgba(59,130,246,0.7), rgba(142,45,226,0.7)) border-box;
+    box-shadow: 0 0 16px rgba(59,130,246,0.18);
+  }
 }
 
 @keyframes shimmer-slide {

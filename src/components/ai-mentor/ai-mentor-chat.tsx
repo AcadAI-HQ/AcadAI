@@ -15,16 +15,18 @@ import {
   addMessageToSession,
   clearChatHistory,
 } from "@/lib/chat-service";
+import { getUserProgress } from "@/lib/progress-service";
 
-// Backend API URL
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+// AI Mentor API routes (Next.js App Router — no external backend needed)
+const CHAT_URL = "/api/ai-mentor/chat";
+const STATUS_URL = "/api/ai-mentor/status";
 
-// Suggested prompts for new users
-const SUGGESTED_PROMPTS = [
-  "What should I learn first?",
-  "How do I stay motivated?",
-  "Suggest a project for me",
-  "Explain my roadmap",
+// First-session suggested prompts (shown when messages.length === 0)
+const DEFAULT_SUGGESTED_PROMPTS = [
+  "What should I do first?",
+  "Walk me through my roadmap",
+  "What's in my learning resources this week?",
+  "Tell me about yourself",
 ];
 
 interface UsageStatus {
@@ -46,6 +48,7 @@ export function AIMentorChat() {
   const [isLoadingMessages, setIsLoadingMessages] = useState(true);
   const [isClearing, setIsClearing] = useState(false);
   const [usageStatus, setUsageStatus] = useState<UsageStatus | null>(null);
+  const [suggestedPrompts, setSuggestedPrompts] = useState<string[]>(DEFAULT_SUGGESTED_PROMPTS);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -60,7 +63,7 @@ export function AIMentorChat() {
       if (!currentUser) return;
       const token = await currentUser.getIdToken();
 
-      const response = await fetch(`${API_URL}/api/ai-mentor/status`, {
+      const response = await fetch(STATUS_URL, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -96,6 +99,33 @@ export function AIMentorChat() {
     loadMessages();
   }, [user?.uid]);
 
+  // Build dynamic suggested prompts based on user's roadmap progress
+  useEffect(() => {
+    async function buildPrompts() {
+      if (!user?.uid || !user?.lastGeneratedDomain) return;
+      try {
+        const progress = await getUserProgress(user.uid, user.lastGeneratedDomain);
+        if (!progress || progress.completedCount === 0) return;
+
+        const domain = user.lastGeneratedDomain;
+        const currentStep = progress.currentStepId || "your current step";
+        const pct = progress.totalSteps
+          ? Math.round((progress.completedCount / progress.totalSteps) * 100)
+          : 0;
+
+        setSuggestedPrompts([
+          `I'm stuck on ${currentStep} in ${domain} — can you help?`,
+          `What should I focus on this week for ${domain}?`,
+          `Quiz me on what I should know at ${pct}% through ${domain}`,
+          `How do I know when I'm ready for the next section?`,
+        ]);
+      } catch {
+        // Non-fatal — keep default prompts
+      }
+    }
+    buildPrompts();
+  }, [user?.uid, user?.lastGeneratedDomain]);
+
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -121,6 +151,9 @@ export function AIMentorChat() {
       });
       setMessages((prev) => [...prev, savedUserMessage]);
 
+      // Track that user has asked their first question (for onboarding widget)
+      localStorage.setItem("acadai_visited_mentor", "1");
+
       // Get Firebase auth token
       const currentUser = auth.currentUser;
       if (!currentUser) {
@@ -134,9 +167,8 @@ export function AIMentorChat() {
         content: msg.content,
       }));
 
-      // Call the backend AI Mentor API
-      // User context is fetched server-side from Firebase for security
-      const response = await fetch(`${API_URL}/api/ai-mentor/chat`, {
+      // Call the Next.js AI Mentor API route
+      const response = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -285,18 +317,21 @@ export function AIMentorChat() {
               <div className="w-16 h-16 rounded-full bg-foreground flex items-center justify-center mb-4">
                 <BrainCircuit className="h-8 w-8 text-background" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Hi, I'm your AI Mentor!</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Hi{user?.displayName ? `, ${user.displayName.split(" ")[0]}` : ""}! I'm your AI Mentor.
+              </h3>
               <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-                I'm here to guide your learning journey. Ask me anything about your roadmap, learning strategies, or tech topics.
+                {user?.lastGeneratedDomain
+                  ? `I've been set up to guide your ${user.lastGeneratedDomain} learning journey.`
+                  : "I'm here to guide your learning journey. Ask me anything about your roadmap, learning strategies, or tech topics."}
               </p>
-              <div className="flex flex-wrap gap-2 justify-center max-w-sm">
-                {SUGGESTED_PROMPTS.map((prompt) => (
+              <div className="grid grid-cols-1 gap-2 w-full max-w-sm">
+                {suggestedPrompts.map((prompt) => (
                   <Button
                     key={prompt}
                     variant="outline"
-                    size="sm"
                     onClick={() => handleSuggestedPrompt(prompt)}
-                    className="text-xs h-8"
+                    className="h-auto py-2.5 px-4 text-sm text-left justify-start whitespace-normal"
                   >
                     {prompt}
                   </Button>

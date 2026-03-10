@@ -1,40 +1,40 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/use-auth';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { BorderTrail } from '@/components/ui/border-trail';
 import {
   Check,
   Sparkles,
-  PlusIcon,
-  ShieldCheckIcon,
-  Brain,
+  ShieldCheck,
+  BrainCircuit,
   BookOpen,
   TrendingUp,
   Layers,
   Target,
   Zap,
+  Loader2,
+  Tag,
+  Copy,
+  CopyCheck,
+  ArrowRight,
+  Brain,
+  MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
 import { auth } from '@/lib/firebase';
 import { useGeoPricing } from '@/hooks/use-geo-pricing';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 import { trackCheckoutStarted } from '@/lib/analytics';
 import { Timestamp } from 'firebase/firestore';
+import Footer from '@/components/landing/footer';
 
-// Helper to check if subscription is active and not expired
+// ─── helpers ───────────────────────────────────────────────────────────────
 function isSubscriptionActive(subscription: any): boolean {
   if (!subscription) return false;
   if (subscription.tier !== 'premium') return false;
   if (subscription.status !== 'active') return false;
-
-  // Check if subscription has expired
   if (subscription.currentPeriodEnd) {
     let endDate: Date;
     if (subscription.currentPeriodEnd instanceof Timestamp) {
@@ -48,69 +48,74 @@ function isSubscriptionActive(subscription: any): boolean {
     } else {
       return true;
     }
-
-    if (endDate < new Date()) {
-      return false;
-    }
+    if (endDate < new Date()) return false;
   }
-
   return true;
 }
 
-const CURRENT_FEATURES = [
+const formatDomain = (domain: string): string => {
+  const map: Record<string, string> = {
+    frontend: 'Frontend Development', backend: 'Backend Development',
+    fullstack: 'Full Stack Development', ml: 'Machine Learning',
+    devops: 'DevOps', 'data-science': 'Data Science',
+    cybersecurity: 'Cybersecurity', 'ui-ux': 'UI/UX Design',
+    'product-engineering': 'Product Engineering',
+    'game-dev-indie': 'Indie Game Development', 'game-dev-aaa': 'AAA Game Development',
+    android: 'Android Development', iOS: 'iOS Development',
+    blockchain: 'Blockchain Development',
+  };
+  return map[domain] || domain;
+};
+
+// ─── static data ───────────────────────────────────────────────────────────
+const PROMO_CODE = 'ACADA1T0M00N';
+
+const MONTHLY_FEATURES = [
+  'All 14+ domain roadmaps',
+  'Weekly curated resources',
+  'Personalized learning path',
+  'Cancel anytime',
+];
+
+const YEARLY_FEATURES = [
+  'All 14+ domain roadmaps',
+  'AI Mentor — ask anything, get unstuck',
+  'Weekly curated resources',
+  'AI-powered roadmap personalization',
+];
+
+const FEATURES = [
   {
     icon: BookOpen,
     title: 'Industry-Standard Roadmaps',
-    description: 'Structured learning paths across 14 tech domains - designed like professional training programs',
+    description: 'Structured learning paths across 14 tech domains — designed like professional training programs.',
+  },
+  {
+    icon: Brain,
+    title: 'AI Mentor',
+    description: 'Ask anything, get unstuck, and stay accountable with your personal AI Mentor — available 24/7.',
   },
   {
     icon: Sparkles,
     title: 'Weekly Curated Resources',
-    description: 'Fresh articles, tutorials, videos, and projects delivered every week - saving you hours of research',
+    description: 'Fresh articles, tutorials, videos, and projects delivered every week — saving you hours of research.',
   },
   {
     icon: TrendingUp,
     title: 'Progress Tracking',
-    description: 'Monitor your completion across roadmap stages and see your growth over time',
+    description: 'Monitor your completion across roadmap stages and see your growth over time.',
   },
   {
     icon: Layers,
     title: 'Unlimited Domain Access',
-    description: 'Switch between any tech domain anytime - explore Frontend today, ML tomorrow',
-  },
-  {
-    icon: Target,
-    title: 'Career-Focused Content',
-    description: 'Learn what employers actually want - including testing, deployment, and production best practices',
+    description: 'Switch between any tech domain anytime — explore Frontend today, ML tomorrow.',
   },
   {
     icon: Zap,
     title: 'Instant Access',
-    description: 'Start learning immediately with no setup required - all content available from day one',
+    description: 'Start learning immediately. All content available from day one, no setup required.',
   },
 ];
-
-
-// Helper to format domain names nicely
-const formatDomain = (domain: string): string => {
-  const domainMap: Record<string, string> = {
-    'frontend': 'Frontend Development',
-    'backend': 'Backend Development',
-    'fullstack': 'Full Stack Development',
-    'ml': 'Machine Learning',
-    'devops': 'DevOps',
-    'data-science': 'Data Science',
-    'cybersecurity': 'Cybersecurity',
-    'ui-ux': 'UI/UX Design',
-    'product-engineering': 'Product Engineering',
-    'game-dev-indie': 'Indie Game Development',
-    'game-dev-aaa': 'AAA Game Development',
-    'android': 'Android Development',
-    'iOS': 'iOS Development',
-    'blockchain': 'Blockchain Development',
-  };
-  return domainMap[domain] || domain;
-};
 
 const FAQS = [
   {
@@ -127,7 +132,7 @@ const FAQS = [
   },
   {
     question: 'What makes these roadmaps different?',
-    answer: 'Our roadmaps are structured like professional training programs - covering not just what to learn, but the optimal order, practical projects, and real-world context. They include testing, deployment, and production considerations that most free resources skip.',
+    answer: "Our roadmaps are structured like professional training programs — covering not just what to learn, but the optimal order, practical projects, and real-world context. They include testing, deployment, and production considerations that most free resources skip.",
   },
   {
     question: 'Can I cancel anytime?',
@@ -137,57 +142,53 @@ const FAQS = [
     question: 'What payment methods do you accept?',
     answer: 'We accept all major credit and debit cards including Visa, Mastercard, American Express, and Discover.',
   },
-  {
-    question: 'Can I suggest new roadmap topics?',
-    answer: 'Definitely! We actively listen to user feedback. If there\'s a domain or specialization you\'d like covered, let us know and we\'ll prioritize based on demand.',
-  },
 ];
 
 type Interval = 'monthly' | 'yearly';
 
+// ─── page ──────────────────────────────────────────────────────────────────
 export default function PricingPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const { monthly, annual } = useGeoPricing();
+  const pricing = useGeoPricing();
+  const { monthly, annual } = pricing;
+  const [copied, setCopied] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  // Redirect premium users to dashboard - they don't need to see pricing
+  const monthlyPopped = pricing.isIndia && !pricing.loading;
+  const yearlyPopped  = !pricing.isIndia && !pricing.loading;
+  const savingsPct    = annual.savingsPercent || '17';
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(PROMO_CODE).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   useEffect(() => {
     if (loading) return;
-
     const bypass = user?.flags?.bypassPremium === true || (user as any)?.roles?.admin === true;
-    const isPremium = bypass || isSubscriptionActive(user?.subscription);
-
-    if (isPremium) {
+    if (bypass || isSubscriptionActive(user?.subscription)) {
       router.replace('/dashboard');
     }
   }, [user, loading, router]);
 
   const handleCheckout = async (interval: Interval) => {
     try {
-      // Track checkout initiation
       const currency = monthly.symbol === '₹' ? 'INR' : 'USD';
       trackCheckoutStarted(interval, currency);
-
       const token = await auth.currentUser?.getIdToken();
       if (!token) {
-        toast({
-          title: 'Please sign in',
-          description: 'You need to be signed in to subscribe.',
-          variant: 'destructive',
-        });
+        toast({ title: 'Please sign in', description: 'You need to be signed in to subscribe.', variant: 'destructive' });
         router.push('/login');
         return;
       }
-
-      // Use backend API for checkout
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
       const res = await fetch(`${backendUrl}/api/payment/checkout`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ interval, currency }),
       });
       const data = await res.json();
@@ -195,386 +196,487 @@ export default function PricingPage() {
       window.location.href = data.checkout_url;
     } catch (e: any) {
       console.error(e);
-      toast({
-        title: 'Checkout failed',
-        description: e?.message || 'Please try again.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Checkout failed', description: e?.message || 'Please try again.', variant: 'destructive' });
     }
   };
 
+  const firstName = user?.displayName?.split(' ')[0] || 'there';
+  const domain    = user?.interestedDomains?.[0] || user?.lastGeneratedDomain || '';
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navigation Bar */}
-      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <Brain className="h-6 w-6 text-primary" />
-            <span className="font-headline text-xl">Acad AI</span>
+    <div style={{ background: '#ffffff', color: '#111827' }}>
+
+      {/* ── Nav ── */}
+      <header className="sticky top-0 z-50" style={{ background: 'rgba(255,255,255,0.92)', borderBottom: '1px solid rgba(0,0,0,0.06)', backdropFilter: 'blur(12px)' }}>
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <BrainCircuit className="h-5 w-5 text-black transition-transform group-hover:scale-110" />
+            <span className="font-headline text-xl font-semibold tracking-tight text-black">Acad AI</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {user ? (
-              <Button asChild variant="outline">
-                <Link href="/dashboard">Dashboard</Link>
-              </Button>
+              <Link href="/dashboard"
+                className="rounded-xl px-5 py-2 text-sm font-semibold transition-colors hover:bg-black/5"
+                style={{ color: '#111827' }}>
+                Dashboard
+              </Link>
             ) : (
               <>
-                <Button asChild variant="ghost">
-                  <Link href="/login">Sign In</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/signup">Get Started</Link>
-                </Button>
+                <Link href="/login"
+                  className="hidden sm:block rounded-xl px-5 py-2 text-sm font-medium transition-colors hover:bg-black/5"
+                  style={{ color: 'rgba(0,0,0,0.6)' }}>
+                  Log in
+                </Link>
+                <Link href="/signup"
+                  className="rounded-xl px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  style={{ background: '#111827' }}>
+                  Sign up
+                </Link>
               </>
             )}
           </div>
         </div>
-      </nav>
+      </header>
 
-
-      {/* Pricing Section */}
-      <section className="relative min-h-screen overflow-hidden py-24">
-        <div className="mx-auto w-full max-w-6xl space-y-8 px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto max-w-2xl space-y-5"
+      {/* ── Hero ── */}
+      <section className="pt-20 pb-6 px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <motion.p
+            className="text-[11px] font-semibold uppercase tracking-widest mb-5"
+            style={{ color: 'rgba(0,0,0,0.3)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            <div className="flex justify-center">
-              <div className="rounded-lg border px-4 py-1 font-mono text-sm">Pricing</div>
-            </div>
+            Pricing
+          </motion.p>
 
-            {/* Personalized Hero for logged-in users */}
-            {user && (user.interestedDomains?.length || user.lastGeneratedDomain) ? (
-              <>
-                <h1 className="text-center text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl font-headline">
-                  Hey {user.displayName?.split(' ')[0] || 'there'}, ready to master{' '}
-                  <span className="bg-gradient-to-r from-[#29ABE2] to-[#8E2DE2] bg-clip-text text-transparent">
-                    {formatDomain(user.interestedDomains?.[0] || user.lastGeneratedDomain || '')}
-                  </span>?
-                </h1>
-                <p className="text-muted-foreground text-center text-base md:text-lg">
-                  {user.skills && user.skills.length > 0 ? (
-                    <>
-                      Build on your {user.skills.slice(0, 3).join(', ')} skills with our structured roadmap and weekly curated resources.
-                    </>
-                  ) : (
-                    <>
-                      Get unlimited access to your personalized roadmap and weekly curated resources to accelerate your journey.
-                    </>
-                  )}
-                </p>
-              </>
-            ) : (
-              <>
-                <h1 className="text-center text-3xl font-bold tracking-tighter md:text-4xl lg:text-5xl font-headline">
-                  Master In-Demand Tech Skills
-                </h1>
-                <p className="text-muted-foreground text-center text-base md:text-lg">
-                  Industry-standard roadmaps and curated resources to accelerate your career.
-                  Join thousands of developers building real skills.
-                </p>
-              </>
+          {user && domain ? (
+            <>
+              <motion.h1
+                className="font-headline text-[clamp(2rem,4.5vw,3rem)] font-normal leading-[1.07] tracking-tight mb-4"
+                style={{ color: '#111827' }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              >
+                Hey {firstName}, ready to master{' '}
+                <span style={{ color: '#3B82F6' }}>{formatDomain(domain)}</span>?
+              </motion.h1>
+              <motion.p
+                className="text-base mb-0"
+                style={{ color: 'rgba(0,0,0,0.45)' }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                {user.skills && user.skills.length > 0
+                  ? `Build on your ${user.skills.slice(0, 3).join(', ')} skills with a structured roadmap and weekly curated resources.`
+                  : 'Get unlimited access to your personalized roadmap and weekly curated resources.'}
+              </motion.p>
+            </>
+          ) : (
+            <>
+              <motion.h1
+                className="font-headline text-[clamp(2rem,4.5vw,3rem)] font-normal leading-[1.07] tracking-tight mb-4"
+                style={{ color: '#111827' }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              >
+                Simple pricing.{' '}
+                <span style={{ color: '#3B82F6' }}>Real results.</span>
+              </motion.h1>
+              <motion.p
+                className="text-base mb-0"
+                style={{ color: 'rgba(0,0,0,0.45)' }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                Industry-standard roadmaps and curated resources to accelerate your career.
+              </motion.p>
+            </>
+          )}
+        </div>
+      </section>
+
+      {/* ── Pricing cards ── */}
+      <section className="pb-10 px-6">
+        <motion.div
+          className="mx-auto max-w-2xl grid md:grid-cols-2 gap-5 items-start"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
+
+          {/* Monthly */}
+          <div
+            className="relative flex flex-col rounded-2xl p-7 transition-shadow duration-300"
+            style={monthlyPopped ? {
+              background: '#ffffff',
+              border: '1px solid rgba(59,130,246,0.22)',
+              boxShadow: '0 8px 32px rgba(59,130,246,0.10), 0 2px 8px rgba(0,0,0,0.06)',
+              transform: 'translateY(-4px)',
+            } : {
+              background: '#EDEEF0',
+              border: '1px solid rgba(0,0,0,0.06)',
+              boxShadow: 'inset 0 3px 10px rgba(0,0,0,0.13), inset 0 1px 3px rgba(0,0,0,0.10)',
+            }}
+          >
+            {monthlyPopped && (
+              <div className="mb-4">
+                <span className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide"
+                  style={{ background: '#111827', color: '#fff' }}>
+                  Most Popular in 🇮🇳
+                </span>
+              </div>
             )}
+            <div className="mb-6">
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-1"
+                style={{ color: 'rgba(0,0,0,0.4)' }}>Monthly</h3>
+              <p className="text-xs" style={{ color: 'rgba(0,0,0,0.3)' }}>Flexible. Start or stop anytime.</p>
+            </div>
+            {pricing.loading ? (
+              <div className="flex items-center gap-2 h-14 mb-6">
+                <Loader2 className="h-5 w-5 animate-spin" style={{ color: 'rgba(0,0,0,0.25)' }} />
+              </div>
+            ) : (
+              <div className="mb-6">
+                <div className="flex items-end gap-1 leading-none">
+                  <span className="text-base pb-1" style={{ color: 'rgba(0,0,0,0.35)' }}>{monthly.symbol}</span>
+                  <span className="text-5xl font-bold tracking-tighter" style={{ color: '#111827' }}>{monthly.price}</span>
+                  <span className="text-sm pb-1" style={{ color: 'rgba(0,0,0,0.35)' }}>/mo</span>
+                </div>
+              </div>
+            )}
+            <ul className="flex-1 space-y-2.5 mb-8">
+              {MONTHLY_FEATURES.map((text) => (
+                <li key={text} className="flex items-start gap-2.5">
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                    style={{ color: monthlyPopped ? '#3B82F6' : 'rgba(0,0,0,0.30)' }} />
+                  <span className="text-sm" style={{ color: 'rgba(0,0,0,0.6)' }}>{text}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => handleCheckout('monthly')}
+              className="flex items-center justify-center gap-2 w-full rounded-xl py-3 text-sm font-semibold transition-all duration-200 hover:opacity-90"
+              style={monthlyPopped
+                ? { background: '#3B82F6', color: '#fff' }
+                : { background: '#E4E5E7', color: '#111827' }}
+            >
+              Get started
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          {/* Yearly */}
+          <div
+            className="relative flex flex-col rounded-2xl p-7 transition-shadow duration-300"
+            style={yearlyPopped ? {
+              background: '#ffffff',
+              border: '1px solid rgba(0,0,0,0.22)',
+              boxShadow: '0 8px 32px rgba(59,130,246,0.10), 0 2px 8px rgba(0,0,0,0.06)',
+              transform: 'translateY(-4px)',
+            } : {
+              background: '#EDEEF0',
+              border: '1px solid rgba(0,0,0,0.06)',
+              boxShadow: 'inset 0 3px 10px rgba(0,0,0,0.13), inset 0 1px 3px rgba(0,0,0,0.10)',
+            }}
+          >
+            {!pricing.loading && (
+              <div className="absolute right-6 top-6">
+                <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
+                  style={{ border: '1px solid rgba(0,0,0,0.12)', background: '#fff', color: '#111827' }}>
+                  Save {savingsPct}%
+                </span>
+              </div>
+            )}
+            {yearlyPopped && (
+              <div className="mb-4">
+                <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide"
+                  style={{ background: '#3B82F6', color: '#fff' }}>
+                  <Sparkles className="h-3 w-3" />
+                  Best value
+                </span>
+              </div>
+            )}
+            <div className="mb-6">
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-1"
+                style={{ color: 'rgba(0,0,0,0.4)' }}>Yearly</h3>
+              <p className="text-xs" style={{ color: 'rgba(0,0,0,0.3)' }}>Commit to the journey. Pay less.</p>
+            </div>
+            {pricing.loading ? (
+              <div className="flex items-center gap-2 h-14 mb-6">
+                <Loader2 className="h-5 w-5 animate-spin" style={{ color: 'rgba(0,0,0,0.25)' }} />
+              </div>
+            ) : (
+              <div className="mb-6">
+                <div className="flex items-end gap-1 leading-none">
+                  <span className="text-base pb-1" style={{ color: 'rgba(0,0,0,0.35)' }}>{annual.symbol}</span>
+                  <span className="text-5xl font-bold tracking-tighter" style={{ color: '#111827' }}>{annual.price}</span>
+                  <span className="text-sm pb-1" style={{ color: 'rgba(0,0,0,0.35)' }}>/yr</span>
+                </div>
+                <p className="mt-2 text-sm" style={{ color: 'rgba(0,0,0,0.4)' }}>
+                  Just{' '}
+                  <span className="font-semibold" style={{ color: '#3B82F6' }}>
+                    {annual.symbol}{annual.monthlyEquivalent}/mo
+                  </span>
+                  {' '}—{' '}
+                  <span style={{ textDecoration: 'line-through', color: 'rgba(0,0,0,0.35)' }}>
+                    {monthly.symbol}{monthly.price}/mo
+                  </span>
+                </p>
+              </div>
+            )}
+            <ul className="flex-1 space-y-2.5 mb-8">
+              {YEARLY_FEATURES.map((text) => (
+                <li key={text} className="flex items-start gap-2.5">
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                    style={{ color: yearlyPopped ? '#3B82F6' : 'rgba(0,0,0,0.30)' }} />
+                  <span className="text-sm" style={{ color: 'rgba(0,0,0,0.6)' }}>{text}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => handleCheckout('yearly')}
+              className="flex items-center justify-center gap-2 w-full rounded-xl py-3 text-sm font-semibold transition-all duration-200 hover:opacity-90"
+              style={yearlyPopped
+                ? { background: '#000000', color: '#fff' }
+                : { background: '#E4E5E7', color: '#111827' }}
+            >
+              Get started
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+        </motion.div>
+
+        {/* Promo code */}
+        <motion.div
+          className="mx-auto mt-5 max-w-2xl"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <div className="flex flex-col sm:flex-row items-center gap-3 rounded-2xl px-5 py-4"
+            style={{ border: '1px dashed rgba(59,130,246,0.3)', background: 'rgba(59,130,246,0.04)' }}>
+            <div className="flex items-center gap-2 shrink-0">
+              <Tag className="h-4 w-4" style={{ color: '#3B82F6' }} />
+              <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#3B82F6' }}>
+                Launch Offer
+              </span>
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-sm" style={{ color: 'rgba(0,0,0,0.55)' }}>
+                Get{' '}
+                <span className="font-semibold" style={{ color: '#111827' }}>10% off</span>
+                {' '}your first billing cycle — any plan.{' '}
+                <span className="text-xs" style={{ color: 'rgba(0,0,0,0.35)' }}>First 50 uses only.</span>
+              </p>
+            </div>
+            <button
+              onClick={copyCode}
+              className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-mono font-semibold transition-all hover:opacity-80 active:scale-95 shrink-0"
+              style={{ background: '#fff', border: '1px solid rgba(59,130,246,0.25)', color: '#111827', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}
+            >
+              <span className="tracking-wider">{PROMO_CODE}</span>
+              {copied
+                ? <CopyCheck className="h-3.5 w-3.5" style={{ color: '#3B82F6' }} />
+                : <Copy className="h-3.5 w-3.5" style={{ color: 'rgba(0,0,0,0.3)' }} />
+              }
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Trust line */}
+        <div className="mt-5 flex items-center justify-center gap-2 text-xs" style={{ color: 'rgba(0,0,0,0.35)' }}>
+          <ShieldCheck className="h-3.5 w-3.5" />
+          <span>Secure payment · Cancel anytime · All features included</span>
+        </div>
+      </section>
+
+      {/* ── What's included ── */}
+      <section className="py-20 px-6" style={{ background: '#F9FAFB' }}>
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-widest mb-4"
+              style={{ color: 'rgba(0,0,0,0.3)' }}>
+              What you get
+            </p>
+            <h2 className="font-headline text-[clamp(1.8rem,3.5vw,2.6rem)] font-normal leading-tight tracking-tight mb-3"
+              style={{ color: '#111827' }}>
+              Everything you need to succeed
+            </h2>
+            <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(0,0,0,0.45)' }}>
+              Comprehensive tools and resources to accelerate your tech career.
+            </p>
           </motion.div>
 
-          <div className="relative">
-            <div
-              className={cn(
-                'z--10 pointer-events-none absolute inset-0 size-full',
-                'bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)]',
-                'bg-[size:32px_32px]',
-                '[mask-image:radial-gradient(ellipse_at_center,black_10%,transparent)]',
-              )}
-            />
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mx-auto w-full max-w-2xl space-y-3"
-            >
-              <div className="grid md:grid-cols-2 bg-black relative border border-gray-800 p-4">
-                <PlusIcon className="absolute -top-3 -left-3 size-5.5 text-gray-700" />
-                <PlusIcon className="absolute -top-3 -right-3 size-5.5 text-gray-700" />
-                <PlusIcon className="absolute -bottom-3 -left-3 size-5.5 text-gray-700" />
-                <PlusIcon className="absolute -right-3 -bottom-3 size-5.5 text-gray-700" />
-
-                {/* Monthly Plan */}
-                <div className="w-full px-4 pt-5 pb-4 bg-black">
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <h3 className="leading-none font-semibold">Monthly</h3>
-                    </div>
-                    <p className="text-muted-foreground text-sm">Pay month-to-month, cancel anytime</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {FEATURES.map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: idx * 0.07 }}
+              >
+                <div className="rounded-2xl p-6 h-full transition-shadow duration-200 hover:shadow-md"
+                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.07)' }}>
+                  <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg"
+                    style={{ background: 'rgba(59,130,246,0.08)' }}>
+                    <feature.icon className="h-4.5 w-4.5" style={{ color: '#3B82F6' }} />
                   </div>
-                  <ul className="mt-4 space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#29ABE2]" />
-                      <span>14 Industry-standard roadmaps</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#29ABE2]" />
-                      <span>Weekly curated learning resources</span>
-                    </li>
-                  </ul>
-                  <div className="mt-6 space-y-4">
-                    <div className="text-muted-foreground flex items-end gap-0.5 text-xl">
-                      <span>{monthly.symbol}</span>
-                      <span className="text-foreground -mb-0.5 text-4xl font-extrabold tracking-tighter md:text-5xl">
-                        {monthly.price}
-                      </span>
-                      <span>/month</span>
-                    </div>
-                    <Button
-                      className="w-full bg-white text-black hover:bg-gray-200"
-                      onClick={() => handleCheckout('monthly')}
-                    >
-                      Start Learning
-                    </Button>
-                  </div>
+                  <p className="text-sm font-semibold mb-1.5" style={{ color: '#111827' }}>
+                    {feature.title}
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.5)' }}>
+                    {feature.description}
+                  </p>
                 </div>
-
-                {/* Yearly Plan */}
-                <div className="relative w-full rounded-lg border border-gray-800 px-4 pt-5 pb-4 bg-black">
-                  <BorderTrail
-                    className="bg-white"
-                    style={{
-                      boxShadow:
-                        '0px 0px 60px 30px rgb(255 255 255 / 50%), 0 0 100px 60px rgb(0 0 0 / 50%), 0 0 140px 90px rgb(0 0 0 / 50%)',
-                    }}
-                    size={100}
-                  />
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between">
-                      <h3 className="leading-none font-semibold">Yearly</h3>
-                      <Badge className="bg-[#29ABE2] text-white border-0">
-                        <Sparkles className="h-3 w-3 mr-1 inline" />
-                        Save {annual.savingsPercent}%
-                      </Badge>
-                    </div>
-                    <p className="text-muted-foreground text-sm">Best value - commit to your growth!</p>
-                  </div>
-                  <ul className="mt-4 space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#29ABE2]" />
-                      <span>14 Industry-standard roadmaps</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#29ABE2]" />
-                      <span>Weekly curated learning resources</span>
-                    </li>
-                  </ul>
-                  <div className="mt-6 space-y-4">
-                    <div className="text-muted-foreground flex items-end text-xl">
-                      <span>{annual.symbol}</span>
-                      <span className="text-foreground -mb-0.5 text-4xl font-extrabold tracking-tighter md:text-5xl">
-                        {annual.price}
-                      </span>
-                      <span>/year</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      That's just <span className="text-[#29ABE2] font-semibold">
-                        {annual.symbol}{annual.monthlyEquivalent}/month
-                      </span>
-                    </p>
-                    <Button
-                      className="w-full bg-[#29ABE2] text-white hover:bg-[#2196ce]"
-                      onClick={() => handleCheckout('yearly')}
-                    >
-                      Get Started
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-muted-foreground flex items-center justify-center gap-x-2 text-sm">
-                <ShieldCheckIcon className="size-4" />
-                <span>Secure payment • Cancel anytime • All features included</span>
-              </div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What's Included Now */}
-      <section className="container mx-auto px-4 py-20 bg-muted/30">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <Badge className="mb-4" variant="secondary">
-            <Check className="h-3 w-3 mr-1" />
-            Available Now
-          </Badge>
-          <h2 className="text-4xl font-headline font-bold mb-4">
-            Everything You Need to Succeed
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive tools and resources to accelerate your tech career
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {CURRENT_FEATURES.map((feature, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="h-full border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <feature.icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-lg mb-1">{feature.title}</CardTitle>
-                      <CardDescription>{feature.description}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-
-      {/* FAQ Section */}
-      <section className="container mx-auto px-4 py-20 bg-muted/30">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-headline font-bold mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to know about the platform
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto space-y-4"
-        >
-          {FAQS.map((faq, idx) => (
-            <Card key={idx}>
-              <CardHeader>
-                <CardTitle className="text-base md:text-lg">{faq.question}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm md:text-base text-muted-foreground">{faq.answer}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto"
-        >
-          <Card className="border-2 border-primary">
-            <CardContent className="pt-12 pb-12">
-              <Sparkles className="h-12 w-12 text-primary mx-auto mb-6" />
-              {user && (user.interestedDomains?.length || user.lastGeneratedDomain) ? (
-                <>
-                  <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">
-                    Start Your {formatDomain(user.interestedDomains?.[0] || user.lastGeneratedDomain || '')} Journey Today
-                  </h2>
-                  <p className="text-lg text-muted-foreground mb-8">
-                    {user.displayName?.split(' ')[0]}, your personalized roadmap is waiting.
-                    Get instant access to structured learning paths and weekly resources.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">
-                    Ready to Accelerate Your Career?
-                  </h2>
-                  <p className="text-lg text-muted-foreground mb-8">
-                    Join developers worldwide who are building in-demand skills with industry-standard roadmaps
-                    and curated weekly resources.
-                  </p>
-                </>
-              )}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="text-lg px-8"
-                  onClick={() => handleCheckout('yearly')}
-                >
-                  Get Started Now
-                  <Sparkles className="ml-2 h-5 w-5" />
-                </Button>
-                {!user && (
-                  <Button size="lg" variant="outline" className="text-lg px-8" asChild>
-                    <Link href="/signup">Create Account</Link>
-                  </Button>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground mt-6">
-                Cancel anytime • Unlimited roadmaps • Weekly resources included
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </section>
-
-      {/* Founder's Note - Small, humble section */}
-      <section className="container mx-auto px-4 pb-12">
-        <div className="max-w-xl mx-auto text-center">
-          <p className="text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">From the founder:</span> Acad AI started as a passion project to help students navigate tech careers.
-            Your support keeps the platform running and the content fresh.
-          </p>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t bg-background">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <Brain className="h-5 w-5 text-primary" />
-              <span className="font-headline font-semibold">Acad AI</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              © 2026 Acad AI. All rights reserved.
+      {/* ── FAQ ── */}
+      <section className="py-20 px-6" style={{ background: '#ffffff' }}>
+        <div className="mx-auto max-w-3xl">
+          <motion.div
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-widest mb-4"
+              style={{ color: 'rgba(0,0,0,0.3)' }}>
+              FAQ
             </p>
-            <div className="flex items-center gap-6 text-sm">
-              <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
-                Terms
-              </Link>
-              <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
-                Privacy
-              </Link>
-              <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                Contact
-              </Link>
-            </div>
+            <h2 className="font-headline text-[clamp(1.8rem,3.5vw,2.6rem)] font-normal leading-tight tracking-tight"
+              style={{ color: '#111827' }}>
+              Common questions
+            </h2>
+          </motion.div>
+
+          <div className="space-y-2">
+            {FAQS.map((faq, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+              >
+                <div className="rounded-2xl overflow-hidden"
+                  style={{ border: '1px solid rgba(0,0,0,0.07)' }}>
+                  <button
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                    className="w-full flex items-center justify-between px-6 py-4 text-left transition-colors duration-150 hover:bg-black/[0.02]"
+                    style={{ background: '#fff' }}
+                  >
+                    <span className="text-sm font-semibold pr-4" style={{ color: '#111827' }}>
+                      {faq.question}
+                    </span>
+                    <span className="shrink-0 text-lg leading-none" style={{ color: 'rgba(0,0,0,0.3)' }}>
+                      {openFaq === idx ? '−' : '+'}
+                    </span>
+                  </button>
+                  {openFaq === idx && (
+                    <div className="px-6 pb-5" style={{ background: '#fff' }}>
+                      <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.55)' }}>
+                        {faq.answer}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </footer>
+      </section>
+
+      {/* ── Final CTA ── */}
+      <section className="py-20 px-6" style={{ background: '#F9FAFB' }}>
+        <motion.div
+          className="mx-auto max-w-2xl text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55 }}
+        >
+          <div className="rounded-3xl px-8 py-14"
+            style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 8px 40px rgba(0,0,0,0.08)' }}>
+            <div className="mb-5 flex justify-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl"
+                style={{ background: 'rgba(59,130,246,0.10)' }}>
+                <BrainCircuit className="h-6 w-6" style={{ color: '#3B82F6' }} />
+              </div>
+            </div>
+            {user && domain ? (
+              <>
+                <h2 className="font-headline text-[clamp(1.6rem,3vw,2.2rem)] font-normal leading-tight mb-3"
+                  style={{ color: '#111827' }}>
+                  Start your {formatDomain(domain)} journey today
+                </h2>
+                <p className="text-sm mb-8" style={{ color: 'rgba(0,0,0,0.45)' }}>
+                  {firstName}, your personalized roadmap is waiting.
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="font-headline text-[clamp(1.6rem,3vw,2.2rem)] font-normal leading-tight mb-3"
+                  style={{ color: '#111827' }}>
+                  Ready to accelerate your career?
+                </h2>
+                <p className="text-sm mb-8" style={{ color: 'rgba(0,0,0,0.45)' }}>
+                  Join developers building in-demand skills with structured roadmaps and weekly resources.
+                </p>
+              </>
+            )}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => handleCheckout('yearly')}
+                className="inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
+                style={{ background: '#3B82F6', color: '#fff', boxShadow: '0 4px 20px rgba(59,130,246,0.3)' }}
+              >
+                Get started now
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              {!user && (
+                <Link href="/signup"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3 text-sm font-semibold transition-opacity hover:opacity-80"
+                  style={{ background: '#F3F4F6', color: '#111827', border: '1px solid rgba(0,0,0,0.08)' }}
+                >
+                  Create free account
+                </Link>
+              )}
+            </div>
+            <p className="mt-6 text-xs" style={{ color: 'rgba(0,0,0,0.3)' }}>
+              Cancel anytime · Unlimited roadmaps · Weekly resources included
+            </p>
+          </div>
+
+          {/* Founder note */}
+          <p className="mt-10 text-sm" style={{ color: 'rgba(0,0,0,0.4)' }}>
+            <span className="font-medium" style={{ color: 'rgba(0,0,0,0.65)' }}>From the founder:</span>{' '}
+            Acad AI started as a passion project to help students navigate tech careers. Your support keeps the platform running and the content fresh.
+          </p>
+        </motion.div>
+      </section>
+
+      {/* ── Footer ── */}
+      <Footer />
+
     </div>
   );
 }

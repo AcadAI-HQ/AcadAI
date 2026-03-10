@@ -16,6 +16,7 @@ import type { UserRoadmap, RoadmapFile, RoadmapModification } from '@/types';
  */
 
 const ROADMAP_COLLECTION = 'roadmaps';
+// Note: Firestore rules must allow client reads on `roadmaps/{domain}`
 const BASE_ROADMAP_VERSION = 'v1.0.0'; // Update this when base templates change
 
 /**
@@ -54,11 +55,24 @@ export async function getUserRoadmap(
 }
 
 /**
- * Load base roadmap template from public folder
- * @param domain - Roadmap domain
- * @returns RoadmapFile from JSON
+ * Load base roadmap: first tries the AI-generated global Firestore doc,
+ * then falls back to the static public JSON template.
+ * @param domain - Roadmap domain slug (e.g., 'frontend')
+ * @returns RoadmapFile
  */
 export async function loadBaseRoadmap(domain: string): Promise<RoadmapFile> {
+  // 1. Try AI-generated global roadmap from Firestore
+  try {
+    const aiRoadmapRef = doc(db, 'roadmaps', domain);
+    const aiRoadmapSnap = await getDoc(aiRoadmapRef);
+    if (aiRoadmapSnap.exists()) {
+      return aiRoadmapSnap.data() as RoadmapFile;
+    }
+  } catch (firestoreError) {
+    console.error('Error fetching AI global roadmap from Firestore, falling back to static:', firestoreError);
+  }
+
+  // 2. Fall back to static JSON template
   try {
     const response = await fetch(`/roadmaps-new/${domain}.json`);
 
@@ -75,17 +89,21 @@ export async function loadBaseRoadmap(domain: string): Promise<RoadmapFile> {
 }
 
 /**
- * Get roadmap for user - returns personalized version if exists, otherwise base template
+ * Get roadmap for user with a three-tier priority:
+ *   1. Personalized roadmap from `users/{userId}/roadmaps/{domain}` (Firestore)
+ *   2. AI-generated global roadmap from `roadmaps/{domain}` (Firestore)
+ *   3. Static base template from `/public/roadmaps-new/{domain}.json`
+ *
  * @param userId - User's UID
- * @param domain - Roadmap domain
- * @returns RoadmapFile (either personalized or base template)
+ * @param domain - Roadmap domain slug
+ * @returns RoadmapFile plus flags indicating origin
  */
 export async function getRoadmapForUser(
   userId: string,
   domain: string
-): Promise<{ roadmap: RoadmapFile; isPersonalized: boolean }> {
+): Promise<{ roadmap: RoadmapFile; isPersonalized: boolean; isAiGenerated?: boolean }> {
   try {
-    // First, try to get personalized roadmap
+    // 1. Try personalized user roadmap
     const userRoadmap = await getUserRoadmap(userId, domain);
 
     if (userRoadmap) {
@@ -95,12 +113,29 @@ export async function getRoadmapForUser(
       };
     }
 
-    // If no personalized version, load base template
+    // 2. Try AI-generated global roadmap from Firestore
+    // Note: Firestore rules must allow client reads on `roadmaps/{domain}`
+    try {
+      const aiRoadmapRef = doc(db, 'roadmaps', domain);
+      const aiRoadmapSnap = await getDoc(aiRoadmapRef);
+      if (aiRoadmapSnap.exists()) {
+        return {
+          roadmap: aiRoadmapSnap.data() as RoadmapFile,
+          isPersonalized: false,
+          isAiGenerated: true,
+        };
+      }
+    } catch (firestoreError) {
+      console.error('Error fetching AI global roadmap, falling back to static:', firestoreError);
+    }
+
+    // 3. Fall back to static JSON template
     const baseRoadmap = await loadBaseRoadmap(domain);
 
     return {
       roadmap: baseRoadmap,
       isPersonalized: false,
+      isAiGenerated: false,
     };
   } catch (error) {
     console.error('Error getting roadmap for user:', error);

@@ -22,30 +22,41 @@ service cloud.firestore {
 
       // User's personalized roadmaps subcollection
       match /roadmaps/{domain} {
-        // Users can only access their own roadmaps
         allow read: if isOwner(userId);
         allow create: if isOwner(userId);
         allow update: if isOwner(userId);
         allow delete: if isOwner(userId);
       }
 
-      // User's chat sessions subcollection
+      // User's roadmap progress tracking (step completion, current step, etc.)
+      match /roadmapProgress/{domain} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // User's chat sessions (AI Mentor general chat + per-roadmap chat)
       match /chats/{domain} {
-        // Users can only access their own chat sessions
         allow read: if isOwner(userId);
         allow create: if isOwner(userId);
         allow update: if isOwner(userId);
         allow delete: if isOwner(userId);
       }
 
-      // User's learning resource progress subcollection
-      match /resourceProgress/{progressId} {
-        // Users can only access their own progress data
-        allow read: if isOwner(userId);
-        allow create: if isOwner(userId);
-        allow update: if isOwner(userId);
-        allow delete: if isOwner(userId);
-      }
+      // Usage counters are written by server (Admin SDK) only — no client access needed
+    }
+
+    // AI-generated global roadmap base templates — authenticated read, server-write only
+    match /roadmaps/{domain} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only Admin SDK (cron jobs) can write
+    }
+
+    // AI-curated weekly learning resources — authenticated read, server-write only
+    match /learning-resources/{domain}/weeks/{weekId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only Admin SDK (cron jobs) can write
     }
 
     // Public stats document (read-only for all, write by authenticated users for increment)

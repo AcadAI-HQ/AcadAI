@@ -1,4 +1,4 @@
-import { getAllPosts } from '@/lib/blog';
+import { getAllPostsIncludingDynamic } from '@/lib/blog-server';
 import { PostCard } from '@/components/blog/post-card';
 import { PenLine } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -37,8 +37,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogPage() {
-  const posts = getAllPosts();
+// Re-check Firestore every hour for new AI-generated posts
+export const revalidate = 3600;
+
+export default async function BlogPage() {
+  const posts = await getAllPostsIncludingDynamic();
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">

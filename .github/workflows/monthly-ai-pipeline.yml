@@ -1,0 +1,92 @@
+name: Monthly AI Pipeline
+
+on:
+  schedule:
+    # 1st of every month at 3:00am UTC
+    # Adjust timezone: 3am UTC = 8:30am IST
+    - cron: '0 3 1 * *'
+  # Manual trigger from GitHub Actions UI (for testing)
+  workflow_dispatch:
+
+# CRITICAL: Prevents two runs from overlapping.
+# If a run is already in progress when a new trigger fires, the new one waits.
+# 'cancel-in-progress: false' ensures we never kill a running job.
+concurrency:
+  group: monthly-ai-pipeline
+  cancel-in-progress: false
+
+jobs:
+  market-research:
+    name: Run Market Research
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Trigger Market Research
+        run: |
+          echo "Calling /api/cron/market-research..."
+
+          HTTP_STATUS=$(curl -s \
+            -o /tmp/response.json \
+            -w "%{http_code}" \
+            -X POST "${{ secrets.NEXT_PUBLIC_SITE_URL }}/api/cron/market-research" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --max-time 600)
+
+          echo "HTTP Status: $HTTP_STATUS"
+          echo "Response:"
+          cat /tmp/response.json
+
+          # 200 = success OR already ran (skipped) — both are fine
+          # 401 = wrong secret — configuration error
+          # 500 = agent failed
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Unexpected HTTP status $HTTP_STATUS"
+            exit 1
+          fi
+
+          # Check if it was skipped (idempotency) vs actually ran
+          if cat /tmp/response.json | grep -q '"skipped":true'; then
+            echo "INFO: Job was skipped (already ran this month). This is expected."
+          else
+            echo "SUCCESS: Market research completed."
+          fi
+
+  roadmap-update:
+    name: Generate Roadmaps
+    needs: [market-research]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Trigger Roadmap Update
+        run: |
+          echo "Calling /api/cron/roadmap-update..."
+
+          HTTP_STATUS=$(curl -s \
+            -o /tmp/response.json \
+            -w "%{http_code}" \
+            -X POST "${{ secrets.NEXT_PUBLIC_SITE_URL }}/api/cron/roadmap-update" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --max-time 600)
+
+          echo "HTTP Status: $HTTP_STATUS"
+          echo "Response:"
+          cat /tmp/response.json
+
+          # 200 = success OR already ran (skipped) — both are fine
+          # 401 = wrong secret — configuration error
+          # 500 = agent failed
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Unexpected HTTP status $HTTP_STATUS"
+            exit 1
+          fi
+
+          # Check if it was skipped (idempotency) vs actually ran
+          if cat /tmp/response.json | grep -q '"skipped":true'; then
+            echo "INFO: Job was skipped (already ran this month). This is expected."
+          else
+            echo "SUCCESS: Roadmap generation completed."
+          fi

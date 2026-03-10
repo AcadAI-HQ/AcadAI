@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Check,
   CheckCircle2,
@@ -26,11 +27,23 @@ import {
   Play,
   Code,
   Newspaper,
+  BrainCircuit,
+  Lock,
+  Send,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { RoadmapProgress } from "@/types";
 import { markStepComplete } from "@/lib/progress-service";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { auth } from "@/lib/firebase";
+import {
+  getChatMessages,
+  addMessageToSession,
+} from "@/lib/chat-service";
+import type { ChatMessage } from "@/types";
+import Link from "next/link";
 
 interface FlattenedStep {
   id: string;
@@ -53,6 +66,7 @@ interface NodeDetailDrawerProps {
   progress: RoadmapProgress | null;
   userId: string;
   domain: string;
+  hasMentorAccess?: boolean;
 }
 
 // Parse URL to get resource info
@@ -296,6 +310,202 @@ function ResourceCard({ resource }: { resource: ParsedResource }) {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Compact mentor chat embedded inside the step drawer
+// ---------------------------------------------------------------------------
+
+interface MentorStepChatProps {
+  step: FlattenedStep;
+  domain: string;
+  userId: string;
+}
+
+function MentorStepChat({ step, domain, userId }: MentorStepChatProps) {
+  const { user } = useAuth();
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const chatDomain = `roadmap-${domain}`;
+
+  const stepSuggestedPrompts = [
+    `Explain "${step.title}" simply`,
+    `What should I build for this?`,
+    `How long will this take realistically?`,
+  ];
+
+  useEffect(() => {
+    async function load() {
+      if (!userId) return;
+      try {
+        const msgs = await getChatMessages(userId, chatDomain, 20);
+        setMessages(msgs);
+      } catch {
+        // silent
+      } finally {
+        setIsLoadingHistory(false);
+      }
+    }
+    load();
+  }, [userId, chatDomain]);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
+
+  const handleSend = async (text?: string) => {
+    const msg = (text || input).trim();
+    if (!msg || !user || isLoading) return;
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      const saved = await addMessageToSession(userId, chatDomain, { role: "user", content: msg });
+      setMessages((prev) => [...prev, saved]);
+
+      const currentUser = auth.currentUser;
+      if (!currentUser) throw new Error("Not authenticated");
+      const token = await currentUser.getIdToken();
+
+      const res = await fetch("/api/ai-mentor/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          message: msg,
+          domain,
+          chatHistory: messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
+          stepContext: {
+            stepId: step.id,
+            stepTitle: step.title,
+            sectionTitle: step.sectionTitle,
+          },
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to get response");
+
+      const aiMsg = await addMessageToSession(userId, chatDomain, {
+        role: "assistant",
+        content: data.response,
+      });
+      setMessages((prev) => [...prev, aiMsg]);
+    } catch (err: any) {
+      const errMsg = await addMessageToSession(userId, chatDomain, {
+        role: "assistant",
+        content: err.message || "Sorry, I couldn't process that. Please try again.",
+      });
+      setMessages((prev) => [...prev, errMsg]);
+    } finally {
+      setIsLoading(false);
+      textareaRef.current?.focus();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-[340px]">
+      {/* Messages */}
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto space-y-3 pr-1"
+      >
+        {isLoadingHistory ? (
+          <div className="flex items-center justify-center h-20">
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          </div>
+        ) : messages.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-4 text-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-[#3B82F6]/10 flex items-center justify-center">
+              <BrainCircuit className="h-6 w-6 text-[#3B82F6]" />
+            </div>
+            <p className="text-xs text-muted-foreground max-w-[220px]">
+              Ask me anything about <strong>{step.title}</strong>
+            </p>
+            <div className="flex flex-col gap-1.5 w-full">
+              {stepSuggestedPrompts.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => handleSend(p)}
+                  className="text-xs text-left px-3 py-2 rounded-lg border border-border/60 hover:border-[#3B82F6]/40 hover:bg-[#3B82F6]/5 transition-colors text-muted-foreground hover:text-foreground"
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            {messages.map((m) => (
+              <div
+                key={m.id}
+                className={cn(
+                  "flex gap-2",
+                  m.role === "user" ? "flex-row-reverse" : "flex-row"
+                )}
+              >
+                <div
+                  className={cn(
+                    "text-xs px-3 py-2 rounded-xl max-w-[85%] leading-relaxed",
+                    m.role === "user"
+                      ? "bg-[#3B82F6] text-white rounded-tr-sm"
+                      : "bg-muted text-foreground rounded-tl-sm"
+                  )}
+                >
+                  {m.content}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex gap-2">
+                <div className="bg-muted rounded-xl rounded-tl-sm px-3 py-2 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <span className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                  <span className="w-1.5 h-1.5 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Input */}
+      <div className="flex gap-2 pt-3 border-t mt-3">
+        <Textarea
+          ref={textareaRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Ask about this step..."
+          className="min-h-[38px] max-h-[80px] resize-none text-sm"
+          rows={1}
+          disabled={isLoading}
+        />
+        <Button
+          size="icon"
+          className="shrink-0 h-[38px] w-[38px]"
+          onClick={() => handleSend()}
+          disabled={!input.trim() || isLoading}
+        >
+          <Send className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
 export function NodeDetailDrawer({
   step,
   open,
@@ -304,6 +514,7 @@ export function NodeDetailDrawer({
   progress,
   userId,
   domain,
+  hasMentorAccess = false,
 }: NodeDetailDrawerProps) {
   const [completing, setCompleting] = useState(false);
 
@@ -397,7 +608,7 @@ export function NodeDetailDrawer({
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto py-4">
             <Tabs defaultValue="resources" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4">
+              <TabsList className={cn("grid w-full mb-4", hasMentorAccess ? "grid-cols-3" : "grid-cols-2")}>
                 <TabsTrigger value="resources" className="flex items-center gap-2">
                   <BookOpen className="h-4 w-4" />
                   Resources
@@ -406,6 +617,20 @@ export function NodeDetailDrawer({
                   <Sparkles className="h-4 w-4" />
                   Tips
                 </TabsTrigger>
+                {hasMentorAccess ? (
+                  <TabsTrigger value="mentor" className="flex items-center gap-2">
+                    <BrainCircuit className="h-4 w-4" />
+                    Ask Mentor
+                  </TabsTrigger>
+                ) : (
+                  <Link
+                    href="/pricing"
+                    className="flex items-center justify-center gap-1.5 rounded-sm px-3 py-1.5 text-xs font-medium text-muted-foreground border border-dashed border-border/60 hover:border-[#3B82F6]/40 hover:text-[#3B82F6] transition-colors"
+                  >
+                    <Lock className="h-3 w-3" />
+                    Mentor
+                  </Link>
+                )}
               </TabsList>
 
               <TabsContent value="resources" className="space-y-4 mt-0">
@@ -471,6 +696,13 @@ export function NodeDetailDrawer({
                   </p>
                 </div>
               </TabsContent>
+
+              {/* Ask Mentor Tab */}
+              {hasMentorAccess && step && (
+                <TabsContent value="mentor" className="mt-0">
+                  <MentorStepChat step={step} domain={domain} userId={userId} />
+                </TabsContent>
+              )}
 
               <TabsContent value="tips" className="space-y-4 mt-0">
                 {/* Learning Tips */}

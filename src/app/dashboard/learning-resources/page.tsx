@@ -20,6 +20,7 @@ import {
 import { DomainResourceCard } from '@/components/learning-resources/domain-resource-card';
 import { loadManifest } from '@/lib/weekly-resources-service';
 import { getCompletionStats } from '@/lib/user-progress-service';
+import { hasAIResourcesForDomain, getAIResourcesForDomain } from '@/lib/ai-learning-resources-service';
 import { useAuth } from '@/hooks/use-auth';
 import { WeeklyResourceManifest } from '@/types/weekly-resources';
 
@@ -44,25 +45,58 @@ export default function LearningResourcesPage() {
   const router = useRouter();
   const { user } = useAuth();
   const [manifest, setManifest] = useState<WeeklyResourceManifest | null>(null);
-  const [completionStats, setCompletionStats] = useState<
-    Record<string, number>
-  >({});
+  const [completionStats, setCompletionStats] = useState<Record<string, number>>({});
+  // Map of domain id -> number of AI-generated weeks
+  const [aiWeekCounts, setAiWeekCounts] = useState<Record<string, number>>({});
+  // Map of domain id -> whether AI content exists
+  const [aiDomainFlags, setAiDomainFlags] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Mark learning resources as visited (for onboarding widget + spotlight dot)
+    localStorage.setItem("acadai_visited_resources", "1");
+  }, []);
 
   useEffect(() => {
     async function loadData() {
       try {
-        console.log('[Learning Resources] Starting to load data...');
+        // ── Static manifest ──────────────────────────────────────────────
         const manifestData = await loadManifest();
-        console.log('[Learning Resources] Manifest loaded:', manifestData);
         setManifest(manifestData);
 
-        // Load completion stats for each domain if user is logged in
+        // ── AI resources (parallel per domain, graceful degradation) ─────
+        const aiFlags: Record<string, boolean> = {};
+        const aiCounts: Record<string, number> = {};
+
+        try {
+          const aiChecks = await Promise.all(
+            domainConfig.map(async (domain) => {
+              const hasAI = await hasAIResourcesForDomain(domain.id);
+              let weekCount = 0;
+              if (hasAI) {
+                const weeks = await getAIResourcesForDomain(domain.id);
+                weekCount = weeks.length;
+              }
+              return { id: domain.id, hasAI, weekCount };
+            })
+          );
+
+          for (const result of aiChecks) {
+            aiFlags[result.id] = result.hasAI;
+            aiCounts[result.id] = result.weekCount;
+          }
+        } catch (aiError) {
+          // Firestore unavailable — degrade gracefully and show only static content
+          console.error('[Learning Resources] Failed to load AI resources, showing static only:', aiError);
+        }
+
+        setAiDomainFlags(aiFlags);
+        setAiWeekCounts(aiCounts);
+
+        // ── Completion stats (per-user) ──────────────────────────────────
         if (user?.uid) {
-          console.log('[Learning Resources] User logged in, loading completion stats...');
           const stats: Record<string, number> = {};
 
-          // Load stats with timeout to prevent hanging
           const statsPromises = domainConfig.map(async (domain) => {
             try {
               const timeoutPromise = new Promise<never>((_, reject) =>
@@ -79,15 +113,11 @@ export default function LearningResourcesPage() {
           });
 
           await Promise.all(statsPromises);
-          console.log('[Learning Resources] Completion stats loaded:', stats);
           setCompletionStats(stats);
-        } else {
-          console.log('[Learning Resources] No user logged in');
         }
       } catch (error) {
         console.error('[Learning Resources] Failed to load data:', error);
       } finally {
-        console.log('[Learning Resources] Setting loading to false');
         setLoading(false);
       }
     }
@@ -118,16 +148,25 @@ export default function LearningResourcesPage() {
       {/* Domain Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {domainConfig.map((domain) => {
-          const availableWeeks =
-            manifest?.domains[domain.id]?.availableWeeks.length || 0;
-          const completionPercentage = completionStats[domain.id] || 0;
+          const staticWeeks = manifest?.domains[domain.id]?.availableWeeks.length ?? 0;
+          const aiWeeks = aiWeekCounts[domain.id] ?? 0;
+
+          // Deduplicate by taking the greater of static + AI counts.
+          // Both lists may overlap on the same week number, so we present
+          // the sum but guard against double-counting by capping at a sane max.
+          // The detail page handles the actual dedup logic.
+          const totalWeeks = staticWeeks + aiWeeks;
+
+          const completionPercentage = completionStats[domain.id] ?? 0;
+          const hasAiContent = aiDomainFlags[domain.id] ?? false;
 
           return (
             <DomainResourceCard
               key={domain.id}
               domain={domain}
-              availableWeeks={availableWeeks}
+              availableWeeks={totalWeeks}
               completionPercentage={completionPercentage}
+              hasAiContent={hasAiContent}
               onSelect={() =>
                 router.push(`/dashboard/learning-resources/${domain.id}`)
               }

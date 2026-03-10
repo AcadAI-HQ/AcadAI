@@ -1,0 +1,92 @@
+name: Weekly AI Pipeline
+
+on:
+  schedule:
+    # Every Monday at 2:00am UTC
+    # Adjust timezone: 2am UTC = 7:30am IST
+    - cron: '0 2 * * 1'
+  # Manual trigger from GitHub Actions UI (for testing)
+  workflow_dispatch:
+
+# CRITICAL: Prevents two runs from overlapping.
+# If a run is already in progress when a new trigger fires, the new one waits.
+# 'cancel-in-progress: false' ensures we never kill a running job.
+concurrency:
+  group: weekly-ai-pipeline
+  cancel-in-progress: false
+
+jobs:
+  blog-post:
+    name: Generate Weekly Blog Post
+    runs-on: ubuntu-latest
+    timeout-minutes: 10   # Hard stop after 10 min — blog post should take < 60s
+
+    steps:
+      - name: Trigger blog post generation
+        run: |
+          echo "Calling /api/cron/blog-post..."
+
+          HTTP_STATUS=$(curl -s \
+            -o /tmp/response.json \
+            -w "%{http_code}" \
+            -X POST "${{ secrets.NEXT_PUBLIC_SITE_URL }}/api/cron/blog-post" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --max-time 120)
+
+          echo "HTTP Status: $HTTP_STATUS"
+          echo "Response:"
+          cat /tmp/response.json
+
+          # 200 = success OR already ran (skipped) — both are fine
+          # 401 = wrong secret — configuration error
+          # 500 = agent failed
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Unexpected HTTP status $HTTP_STATUS"
+            exit 1
+          fi
+
+          # Check if it was skipped (idempotency) vs actually ran
+          if cat /tmp/response.json | grep -q '"skipped":true'; then
+            echo "INFO: Job was skipped (already ran this week). This is expected."
+          else
+            echo "SUCCESS: Blog post generated."
+          fi
+
+  learning-resources:
+    name: Generate Weekly Learning Resources
+    needs: [blog-post]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15   # 14 domains with delays — may take up to ~5 min
+
+    steps:
+      - name: Trigger Learning Resources Generation
+        run: |
+          echo "Calling /api/cron/learning-resources..."
+
+          HTTP_STATUS=$(curl -s \
+            -o /tmp/response.json \
+            -w "%{http_code}" \
+            -X POST "${{ secrets.NEXT_PUBLIC_SITE_URL }}/api/cron/learning-resources" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --max-time 300)
+
+          echo "HTTP Status: $HTTP_STATUS"
+          echo "Response:"
+          cat /tmp/response.json
+
+          # 200 = success OR already ran (skipped) — both are fine
+          # 401 = wrong secret — configuration error
+          # 500 = agent failed
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Unexpected HTTP status $HTTP_STATUS"
+            exit 1
+          fi
+
+          # Check if it was skipped (idempotency) vs actually ran
+          if cat /tmp/response.json | grep -q '"skipped":true'; then
+            echo "INFO: Job was skipped (already ran this week). This is expected."
+          else
+            echo "SUCCESS: Learning resources generated."
+          fi
