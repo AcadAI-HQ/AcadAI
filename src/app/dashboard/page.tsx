@@ -53,12 +53,25 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.45, delay, ease: [0.25, 0.46, 0.45, 0.94] },
 });
 
+interface PipelineStatus {
+  roadmapUpdatedDaysAgo: number;
+  resourcesRefreshedDaysAgo: number;
+  latestBlogTitle: string;
+  latestBlogSlug: string;
+}
+
 export default function DashboardPage() {
   const { user, updateUserProfile } = useAuth();
   const [progressPct, setProgressPct]             = useState<number | null>(null);
   const [daysSinceVisit, setDaysSinceVisit]       = useState<number | null>(null);
   const [showWelcomeModal, setShowWelcomeModal]   = useState(false);
   const [hasCompletedStep, setHasCompletedStep]   = useState(false);
+  const [pipelineStatus, setPipelineStatus]       = useState<PipelineStatus>({
+    roadmapUpdatedDaysAgo: 999,
+    resourcesRefreshedDaysAgo: 999,
+    latestBlogTitle: 'Loading…',
+    latestBlogSlug: '',
+  });
 
   const firstName    = user?.displayName?.split(" ")[0] || "there";
   const hasRoadmap   = !!user?.lastGeneratedDomain;
@@ -106,6 +119,16 @@ export default function DashboardPage() {
     if (user?.subscription?.tier === "premium" && !user?.premiumOnboardingComplete) {
       setShowWelcomeModal(true);
     }
+
+    // Fetch live AI pipeline status for the AI Engine card
+    fetch('/api/dashboard/status')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.roadmapUpdatedDaysAgo !== undefined) {
+          setPipelineStatus(data);
+        }
+      })
+      .catch(() => {});
   }, [user?.uid, user?.lastGeneratedDomain, user?.subscription?.tier, user?.premiumOnboardingComplete]);
 
   const handleWelcomeModalDismiss = () => {
@@ -264,10 +287,10 @@ export default function DashboardPage() {
       {/* ── AI Engine status ── */}
       <motion.div {...fadeUp(0.16)}>
         <AiEngineStatusCard
-          roadmapUpdatedDaysAgo={2}
-          resourcesRefreshedDaysAgo={5}
-          latestBlogTitle="How to Get Your First Developer Job in 2026"
-          latestBlogSlug="first-developer-job-2026"
+          roadmapUpdatedDaysAgo={pipelineStatus.roadmapUpdatedDaysAgo}
+          resourcesRefreshedDaysAgo={pipelineStatus.resourcesRefreshedDaysAgo}
+          latestBlogTitle={pipelineStatus.latestBlogTitle}
+          latestBlogSlug={pipelineStatus.latestBlogSlug}
         />
       </motion.div>
 

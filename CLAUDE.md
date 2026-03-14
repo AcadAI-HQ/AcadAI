@@ -25,24 +25,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `src/types/` - TypeScript type definitions
 
 ### Business Logic & Features
-- **Free for Everyone**: Completely free platform with no subscription tiers or generation limits
-- **Comprehensive Content**: All users receive professional-level, detailed roadmaps (previously premium content)
-- **Available Domains**: 
-  - Frontend Development (React, Vue, modern web technologies)
-  - Backend Development (APIs, databases, system architecture)
-  - Fullstack Development (complete web application development)
-  - Machine Learning (from foundations to MLOps and specialized applications)
-  - DevOps (infrastructure automation, CI/CD, cloud platforms)
+- **Subscription-Based Platform**: AcadAI is a premium product gated behind a paid subscription (`subscription.tier === 'premium'`)
+- **Premium Features (all require active subscription)**:
+  - AI-powered learning roadmaps (personalized via Gemini)
+  - Hyperpersonalization modal on roadmap pages
+  - Learning Resources (curated weekly content)
+  - AI Mentor (chat, step Q&A via NodeDetailDrawer, and agentic tool calls)
+  - Blog content and market-researched resources
+- **Free / Public Access**: Landing page, login/signup, onboarding, and basic dashboard shell only
+- **Subscription Check**: `subscription.tier` field on UserProfile; checked server-side in API routes and client-side for UI gating
+- **Available Domains (14 total)**:
+  - Frontend, Backend, Fullstack, Machine Learning, DevOps
+  - Android, iOS, Blockchain, UI/UX, Product Engineering
+  - AAA Game Dev, Indie Game Dev, Cybersecurity, Data Science
 - **Roadmap Structure**: Hierarchical stages with detailed resources and learning paths
 
-### Recent Changes (2025)
-- **Removed Premium Model**: Eliminated all subscription-based features and payment integration
-- **Enhanced Free Content**: What was previously premium content is now available to all users
+### Recent Changes (2025/2026)
+- **Premium Subscription Model**: All core features gated behind subscription — free tier is landing/auth only
+- **AI Mentor**: Fully agentic chat system with 5 tools, daily (50) and monthly (1500) usage caps per user
+- **Hyperpersonalization**: Gemini-powered roadmap customization per user background/goals
 - **Comprehensive User Onboarding**: Multi-step onboarding system collecting user type, background, and learning preferences
 - **Profile Management System**: Complete profile viewing and editing functionality with tabbed interface
-- **Enhanced Navigation**: Integrated sidebar navigation with Dashboard, My Roadmap, and Profile sections
-- **Comprehensive Roadmaps**: All domains now feature detailed, professional-level learning paths
-- **Personalized Roadmap Storage**: User roadmaps now stored in Firestore for future AI customization with Google Gemini
+- **Enhanced Navigation**: Integrated sidebar navigation with Dashboard, My Roadmap, Learning Resources, Profile, and Feedback sections
+- **Comprehensive Roadmaps**: All 14 domains feature detailed, professional-level learning paths
+- **Personalized Roadmap Storage**: User roadmaps stored in Firestore (`users/{userId}/roadmaps/{domain}`) for AI customization
+- **AI Pipeline**: Weekly blog + learning resources, monthly market research + roadmap regeneration via GitHub Actions
 
 ### Authentication Flow
 - Firebase Auth manages authentication
@@ -65,10 +72,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Firebase Configuration
 - Authentication, Firestore database integration
-- Enhanced user profiles include: uid, email, displayName, skills, lastGeneratedDomain, profileComplete, userType, and type-specific fields
+- Enhanced user profiles include: uid, email, displayName, skills, lastGeneratedDomain, profileComplete, userType, subscription, and type-specific fields
 - Firebase config in `src/lib/firebase.ts`
 - Data filtering prevents undefined/null values in Firestore updates
-- No payment or subscription data stored
+- Subscription data stored in `subscription` field on user profile (`{ tier: 'free' | 'premium', ... }`)
 - **Personalized Roadmaps**: Stored in `users/{userId}/roadmaps/{domain}` subcollection
   - Each user gets their own copy of roadmaps for AI customization
   - Base templates from `/public/roadmaps-new/` used as fallback
@@ -96,12 +103,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics Measurement ID (e.g., G-XXXXXXXXXX)
 - `GOOGLE_GEMINI_API_KEY` - (Future) Google Gemini API key for AI customization
 
+### Subscription & Premium Gating
+- **Server-side check**: AI Mentor chat route (`/api/ai-mentor/chat`) validates `subscription.tier === 'premium'` before processing
+- **Client-side check**: `hasMentorAccess` prop gates AI Mentor tab in `NodeDetailDrawer`; Learning Resources, Hyperpersonalization, and roadmap pages check subscription on load
+- **Free users**: See locked UI states (lock icon chips, upgrade prompts) on premium features; redirected to `/pricing` page
+- **`/pricing` page**: Subscription purchase/upgrade flow
+- **Onboarding**: Multi-step onboarding runs regardless of subscription tier; subscription gate enforced after profile is complete
+
 ### Component Patterns
 - Components organized by feature in `src/components/`
 - UI components from shadcn/ui in `src/components/ui/`
 - Custom styling with Tailwind CSS and CSS modules
 - Framer Motion for animations and transitions
-- Removed: Pricing components, limit warning dialogs, subscription management UI
+- Premium-locked UI: lock icon chip components, upgrade CTA cards, gated feature placeholders
 
 ### Navigation & Layout System
 - **ConditionalLayout**: Root-level layout handling authentication, sidebar, and navbar
@@ -110,15 +124,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Mobile Support**: Responsive sidebar with mobile toggle functionality
 
 ### Development Notes
-- **No Payment Integration**: All Razorpay and payment-related code has been removed
-- **Enhanced Auth Context**: Includes profile management and data filtering functionality
-- **Content Loading**: Roadmap pages load from Firestore if personalized, otherwise base templates
-- **User Experience**: All users see comprehensive roadmaps without restrictions
-- **Profile System**: Complete onboarding and profile management with validation
+- **Subscription Gating**: Always enforce `subscription.tier === 'premium'` checks — both server-side (API routes) and client-side (UI). Do NOT remove gates.
+- **Enhanced Auth Context**: Includes profile management, subscription state, and data filtering functionality
+- **Content Loading**: Roadmap pages load from Firestore if personalized (premium), otherwise base templates (free users see upgrade prompt)
+- **Profile System**: Complete onboarding and profile management with validation; roadmap generation requires complete profile + premium subscription
 - **Data Integrity**: Firestore updates filter out undefined/null/empty values
-- **Messaging**: UI emphasizes "comprehensive" and "professional-level" content being free
 - **Roadmap Service**: Centralized service at `src/lib/roadmap-service.ts` handles all roadmap CRUD operations
-- **AI Integration Ready**: Prepared for Google Gemini integration via `src/lib/gemini-service.ts` (placeholder)
+- **Gemini Service**: `src/lib/gemini-service.ts` — single entry point for all Gemini calls with token budget enforcement
+- **AI Mentor Usage**: Tracked in `users/{uid}/usage/ai-mentor` (daily 50, monthly 1500 caps)
 
 ### Common Issues & Solutions
 - **Next.js Cache Corruption**: If encountering ENOENT errors, remove `.next` directory and restart dev server

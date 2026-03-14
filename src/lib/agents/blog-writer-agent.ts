@@ -68,20 +68,21 @@ export interface BlogWriterResult {
 export async function runBlogWriterAgent(): Promise<BlogWriterResult> {
   console.log('[blog-writer] Starting weekly blog post generation...');
 
-  // ── Step 0: SEO Gap Analysis (2 Tavily searches) ────────────────────────────
-  const [existingSitePosts, trendingInSpace] = await Promise.all([
-    tavilySearch('site:acadai.org', {
-      maxResults: 5,
-      days: 365,
-    }),
+  if (!adminDb) {
+    throw new Error('[blog-writer] Firebase Admin not available. Cannot read/store posts.');
+  }
+
+  // ── Step 0: SEO Gap Analysis ─────────────────────────────────────────────────
+  // Read existing blog posts from Firestore (avoid duplicate topics) + search trending
+  const [existingSnapshot, trendingInSpace] = await Promise.all([
+    adminDb.collection(BLOG_POSTS_COLLECTION).orderBy('createdAt', 'desc').limit(20).get(),
     tavilySearch('developer learning platform blog topics trending 2026', {
       maxResults: 5,
-      days: 30,
     }),
   ]);
 
-  const existingTopics = existingSitePosts
-    .map((r) => `- ${r.title}`)
+  const existingTopics = existingSnapshot.docs
+    .map((d) => `- ${d.data().title}`)
     .join('\n');
 
   const trendingTopics = trendingInSpace
@@ -89,22 +90,19 @@ export async function runBlogWriterAgent(): Promise<BlogWriterResult> {
     .join('\n');
 
   console.log(
-    `[blog-writer] SEO analysis: ${existingSitePosts.length} existing posts found, ${trendingInSpace.length} trending topics found`
+    `[blog-writer] SEO analysis: ${existingSnapshot.size} existing posts found, ${trendingInSpace.length} trending topics found`
   );
 
   // ── Step 1: Gather trending topics (3 Tavily searches) ──────────────────────
   const [techTrends, careerTrends, learningTrends] = await Promise.all([
     tavilySearch('trending developer tools programming languages 2026', {
       maxResults: 4,
-      days: 10,
     }),
     tavilySearch('software engineer career job market skills hiring 2026', {
       maxResults: 4,
-      days: 14,
     }),
     tavilySearch('learn programming self-taught developer path 2026', {
       maxResults: 3,
-      days: 14,
     }),
   ]);
 
@@ -183,10 +181,6 @@ Return a JSON object with EXACTLY this structure (no markdown wrapper, no extra 
   };
 
   // ── Step 4: Store to Firestore ───────────────────────────────────────────────
-  if (!adminDb) {
-    throw new Error('[blog-writer] Firebase Admin not available. Cannot store post.');
-  }
-
   // Check for slug collision — append date suffix if needed
   const existingDoc = await adminDb
     .collection(BLOG_POSTS_COLLECTION)

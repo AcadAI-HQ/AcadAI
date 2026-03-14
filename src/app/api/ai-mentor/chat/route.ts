@@ -103,22 +103,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Message too long (max 2000 chars)' }, { status: 400 });
     }
 
-    // 3. Verify premium subscription
-    if (adminDb) {
-      const userSnap = await adminDb.collection('users').doc(uid).get();
-      const userData = userSnap.data() as Record<string, any> | undefined;
-      const isPremium =
-        userData?.subscription?.tier === 'premium' &&
-        userData?.subscription?.status === 'active';
-      const isAdmin = userData?.roles?.admin === true;
-      const bypass = userData?.flags?.bypassPremium === true;
+    // 3. Verify premium subscription — fail closed (deny if DB unavailable)
+    if (!adminDb) {
+      return NextResponse.json({ error: 'Server database not configured' }, { status: 500 });
+    }
 
-      if (!isPremium && !isAdmin && !bypass) {
-        return NextResponse.json(
-          { error: 'Premium subscription required', code: 'PREMIUM_REQUIRED' },
-          { status: 403 }
-        );
-      }
+    const userSnap = await adminDb.collection('users').doc(uid).get();
+    const userData = userSnap.data() as Record<string, any> | undefined;
+    const isPremium =
+      userData?.subscription?.tier === 'premium' &&
+      userData?.subscription?.status === 'active';
+    const isAdmin = userData?.roles?.admin === true;
+    const bypass = userData?.flags?.bypassPremium === true;
+
+    if (!isPremium && !isAdmin && !bypass) {
+      return NextResponse.json(
+        { error: 'Premium subscription required', code: 'PREMIUM_REQUIRED' },
+        { status: 403 }
+      );
     }
 
     // 4. Check usage limits

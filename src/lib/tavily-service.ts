@@ -24,7 +24,12 @@ export interface TavilySearchOptions {
   maxResults?: number;
   /** 'basic' = 1 credit (default), 'advanced' = 2 credits. Use basic unless needed. */
   searchDepth?: 'basic' | 'advanced';
-  /** Filter to results published within the last N days. */
+  /**
+   * Filter to results published within the last N days.
+   * WARNING: Only valid when topic is 'news'. Do NOT use with default (general) topic —
+   * Tavily will return HTTP 400 "Query cannot consist only of site: operators".
+   * Omit this parameter unless you also set topic: 'news'.
+   */
   days?: number;
   /** Include a short AI-synthesized answer from Tavily (uses same credit). */
   includeAnswer?: boolean;

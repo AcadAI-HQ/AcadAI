@@ -99,15 +99,12 @@ export async function runMarketResearchAgent(): Promise<MarketResearchResult> {
       const [skillsResults, toolsResults, salaryResults] = await Promise.all([
         tavilySearch(`${displayName} developer skills jobs hiring 2026`, {
           maxResults: 3,
-          days: 30,
         }),
         tavilySearch(`top ${displayName} frameworks tools companies 2026`, {
           maxResults: 3,
-          days: 30,
         }),
         tavilySearch(`${displayName} engineer salary requirements 2026`, {
           maxResults: 3,
-          days: 30,
         }),
       ]);
 

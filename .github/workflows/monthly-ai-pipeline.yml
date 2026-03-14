@@ -49,6 +49,9 @@ jobs:
           # Check if it was skipped (idempotency) vs actually ran
           if cat /tmp/response.json | grep -q '"skipped":true'; then
             echo "INFO: Job was skipped (already ran this month). This is expected."
+          elif cat /tmp/response.json | grep -q '"success":false'; then
+            echo "ERROR: Market research reported failure. Check errors in response above."
+            exit 1
           else
             echo "SUCCESS: Market research completed."
           fi
@@ -87,6 +90,9 @@ jobs:
           # Check if it was skipped (idempotency) vs actually ran
           if cat /tmp/response.json | grep -q '"skipped":true'; then
             echo "INFO: Job was skipped (already ran this month). This is expected."
+          elif cat /tmp/response.json | grep -q '"success":false'; then
+            echo "ERROR: Roadmap generation reported failure. Check errors in response above."
+            exit 1
           else
             echo "SUCCESS: Roadmap generation completed."
           fi

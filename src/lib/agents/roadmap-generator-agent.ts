@@ -114,28 +114,32 @@ export async function runRoadmapGeneratorAgent(): Promise<RoadmapGeneratorResult
         .doc(domain)
         .get();
 
-      if (!researchDoc.exists) {
+      const hasResearch = researchDoc.exists;
+
+      if (!hasResearch) {
         console.warn(
-          `[roadmap-generator] No market research found for ${displayName}. Skipping.`
+          `[roadmap-generator] No market research found for ${displayName}. Generating without market data.`
         );
-        errors.push(`${domain}: No market research data available`);
-        continue;
       }
 
-      const research = researchDoc.data() as MarketResearchDoc;
+      const research = hasResearch ? (researchDoc.data() as MarketResearchDoc) : null;
 
       // ── Step 2: Generate roadmap with Gemini ────────────────────────────────
       const systemInstruction =
         'You are an expert curriculum designer for tech learning paths. Generate structured, practical roadmaps that take a learner from beginner to job-ready. Return only valid JSON.';
 
-      const prompt = `Generate a comprehensive learning roadmap for ${displayName}.
-
-Current market intelligence for this domain:
+      const marketContext = research
+        ? `Current market intelligence for this domain:
 - In-demand skills: ${research.inDemandSkills.join(', ')}
 - Popular tools: ${research.tools.join(', ')}
 - Key frameworks: ${research.frameworks.join(', ')}
 - Industry trends: ${research.trends.join(', ')}
-- Market summary: ${research.summary}
+- Market summary: ${research.summary}`
+        : `Use your expert knowledge of the current ${displayName} job market and industry standards to inform the roadmap.`;
+
+      const prompt = `Generate a comprehensive learning roadmap for ${displayName}.
+
+${marketContext}
 
 Return a JSON object with EXACTLY this structure (no markdown wrapper, no extra fields):
 {
@@ -203,6 +207,7 @@ Requirements:
         steps: roadmap.steps,
         generatedAt: now.toISOString(),
         source: 'ai-generated',
+        usedMarketResearch: hasResearch,
       });
 
       domainsProcessed++;

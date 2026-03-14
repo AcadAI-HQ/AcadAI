@@ -103,11 +103,9 @@ async function processDomain(
   const [tutorials, tools] = await Promise.all([
     tavilySearch(`best ${domain.displayName} tutorial article ${monthName} ${currentYear}`, {
       maxResults: 3,
-      days: 14,
     }),
     tavilySearch(`new ${domain.displayName} tools releases ${monthName} ${currentYear}`, {
       maxResults: 3,
-      days: 14,
     }),
   ]);
 
